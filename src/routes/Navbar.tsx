@@ -10,8 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { redirect, useLocation } from "react-router-dom";
-
-const baseUrl = "http://localhost:3000";
+import { baseUrl } from "../utils/constants";
 
 interface User {
     firstName: string;

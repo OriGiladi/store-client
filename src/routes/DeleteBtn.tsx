@@ -2,8 +2,7 @@ import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Al
 import { DeleteIcon} from '@chakra-ui/icons'
 import React from 'react'
 import axios from 'axios';
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from '../utils/constants';
 
 interface Product{
     _id: string,

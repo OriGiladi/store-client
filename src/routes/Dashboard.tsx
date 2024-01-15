@@ -3,8 +3,7 @@ import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteBtn } from "./DeleteBtn";
 import axios from "axios";
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
 
 interface Product{
     _id: string,

@@ -2,14 +2,9 @@ import { Outlet } from "react-router-dom"
 import { Navbar } from "./Navbar"
 import { Container, Grid, GridItem } from "@chakra-ui/react"
 import SideBar from "./SideBar"
-
-
-const baseUrl = 'http://localhost:3000';
-
-
+import { baseUrl } from "../utils/constants"
 
 export function RootLayout() {
-
     return (
         <Grid templateColumns="repeat(6, 1fr)" bg="gray.50">
             <GridItem as="aside"

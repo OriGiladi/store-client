@@ -2,8 +2,7 @@ import { Box, Button, Card, CardHeader, Flex, Heading, Image, Text } from "@chak
 import { NavLink, redirect, useLoaderData } from "react-router-dom";
 import { AddIcon} from '@chakra-ui/icons'
 import { LoaderFunction } from 'react-router-dom';
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
 
 interface Product{
     _id: string,

@@ -4,8 +4,7 @@ import '../index.css'
 import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
 
 const admin = localStorage.getItem('admin')
 

@@ -4,9 +4,7 @@ import '../index.css'
 import axios from 'axios';
 import { registrationValidators } from "../validators/registrationValidators";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
 
 
 

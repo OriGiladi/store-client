@@ -5,8 +5,7 @@ import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
 
 const admin = localStorage.getItem('admin')
 
