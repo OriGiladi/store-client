@@ -1,6 +1,7 @@
 import { Box, List, ListIcon, ListItem, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
 import {StarIcon} from "@chakra-ui/icons"
 import { PayPalScriptProvider, PayPalButtons, SCRIPT_LOADING_STATE } from "@paypal/react-paypal-js";
+import rootStore from "../rootStore";
 
 function ShoppingCart() {
 
@@ -10,7 +11,7 @@ function ShoppingCart() {
         intent: "capture"
     };
 
-    const token = localStorage.getItem('token')
+    const {userStore} = rootStore
 
     return (
         <>
@@ -32,7 +33,7 @@ function ShoppingCart() {
                         </List>
                     </TabPanel>
                     <TabPanel>
-                        {token?
+                        {userStore.userJwt ?
                         (
                             <List spacing = {4}>
                                 <ListItem>product 1</ListItem>
@@ -50,7 +51,7 @@ function ShoppingCart() {
             <Box mb="30px">
                 
             </Box>
-            <PayPalScriptProvider loadingStatus={SCRIPT_LOADING_STATE.RESOLVED} options={initialOptions}>
+            <PayPalScriptProvider loadingStatus={SCRIPT_LOADING_STATE.RESOLVED} options={initialOptions}> 
                 <PayPalButtons />
             </PayPalScriptProvider> 
                 

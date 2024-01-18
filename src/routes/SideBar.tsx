@@ -1,10 +1,12 @@
-import { Box, List, ListIcon, ListItem } from "@chakra-ui/react"
+import { List, ListIcon, ListItem } from "@chakra-ui/react"
 import { NavLink } from "react-router-dom"
 import {CalendarIcon, EditIcon} from "@chakra-ui/icons"
+import { observer } from "mobx-react";
+import rootStore from "../rootStore";
 
-function SideBar() {
-
-    const token = localStorage.getItem('token')
+const SideBar = observer(() => {
+    const { userStore } = rootStore 
+    const userJwt = userStore.userJwt
 
     return (
         <List color="white" fontSize="1.2em" spacing={4}>
@@ -21,10 +23,7 @@ function SideBar() {
                 <NavLink to='/about'>About Us</NavLink>
             </ListItem>
 
-        {token? (
-            <Box></Box>
-        ):
-        (
+        {!userJwt? (
             <>
                 <ListItem>
                     <NavLink to='/login'> Log in </NavLink>
@@ -35,11 +34,9 @@ function SideBar() {
                     <NavLink to='/register'>Register</NavLink>
                 </ListItem>
             </>
-        )}
-            
-            
+        ) : (null)}
         </List>
     )
-}
+})
 
 export default SideBar

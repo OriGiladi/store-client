@@ -5,8 +5,8 @@ import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from "../utils/constants";
+import rootStore from "../rootStore";
 
 const admin = localStorage.getItem('admin')
 
@@ -24,7 +24,7 @@ const admin = localStorage.getItem('admin')
 
 export async function addProductActionDialog({ request }: { request: Request}) {
     
-    const token = localStorage.getItem('token')
+    const {userStore} = rootStore
     
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
@@ -45,7 +45,7 @@ export async function addProductActionDialog({ request }: { request: Request}) {
             await axios.post(`${baseUrl}/product`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
+                    "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
 

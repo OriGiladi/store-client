@@ -1,15 +1,12 @@
 import { Outlet } from "react-router-dom"
-import { Navbar } from "./Navbar"
 import { Container, Grid, GridItem } from "@chakra-ui/react"
+import { baseUrl } from "../utils/constants"
+import Navbar from "./Navbar"
 import SideBar from "./SideBar"
+import { observer } from "mobx-react";
+import rootStore from "../rootStore"
 
-
-const baseUrl = 'http://localhost:3000';
-
-
-
-export function RootLayout() {
-
+const RootLayout = observer(() => {
     return (
         <Grid templateColumns="repeat(6, 1fr)" bg="gray.50">
             <GridItem as="aside"
@@ -27,12 +24,14 @@ export function RootLayout() {
             </GridItem>
         </Grid>
     )
-}
+})
+export default RootLayout
 
 export async function userLoader() {
+    const {userStore} = rootStore
     const res = await fetch(`${baseUrl}/users/me`, {
         headers: {
-        Authorization: 'Bearer ' + localStorage.getItem("token")}}
+        Authorization: 'Bearer ' + userStore.userJwt}}
     )
     console.log(res)
     return res.json()

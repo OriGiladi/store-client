@@ -2,9 +2,8 @@ import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Al
 import { DeleteIcon} from '@chakra-ui/icons'
 import React from 'react'
 import axios from 'axios';
-
-const baseUrl = 'http://localhost:3000';
-
+import { baseUrl } from '../utils/constants';
+import rootStore from '../rootStore';
 interface Product{
     _id: string,
     name: string,
@@ -25,13 +24,13 @@ export function DeleteBtn({product}: {product: Product}) {
 
     const onDelete = async (id: string) => {
 
-        const token = localStorage.getItem('token')
+        const {userStore} = rootStore
 
         try {
             await axios.delete(`${baseUrl}/product/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
+                    "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
             onClose()

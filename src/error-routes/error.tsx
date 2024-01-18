@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const ErorrPage = () => {
+const ErrorPage = () => {
     return (
         <>
             <div>404 error</div>
@@ -10,4 +10,4 @@ const ErorrPage = () => {
     )
 }
 
-export default ErorrPage
+export default ErrorPage

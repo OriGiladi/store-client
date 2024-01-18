@@ -1,85 +1,66 @@
-import React, { useState, ChangeEvent } from "react";
-import { Form, redirect } from "react-router-dom";
+import { useState, ChangeEvent } from "react";
+import { Form, json  } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-
-const baseUrl = 'http://localhost:3000';
-
-interface FormData {
-    email: string;
-    password: string;
-}
+import { LoginRequest, baseUrl } from "../utils/constants";
+import rootStore from '../rootStore'
 
 export async function loginAction({ request }: { request: Request }) {
+    const {userStore} = rootStore
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
     const { email, password } = userInfo;
-
     const requestData = {
         email,
         password
     };
-
     try {
         const response = await axios.post(`${baseUrl}/login`, requestData, {
-            headers: {
+            headers: { // TODO: create getHeader function in utils
                 'Content-Type': 'application/json',
             }
         });
-        
-        localStorage.setItem('token', response.data.token)
-        if(response.data.admin)
-            localStorage.setItem('admin', response.data.admin)
-        
-        return redirect("/");
-
+        localStorage.setItem('userJwt', response.data.token)
+        if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
+            localStorage.setItem('adminJwt', response.data.admin)
+        userStore.userJwtAuthentication()
+        return response
     } catch (error) {
-        console.error(error);
-        return { response: false, data: null };
+
+        if (error.response.status === 401 || error.response.status === 404 ) // TODO: don't use magic numbers
+        {
+            throw json(
+                {
+                    message: "Invalid email or password",
+                },
+            );
+        }
+        else {  
+            throw json(
+                {
+                    message: "There is a problem in our server",
+                },
+            );
+        }
     }
 }
 
-const Login:React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
+const Login = () => {
+    const {userStore} = rootStore
+    const [formData, setFormData] = useState<LoginRequest>({
         email: "",
         password: ""
     });
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
     const [loginError, setLoginError] = useState("")
+    const userJwt = userStore.userJwt
 
-    const token = localStorage.getItem('token')
-
-    const validate = async () => {
-    const { email, password } = formData;
-
-    const requestData = {
-        email,
-        password
-    };
-
-    try {
-        await axios.post(`${baseUrl}/login`, requestData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        // success code
-
-    } catch (error) {
-        console.error(error);
-        setLoginError("Email or password are invalid")
-        return { response: false, data: null };
-    }
-    }
-    
     return (
         <>
-        {!token ?
+        {!userJwt ?
         ( <Box textAlign="center" maxWidth='480px'>
             <Heading my='30' p="10px">Log In</Heading>
             <Form method="post" id="register-form" action="/login">
@@ -99,14 +80,14 @@ const Login:React.FC = () => {
 
                 <FormControl>
                     
-                        <FormHelperText color="red.500" mb="40px">
+                        <FormHelperText color="red.500" mb="40px" fontWeight="600">
                             {loginError}
                         </FormHelperText>
                     
                 </FormControl>
                 
 
-                <Button colorScheme="red" onClick={validate} type="submit">Submit</Button>
+            <Button colorScheme="red" type="submit">Submit</Button>
             </Form>
             </Box>):
             ( <Heading textAlign="center" my='30' p="10px">

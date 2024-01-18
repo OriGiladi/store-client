@@ -3,9 +3,8 @@ import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteBtn } from "./DeleteBtn";
 import axios from "axios";
-
-const baseUrl = 'http://localhost:3000';
-
+import { baseUrl } from "../utils/constants";
+import rootStore from "../rootStore";
 interface Product{
     _id: string,
     name: string,
@@ -20,7 +19,7 @@ interface LoadedData {
 
 export async function deleteProductAction({ request }: { request: Request }){
     
-    const token = localStorage.getItem('token')
+    const {userStore} = rootStore
 
     console.log("here")
 
@@ -32,7 +31,7 @@ export async function deleteProductAction({ request }: { request: Request }){
         await axios.delete(`${baseUrl}/product/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
-                "authorization": `Bearer ${token}`
+                "authorization": `Bearer ${userStore.userJwt}`
             }
         });
 
