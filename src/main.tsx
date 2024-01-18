@@ -17,9 +17,7 @@ import { Product, productLoader } from "./routes/Product";
 import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct, editProductAction } from "./routes/EditProduct";
-import { ProductPageError } from "./error-routes/productPageError";
 import AuthError from "./error-routes/AuthError";
-
 const router = createBrowserRouter([
     {
         path: '/',
@@ -86,7 +84,7 @@ const router = createBrowserRouter([
         path: "*",
         element: <ErorrPage />
     }
-]);
+]);  
 
 const theme = extendTheme()
 

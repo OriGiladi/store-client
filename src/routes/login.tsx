@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from "react";
-import { Form, json, redirect, useRouteError  } from "react-router-dom";
+import { useState, ChangeEvent } from "react";
+import { Form, json  } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { LoginRequest, baseUrl } from "../utils/constants";
@@ -24,16 +24,24 @@ export async function loginAction({ request }: { request: Request }) {
         if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
             localStorage.setItem('adminJwt', response.data.admin)
         userStore.userJwtAuthentication()
-        redirect("/");
         return response
     } catch (error) {
-        console.error(error);
-        return json( //
+
+        if (error.response.status === 401 || error.response.status === 404 ) // TODO: don't use magic numbers
         {
-            message: "Invalid Email or password",
-        },
-            { status: 401 }
-        );
+            throw json(
+                {
+                    message: "Invalid email or password",
+                },
+            );
+        }
+        else {  
+            throw json(
+                {
+                    message: "There is a problem in our server",
+                },
+            );
+        }
     }
 }
 
