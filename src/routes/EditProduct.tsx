@@ -3,8 +3,9 @@ import { Form, redirect, useLoaderData} from "react-router-dom";
 import '../index.css'
 import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
-import {  Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
+import { Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
 import { baseUrl } from "../utils/constants";
+import rootStore from "../rootStore";
 
 const admin = localStorage.getItem('admin')
 
@@ -32,7 +33,7 @@ export async function editProductAction({ request }: { request: Request }) {
 
     const loader = useLoaderData()
     console.log(loader)
-    const token = localStorage.getItem('token')
+    const {userStore} = rootStore
     
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
@@ -59,7 +60,7 @@ export async function editProductAction({ request }: { request: Request }) {
             await axios.patch(`${baseUrl}/product/652ba24b71c865436a1f7740`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
+                    "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
 

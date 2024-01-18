@@ -5,7 +5,7 @@ import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { baseUrl } from "../utils/constants";
-
+import rootStore from "../rootStore";
 const admin = localStorage.getItem('admin')
 
     interface FormData {
@@ -23,7 +23,7 @@ const admin = localStorage.getItem('admin')
 
 export async function addProductAction({ request }: { request: Request }) {
     
-    const token = localStorage.getItem('token')
+    const {userStore} = rootStore
     
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
@@ -44,7 +44,7 @@ export async function addProductAction({ request }: { request: Request }) {
             await axios.post(`${baseUrl}/product`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    "authorization": `Bearer ${token}`
+                    "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
 

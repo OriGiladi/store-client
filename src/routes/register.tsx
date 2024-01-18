@@ -1,10 +1,11 @@
-import React, { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { Form, redirect} from "react-router-dom";
 import '../index.css'
 import axios from 'axios';
 import { registrationValidators } from "../validators/registrationValidators";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { baseUrl } from "../utils/constants";
+import rootStore from "../rootStore";
 
 
 
@@ -24,6 +25,7 @@ interface Validation {
 
 
 export async function registerAction({ request }: { request: Request }) {
+    const {userStore} = rootStore
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
     const { firstName, lastName, email, password } = userInfo;
@@ -46,7 +48,8 @@ export async function registerAction({ request }: { request: Request }) {
                     'Content-Type': 'application/json',
                 }
             });
-            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('userJwt', response.data.token)
+            userStore.userJwtAuthentication()
             return redirect("/");
     
         } catch (error) {
@@ -62,7 +65,8 @@ export async function registerAction({ request }: { request: Request }) {
 
 
 
-const Register: React.FC = () => {
+const Register = () => {
+    const {userStore} = rootStore
     const [formData, setFormData] = useState<FormData>({
         firstName: "",
         lastName: "",
@@ -93,11 +97,9 @@ const Register: React.FC = () => {
         )
     }
 
-    const token = localStorage.getItem('token')
-
     return (
         <>
-        {!token ?
+        {!userStore.userJwt ?
         (
             <Box>
             <Heading textAlign="center" my='30' p="10px">Registration</Heading>
@@ -151,7 +153,7 @@ const Register: React.FC = () => {
         ):
         (
             <Heading textAlign="center" my='30' p="10px">
-            You are already registered in</Heading>
+            You are already registered </Heading>
         )}
             
 

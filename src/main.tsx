@@ -3,16 +3,14 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
-
-
 //pages
 import About from "./routes/about";
 import ErorrPage from "./error-routes/error";
-import Register from "./routes/register";
-import { registerAction } from "./routes/register";
-import Login from "./routes/login";
-import { loginAction } from "./routes/login";
-import { RootLayout } from "./routes/rootLayout";
+import Register from "./routes/Register";
+import { registerAction } from "./routes/Register";
+import Login from "./routes/Login";
+import { loginAction } from "./routes/Login";
+import  RootLayout  from "./routes/rootLayout";
 import { Dashboard, productsLoader } from "./routes/Dashboard";
 import ShoppingCart from "./routes/ShoppingCart";
 import { Product, productLoader } from "./routes/Product";
@@ -20,6 +18,7 @@ import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct, editProductAction } from "./routes/EditProduct";
 import { ProductPageError } from "./error-routes/productPageError";
+import AuthError from "./error-routes/AuthError";
 
 const router = createBrowserRouter([
     {
@@ -62,8 +61,8 @@ const router = createBrowserRouter([
             {
                 path: "/login",
                 element: <Login />,
-                action: loginAction
-                // errorElement: <ErrorPage />,
+                action: loginAction,
+                errorElement: <AuthError />,
             },
             {
                 path: "/register",
@@ -89,15 +88,12 @@ const router = createBrowserRouter([
     }
 ]);
 
-
-
 const theme = extendTheme()
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
-        {/* <ChakraProvider theme={theme}> */}
-            <RouterProvider router={router} />
+                <RouterProvider router={router} />
         </ChakraProvider>
     </React.StrictMode>
 );
