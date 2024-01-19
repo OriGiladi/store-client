@@ -9,7 +9,7 @@ import rootStore from "../rootStore";
 const {userStore} = rootStore
 
 interface FormData {
-    _id: string;
+   // _id: string;
     name: string;
     price: string;
     description: string;
@@ -19,7 +19,7 @@ interface Validation {
     price: string;
 }
 interface Product{
-    _id: string,
+   // _id: string,
     name: string,
     price: string,
     description: string,
@@ -29,11 +29,19 @@ interface Product{
 interface LoadedData {
     data: Product 
 }
+
+function extractProductIdFromUrl(url: string): string | null {
+    const segments = url.split('/');
+    const lastSegment = segments[segments.length - 1];
+    return lastSegment || null;
+}
+
 export async function editProductAction({ request }: { request: Request }) {
     // const loader = useLoaderData()
+    const productId = extractProductIdFromUrl(window.location.href)
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
-    const { name, price, description, _id, image } = userInfo;
+    const { name, price, description, image } = userInfo;
 
     const requestData = {
         name, 
@@ -45,7 +53,7 @@ export async function editProductAction({ request }: { request: Request }) {
     if(validationResult.price === '')
     {
         try {
-            await axios.patch(`${baseUrl}/product/${_id}`, requestData, {
+            await axios.patch(`${baseUrl}/product/${productId}`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                     "authorization": `Bearer ${userStore.userJwt}`
@@ -58,13 +66,15 @@ export async function editProductAction({ request }: { request: Request }) {
         }
     }
     else{
-        return redirect(`/edit-product/${_id}`);
+        return redirect(`/edit-product/${productId}`);
     }
     
 }
     
 export function EditProduct() {
+    const [productId, setProductId] = useState("")
     useEffect(() => {
+        setProductId(extractProductIdFromUrl(window.location.href) as string)
         if(!userStore.isAdmin)
         {
             redirect("/error")
@@ -84,7 +94,7 @@ export function EditProduct() {
         )
     }
     const [formData, setFormData] = useState<FormData>({
-        _id: "",
+        //_id: "",
         name: "",
         price: "",
         description: "",
@@ -97,17 +107,10 @@ export function EditProduct() {
     return (
         <Box>
         <Heading size="lg" mb="20px"> Edit product properties</Heading>
-    <Form method="post" action={`/edit-product/${product._id}`}>
-            <FormControl style={{ display: 'none' }} mb="40px"> {/* for passing the id to the action */}
-                <Input type="text"
-                name="_id"
-                defaultValue={product._id}
-                onChange={handleChange}/> 
-            </FormControl>
-
+        <Form method="post" action={`/edit-product/${productId}`}>
             <FormControl mb="40px">
                 <FormLabel> Product Name:</FormLabel>
-                <Input   type="text"
+                <Input type="text"
                 name="name"
                 defaultValue={product.name}
                 onChange={handleChange}/>
