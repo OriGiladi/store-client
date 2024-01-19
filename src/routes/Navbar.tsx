@@ -7,8 +7,6 @@ import {
     HStack,
     useToast,
     Avatar,
-    ListIcon,
-    ListItem
 } from "@chakra-ui/react";
 import {StarIcon} from "@chakra-ui/icons"
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +36,8 @@ const Navbar = observer(() => {
         });
         navigate('/')
     };
-    useEffect(() => {
+
+    useEffect(() => { // reauthenticates when refreshing the page
         if(localStorage.getItem('userJwt'))
             userStore.userJwtAuthentication()
         if(localStorage.getItem("isAdmin"))
@@ -58,7 +57,7 @@ const Navbar = observer(() => {
             <Button colorScheme="red" onClick={logOut}>
                 Logout
             </Button>
-                { userStore.isAdmin ? (<StarIcon color="red.500"/>) : (null) }
+                { userStore.isAdmin ? (<StarIcon color="red.500"/>) : (null) } {/* TODO: when mouse hovering the star display the text Admin */}
             </HStack>
         ) : (
             <Text>Log in to purchase items</Text>

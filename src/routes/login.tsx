@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Form, json, redirect, useNavigate,   } from "react-router-dom";
+import { Form, json, useNavigate,   } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { LoginRequest, baseUrl } from "../utils/constants";
@@ -23,10 +23,8 @@ export async function loginAction({ request }: { request: Request }) {
         localStorage.setItem('userJwt', response.data.token)
         if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
         {
-            console.log("@@",response.data.admin )
             localStorage.setItem('isAdmin', response.data.admin)
             userStore.setIsAdmin(response.data.admin)
-            console.log("@@",userStore.isAdmin )
         }
             
         userStore.userJwtAuthentication()
