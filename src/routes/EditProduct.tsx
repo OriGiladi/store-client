@@ -12,13 +12,12 @@ interface FormData {
     name: string;
     price: string;
     description: string;
-    image: string
+    image: string;
 }
 interface Validation {
     price: string;
 }
 interface Product{
-    _id: string,
     name: string,
     price: string,
     description: string,
@@ -28,70 +27,63 @@ interface Product{
 interface LoadedData {
     data: Product 
 }
+
+function extractProductIdFromUrl(url: string): string | null { // TODO: move to utils
+    const segments = url.split('/');
+    const lastSegment = segments[segments.length - 1];
+    return lastSegment || null;
+}
+
 export async function editProductAction({ request }: { request: Request }) {
-    const loader = useLoaderData()
+    // const loader = useLoaderData()
+    const productId = extractProductIdFromUrl(window.location.href)
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
-    let { name, price, description } = userInfo;
-    let {image} = userInfo
-    if(image === "")
-        image = "";
-    if(price === "")
-        price = "";
-    if(name === "")
-        name = "";
-    if(description === "")
-        description = "";
+    const { name, price, description, image } = userInfo;
+
     const requestData = {
         name, 
         price,
         description,
         image ,
     };
-    const validationResult = addingProductValidator( price.toString()) 
+    const validationResult = addingProductValidator(price.toString()) 
     if(validationResult.price === '')
     {
         try {
-            await axios.patch(`${baseUrl}/product/652ba24b71c865436a1f7740`, requestData, {
+            await axios.patch(`${baseUrl}/product/${productId}`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                     "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
-
             return redirect("/");
-    
         } catch (error) {
             console.error(error);
             return { response: false, data: null };
         }
     }
     else{
-        return redirect(`/edit-product`);
+        return redirect(`/edit-product/${productId}`);
     }
     
 }
     
 export function EditProduct() {
-
+    const [productId, setProductId] = useState("")
     useEffect(() => {
+        setProductId(extractProductIdFromUrl(window.location.href) as string)
         if(!userStore.isAdmin)
         {
             redirect("/error")
         }
 
     }, [])
-
-
-
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     const product: Product  = loaded.data;
-
-
     const [validationResult, setValidationResult] = useState<Validation>({
         price: ""
     });
-
     const validate = () =>{
         setValidationResult( 
             addingProductValidator(
@@ -99,27 +91,23 @@ export function EditProduct() {
             )
         )
     }
-
     const [formData, setFormData] = useState<FormData>({
         name: "",
         price: "",
         description: "",
         image: ""
     });
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
-
     return (
         <Box>
         <Heading size="lg" mb="20px"> Edit product properties</Heading>
-    <Form method="post" action="/edit-product">
+        <Form method="post" action={`/edit-product/${productId}`}>
             <FormControl mb="40px">
                 <FormLabel> Product Name:</FormLabel>
-                <Input   type="text"
+                <Input type="text"
                 name="name"
                 defaultValue={product.name}
                 onChange={handleChange}/>
@@ -153,7 +141,7 @@ export function EditProduct() {
                 onChange={handleChange}/>
             </FormControl>
             
-            <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Submit</Button>
+            <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Edit</Button>
         </Form>
     </Box>
     )

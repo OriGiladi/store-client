@@ -46,7 +46,7 @@ const router = createBrowserRouter([
                 action: addProductActionDialog,
             },
             {
-                path: 'edit-product/:id',
+                path: 'edit-product/:id', 
                 element: <EditProduct/>,
                 action: editProductAction,
                 loader: productLoader 
