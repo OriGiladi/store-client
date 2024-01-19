@@ -46,17 +46,11 @@ const router = createBrowserRouter([
                 action: addProductActionDialog,
             },
             {
-                path: 'edit-product/:id', // TODO: narrow it down to one path
+                path: 'edit-product/:id', 
                 element: <EditProduct/>,
                 action: editProductAction,
                 loader: productLoader 
             },
-            // {
-            //     path: 'edit-product', // TODO: narrow it down to one path
-            //     element: <EditProduct/>,
-            //     action: editProductAction,
-            //     loader: productLoader 
-            // },
             {
                 path: "/cart",
                 element: <ShoppingCart />,

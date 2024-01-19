@@ -9,7 +9,6 @@ import rootStore from "../rootStore";
 const {userStore} = rootStore
 
 interface FormData {
-   // _id: string;
     name: string;
     price: string;
     description: string;
@@ -19,7 +18,6 @@ interface Validation {
     price: string;
 }
 interface Product{
-   // _id: string,
     name: string,
     price: string,
     description: string,
@@ -30,7 +28,7 @@ interface LoadedData {
     data: Product 
 }
 
-function extractProductIdFromUrl(url: string): string | null {
+function extractProductIdFromUrl(url: string): string | null { // TODO: move to utils
     const segments = url.split('/');
     const lastSegment = segments[segments.length - 1];
     return lastSegment || null;
@@ -94,7 +92,6 @@ export function EditProduct() {
         )
     }
     const [formData, setFormData] = useState<FormData>({
-        //_id: "",
         name: "",
         price: "",
         description: "",
