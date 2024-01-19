@@ -7,7 +7,6 @@ import rootStore from "../rootStore";
 const SideBar = observer(() => {
     const { userStore } = rootStore 
     const userJwt = userStore.userJwt
-
     return (
         <List color="white" fontSize="1.2em" spacing={4}>
             <ListItem >
@@ -18,11 +17,6 @@ const SideBar = observer(() => {
             <ListItem>
                 <NavLink to='/cart'>My Shopping Cart</NavLink>
             </ListItem>
-
-            <ListItem>
-                <NavLink to='/about'>About Us</NavLink>
-            </ListItem>
-
         {!userJwt? (
             <>
                 <ListItem>

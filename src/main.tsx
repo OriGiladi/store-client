@@ -4,10 +4,9 @@ import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 //pages
-import About from "./routes/about";
 import ErorrPage from "./error-routes/error";
-import Register from "./routes/Register";
-import { registerAction } from "./routes/Register";
+import Registration from "./routes/Registration";
+import { registrationAction } from "./routes/Registration";
 import Login from "./routes/Login";
 import { loginAction } from "./routes/Login";
 import  RootLayout  from "./routes/rootLayout";
@@ -64,13 +63,8 @@ const router = createBrowserRouter([
             },
             {
                 path: "/register",
-                element: <Register />,
-                action: registerAction,
-            },
-            {
-                path: "/about",
-                element: <About />
-                // errorElement: <ErrorPage />,
+                element: <Registration />,
+                action: registrationAction,
             },
             {
                 path: "*",

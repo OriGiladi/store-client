@@ -15,6 +15,7 @@ class UserStore {
     rootStore: RootStore;
     user: User | undefined;
     userJwt: string | undefined;
+    isAdmin: boolean | undefined;
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
         makeAutoObservable(this);
@@ -22,8 +23,11 @@ class UserStore {
     setUser(user?: User) {
         this.user = user;
     }
-    setUserJwt(user?: string) {
-        this.userJwt = user;
+    setIsAdmin(isAdmin?: boolean) {
+        this.isAdmin = isAdmin;
+    }
+    setUserJwt(userJwt?: string) {
+        this.userJwt = userJwt;
     }
     userJwtAuthentication() {
         const userJwt = localStorage.getItem("userJwt");

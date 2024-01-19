@@ -1,10 +1,11 @@
 import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
-import { DeleteBtn } from "./DeleteBtn";
+import { DeleteProductBtn } from "./DeleteProductBtn";
 import axios from "axios";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
+const {userStore} = rootStore
 interface Product{
     _id: string,
     name: string,
@@ -16,13 +17,7 @@ interface Product{
 interface LoadedData {
     data: Product []
 }
-
 export async function deleteProductAction({ request }: { request: Request }){
-    
-    const {userStore} = rootStore
-
-    console.log("here")
-
     const data = await request.formData()
     const userInfo = Object.fromEntries(data)
     const { id } = userInfo
@@ -34,9 +29,7 @@ export async function deleteProductAction({ request }: { request: Request }){
                 "authorization": `Bearer ${userStore.userJwt}`
             }
         });
-
         return { response: true, data: "succeeded" };
-
     } catch (error) {
         console.error(error);
         return { response: false, data: null };
@@ -46,13 +39,9 @@ export async function deleteProductAction({ request }: { request: Request }){
 export function Dashboard() {
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     const products: Product [] = loaded.data;
-    
-    const admin = localStorage.getItem("admin")
-
-    
     return (
         <SimpleGrid  spacing={10} minChildWidth="300px">
-            {admin ?(
+            {userStore.isAdmin ?(
                 <>
                     <Button bg="red.200" m="5px"><NavLink to="/add-product">Add a new product</NavLink>  
                     </Button>
@@ -63,14 +52,14 @@ export function Dashboard() {
             )}
             {products.map((product, index) => (
                 <Card key={index} borderTop="8px" borderColor="red.400" bg="white" p="15px">
-                    {admin ?(
+                    {userStore.isAdmin ?(
                         <Flex justifyContent="end" >
                             <Button m="5px" >
                                 <NavLink to={`/edit-product/${product._id}`}>
                                     <EditIcon/> 
                                 </NavLink> 
                             </Button>
-                            <DeleteBtn product={product}/>
+                            <DeleteProductBtn product={product}/>
                         </Flex>
                         
                     ):(

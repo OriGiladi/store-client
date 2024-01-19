@@ -7,10 +7,14 @@ import {
     HStack,
     useToast,
     Avatar,
+    ListIcon,
+    ListItem
 } from "@chakra-ui/react";
+import {StarIcon} from "@chakra-ui/icons"
 import { useNavigate } from 'react-router-dom';
 import { observer } from "mobx-react";
 import rootStore from "../rootStore";
+import { useEffect } from "react";
 
 const Navbar = observer(() => {
     const {userStore} = rootStore    
@@ -20,9 +24,10 @@ const Navbar = observer(() => {
     const logOut = () => {  
         // clearing tokens and setting user to null
         localStorage.removeItem("userJwt");
-        localStorage.removeItem("adminJwt");
+        localStorage.removeItem("isAdmin");
         userStore.setUser();
-        userStore.setUserJwt()
+        userStore.setUserJwt();
+        userStore.setIsAdmin()
         toast({
         title: "Logged Out",
         description: "You have logged out",
@@ -33,6 +38,12 @@ const Navbar = observer(() => {
         });
         navigate('/')
     };
+    useEffect(() => {
+        if(localStorage.getItem('userJwt'))
+            userStore.userJwtAuthentication()
+        if(localStorage.getItem("isAdmin"))
+            userStore.setIsAdmin(localStorage.getItem("isAdmin") as unknown as boolean) // TODO: work with adminJwt
+    }, [userStore])
 
 
 
@@ -42,11 +53,12 @@ const Navbar = observer(() => {
         <Spacer />
         {userStore.user ? (
             <HStack spacing="20px">
-            <Avatar name={userStore.user.firstName} src={userStore.user.image} />
+            <Avatar name={userStore.user.firstName} src={userStore.user.image} /> {/* TODO: add an edit profile optoion (if possible by clicking the Avatar element) */}
             <Text display={{base:"block", md:"block"  }}> {userStore.user.firstName} {userStore.user.lastName}</Text>
             <Button colorScheme="red" onClick={logOut}>
                 Logout
             </Button>
+                { userStore.isAdmin ? (<StarIcon color="red.500"/>) : (null) }
             </HStack>
         ) : (
             <Text>Log in to purchase items</Text>

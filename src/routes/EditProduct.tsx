@@ -6,8 +6,7 @@ import { addingProductValidator } from "../validators/product";
 import { Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
-
-const admin = localStorage.getItem('admin')
+const {userStore} = rootStore
 
 interface FormData {
     name: string;
@@ -30,11 +29,7 @@ interface LoadedData {
     data: Product 
 }
 export async function editProductAction({ request }: { request: Request }) {
-
     const loader = useLoaderData()
-    console.log(loader)
-    const {userStore} = rootStore
-    
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
     let { name, price, description } = userInfo;
@@ -80,7 +75,7 @@ export async function editProductAction({ request }: { request: Request }) {
 export function EditProduct() {
 
     useEffect(() => {
-        if(!admin)
+        if(!userStore.isAdmin)
         {
             redirect("/error")
         }

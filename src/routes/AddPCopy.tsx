@@ -8,8 +8,7 @@ import React from "react";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
 
-const admin = localStorage.getItem('admin')
-
+const {userStore} = rootStore
     interface FormData {
         name: string;
         price: string;
@@ -24,7 +23,6 @@ const admin = localStorage.getItem('admin')
 
 export async function addProductActionDialog({ request }: { request: Request}) {
     
-    const {userStore} = rootStore
     
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
@@ -65,7 +63,7 @@ export async function addProductActionDialog({ request }: { request: Request}) {
 export function AddProductCopy() {
 
     useEffect(() => {
-        if(!admin)
+        if(!userStore.isAdmin)
         {
             redirect("/error")
         }

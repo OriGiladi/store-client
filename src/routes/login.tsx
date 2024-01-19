@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Form, json  } from "react-router-dom";
+import { Form, json, redirect, useNavigate,   } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { LoginRequest, baseUrl } from "../utils/constants";
@@ -22,7 +22,13 @@ export async function loginAction({ request }: { request: Request }) {
         });
         localStorage.setItem('userJwt', response.data.token)
         if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
-            localStorage.setItem('adminJwt', response.data.admin)
+        {
+            console.log("@@",response.data.admin )
+            localStorage.setItem('isAdmin', response.data.admin)
+            userStore.setIsAdmin(response.data.admin)
+            console.log("@@",userStore.isAdmin )
+        }
+            
         userStore.userJwtAuthentication()
         return response
     } catch (error) {
@@ -47,6 +53,7 @@ export async function loginAction({ request }: { request: Request }) {
 
 const Login = () => {
     const {userStore} = rootStore
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<LoginRequest>({
         email: "",
         password: ""
@@ -56,11 +63,9 @@ const Login = () => {
         setFormData({ ...formData, [name]: value });
     };
     const [loginError, setLoginError] = useState("")
-    const userJwt = userStore.userJwt
-
     return (
         <>
-        {!userJwt ?
+        {!userStore.userJwt ?
         ( <Box textAlign="center" maxWidth='480px'>
             <Heading my='30' p="10px">Log In</Heading>
             <Form method="post" id="register-form" action="/login">
@@ -89,9 +94,9 @@ const Login = () => {
 
             <Button colorScheme="red" type="submit">Submit</Button>
             </Form>
-            </Box>):
+            </Box>) :
             ( <Heading textAlign="center" my='30' p="10px">
-            You are already logged in</Heading>
+            You are already logged in</Heading>  
             )
         }
         </>
