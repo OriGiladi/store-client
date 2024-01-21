@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, HStack, Heading, SimpleGrid, Text, useToast } from "@chakra-ui/react";
 import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteProductBtn } from "./DeleteProductBtn";
@@ -6,7 +6,8 @@ import axios from "axios";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
 import { observer } from "mobx-react";
-const {userStore, productStore} = rootStore
+import {ShoppingCartItem} from '../rootStore/ShoppingCartStore'
+const {userStore, productStore, shoppingCartStore} = rootStore
 interface Product{ // TODO: move it to a better place
     _id: string,
     name: string,
@@ -37,6 +38,7 @@ export async function deleteProductAction({ request }: { request: Request }){
 }
 
 export const Dashboard =  observer(() => {
+    const toast = useToast();
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     let products: Product [] = []
     if(!productStore.allProducts)
@@ -48,6 +50,23 @@ export const Dashboard =  observer(() => {
         products = productStore.allProducts
     }
 
+    function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string): void {
+        const shoppingCartItem: ShoppingCartItem = {
+            name: productName,
+            price: productPrice,
+            image: ProductImage
+        }
+        shoppingCartStore.addProductToCart(shoppingCartItem)
+        toast({ // a popup that shows that the product has been added to the cart
+            title: "Added to shopping cart",
+            description: `${productName}`,
+            duration: 5000,
+            isClosable: true,
+            status: "success",
+            position: "bottom-left"
+        });
+    }
+
     return (
         <SimpleGrid spacing={10} minChildWidth="300px">
             {userStore.isAdmin ?(
@@ -57,7 +76,7 @@ export const Dashboard =  observer(() => {
                     {/* <AddProductCopy /> */}
                 </>
             ) : ( null )}
-            {(products as Product []).map((product, index) => (
+            { products.map((product, index) => (
                 <Card key={index} borderTop="8px" borderColor="red.400" bg="white" p="15px">
                     {userStore.isAdmin ?(
                         <Flex justifyContent="end" >
@@ -89,7 +108,7 @@ export const Dashboard =  observer(() => {
                         <CardFooter>
                             <HStack>
                                 <Button bg="red.300" leftIcon={<ViewIcon/>}> <NavLink to={ `/product/${product._id}`}>View</NavLink> </Button>
-                                <Button bg="red.300" leftIcon={<AddIcon/>}> Add To Cart </Button>
+                                <Button bg="red.300" onClick={() => addItemToShoppingCart(product.name, product.price, product.image)} leftIcon={<AddIcon/>}> Add To Cart </Button>
                             </HStack>
                         </CardFooter>
                 </Card>
