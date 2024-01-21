@@ -23,7 +23,6 @@ export function Product() {
 
     if(!product)
     {
-        console.log('here')
         redirect('/')
     }
 

@@ -5,8 +5,9 @@ import { DeleteProductBtn } from "./DeleteProductBtn";
 import axios from "axios";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
-const {userStore} = rootStore
-interface Product{
+import { observer } from "mobx-react";
+const {userStore, productStore} = rootStore
+interface Product{ // TODO: move it to a better place
     _id: string,
     name: string,
     price: string,
@@ -21,7 +22,6 @@ export async function deleteProductAction({ request }: { request: Request }){
     const data = await request.formData()
     const userInfo = Object.fromEntries(data)
     const { id } = userInfo
-
     try {
         await axios.delete(`${baseUrl}/product/${id}`, {
             headers: {
@@ -36,21 +36,28 @@ export async function deleteProductAction({ request }: { request: Request }){
     }
 }
 
-export function Dashboard() {
+export const Dashboard =  observer(() => {
     const loaded: LoadedData  = useLoaderData() as LoadedData 
-    const products: Product [] = loaded.data;
+    let products: Product [] = []
+    if(!productStore.allProducts)
+    {
+        productStore.setAllProducts(loaded.data)
+        products = productStore.allProducts as unknown as Product []
+    }
+    else{
+        products = productStore.allProducts
+    }
+
     return (
-        <SimpleGrid  spacing={10} minChildWidth="300px">
+        <SimpleGrid spacing={10} minChildWidth="300px">
             {userStore.isAdmin ?(
                 <>
                     <Button bg="red.200" m="5px"><NavLink to="/add-product">Add a new product</NavLink>  
                     </Button>
                     {/* <AddProductCopy /> */}
                 </>
-            ):(
-                <Box></Box>
-            )}
-            {products.map((product, index) => (
+            ) : ( null )}
+            {(products as Product []).map((product, index) => (
                 <Card key={index} borderTop="8px" borderColor="red.400" bg="white" p="15px">
                     {userStore.isAdmin ?(
                         <Flex justifyContent="end" >
@@ -61,10 +68,8 @@ export function Dashboard() {
                             </Button>
                             <DeleteProductBtn product={product}/>
                         </Flex>
-                        
-                    ):(
-                        <Box></Box>
-                    )}
+                    ) : ( null )}
+
                     <CardHeader>
                         <Flex gap={5}>
                             <Avatar src={product.image}/>
@@ -92,7 +97,7 @@ export function Dashboard() {
 
         </SimpleGrid>
     )
-}
+})
 
 export async function productsLoader() {
     const res = await fetch(`${baseUrl}/product`)
