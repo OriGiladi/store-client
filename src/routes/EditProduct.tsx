@@ -6,7 +6,7 @@ import { addingProductValidator } from "../validators/product";
 import { Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
 import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
-const {userStore} = rootStore
+const { userStore, productStore } = rootStore
 
 interface FormData {
     name: string;
@@ -57,6 +57,7 @@ export async function editProductAction({ request }: { request: Request }) {
                     "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
+            productStore.setAllProducts(await productStore.loadAllProducts()) // saving the edited product in productStore by reloading all the products
             return redirect("/");
         } catch (error) {
             console.error(error);

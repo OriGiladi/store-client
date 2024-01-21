@@ -11,21 +11,15 @@ interface Product{
     description: string,
     image: string
 }
-
-
 export function DeleteProductBtn({product}: {product: Product}) {
-
     const { isOpen, onOpen, onClose } : {
         isOpen: boolean;
         onClose: () => void;
         onOpen: () => void
     } = useDisclosure()
     const cancelRef = React.useRef<HTMLButtonElement>(null)
-
     const onDelete = async (id: string) => {
-
-        const {userStore} = rootStore
-
+        const { userStore, productStore} = rootStore
         try {
             await axios.delete(`${baseUrl}/product/${id}`, {
                 headers: {
@@ -33,9 +27,9 @@ export function DeleteProductBtn({product}: {product: Product}) {
                     "authorization": `Bearer ${userStore.userJwt}`
                 }
             });
+            productStore.setAllProducts(await productStore.loadAllProducts()) // saving the deleted product in productStore by reloading all the products
             onClose()
             return { response: true, data: "succeeded" };
-    
         } catch (error) {
             console.error(error);
             return { response: false, data: null };

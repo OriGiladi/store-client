@@ -33,7 +33,6 @@ export async function userLoader() {
         headers: {
         Authorization: 'Bearer ' + userStore.userJwt}}
     )
-    console.log(res)
     return res.json()
 }
 

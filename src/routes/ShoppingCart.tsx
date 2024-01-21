@@ -1,21 +1,19 @@
-import { Box, List, ListIcon, ListItem, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
+import { List, ListIcon, ListItem, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react"
 import {StarIcon} from "@chakra-ui/icons"
 import { PayPalScriptProvider, PayPalButtons, SCRIPT_LOADING_STATE } from "@paypal/react-paypal-js";
 import rootStore from "../rootStore";
+import { Suspense } from "react";
 
 function ShoppingCart() {
-
     const initialOptions = {
         "client-id": "AaKXRba20vN70xXrB23ZafBFshL927Uu-VRXD_SunL3C99We7mddrFGuCoKmUGrISogMCB0Fm-CKwm1O",
         currency: "ILS",
         intent: "capture"
     };
-
     const {userStore} = rootStore
-
     return (
         <>
-            <Tabs mt="20px" p="20px" colorScheme="red" variant="enclosed">
+            <Tabs mt="20px" mb="30px" p="20px" colorScheme="red" variant="enclosed">
                 <TabList>
                     <Tab _selected={{color: "white", bg:"red.600"}}>Shopping Cart</Tab>
                     <Tab _selected={{color: "white", bg:"red.600"}}>Purches History</Tab>
@@ -48,13 +46,11 @@ function ShoppingCart() {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <Box mb="30px">
-                
-            </Box>
-            <PayPalScriptProvider loadingStatus={SCRIPT_LOADING_STATE.RESOLVED} options={initialOptions}> 
-                <PayPalButtons />
-            </PayPalScriptProvider> 
-                
+            <Suspense fallback={<div>Loading...</div>}>
+                <PayPalScriptProvider loadingStatus={SCRIPT_LOADING_STATE.RESOLVED} options={initialOptions}> 
+                    <PayPalButtons />
+                </PayPalScriptProvider> 
+            </Suspense>
         </>
     )
 }
