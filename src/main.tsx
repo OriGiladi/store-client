@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-
 //pages
 import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
@@ -15,7 +14,6 @@ import { Product, productLoader } from "./routes/Product";
 import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct, editProductAction } from "./routes/EditProduct";
-import AuthError from "./error-routes/AuthError";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -58,7 +56,6 @@ const router = createBrowserRouter([
                 path: "/login",
                 element: <Login />,
                 action: loginAction,
-                errorElement: <AuthError />,
             },
             {
                 path: "/register",
