@@ -10,7 +10,7 @@ import { registrationAction } from "./routes/Registration";
 import Login ,{ loginAction } from "./routes/Login";
 import  RootLayout  from "./routes/rootLayout";
 import { Dashboard, productsLoader } from "./routes/Dashboard";
-import ShoppingCart from "./routes/ShoppingCart";
+import {ShoppingCart} from "./routes/ShoppingCart";
 import { Product, productLoader } from "./routes/Product";
 import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";

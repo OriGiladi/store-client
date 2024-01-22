@@ -69,7 +69,7 @@ export const Dashboard =  observer(() => {
 
     return (
         <SimpleGrid spacing={10} minChildWidth="300px">
-            {userStore.isAdmin ?(
+            {userStore.isAdmin ? (
                 <>
                     <Button bg="red.200" m="5px"><NavLink to="/add-product">Add a new product</NavLink>  
                     </Button>
@@ -113,7 +113,6 @@ export const Dashboard =  observer(() => {
                         </CardFooter>
                 </Card>
             ))}
-
         </SimpleGrid>
     )
 })

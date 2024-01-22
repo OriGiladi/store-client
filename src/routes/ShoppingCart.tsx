@@ -3,8 +3,10 @@ import { AddIcon, MinusIcon} from '@chakra-ui/icons'
 import { PayPalScriptProvider, PayPalButtons, SCRIPT_LOADING_STATE } from "@paypal/react-paypal-js";
 import rootStore from "../rootStore";
 import { Suspense, useEffect, useState } from "react";
+import { ShoppingCartItem } from "../rootStore/ShoppingCartStore";
+import { observer } from "mobx-react-lite";
 
-function ShoppingCart() {
+export const ShoppingCart = observer(() => {
     const initialOptions = { // TODO: move paypal to a different component
         "client-id": "AaKXRba20vN70xXrB23ZafBFshL927Uu-VRXD_SunL3C99We7mddrFGuCoKmUGrISogMCB0Fm-CKwm1O",
         currency: "ILS",
@@ -12,10 +14,32 @@ function ShoppingCart() {
     };
     const { userStore, shoppingCartStore } = rootStore;
     const [isShoppingCartLoaded, setShoppingCartLoaded] = useState(false) // makes sure that the shoppingCartItemsWithAmounts is displayed only when the loading is done 
+
     useEffect(() => {
         shoppingCartStore.setShoppingCartItemsWithAmounts();
         setShoppingCartLoaded(true);
     }, [shoppingCartStore]);
+
+        function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string): void {
+            const shoppingCartItem: ShoppingCartItem = {
+                name: productName,
+                price: productPrice,
+                image: ProductImage
+            }
+            shoppingCartStore.addProductToCart(shoppingCartItem)
+            shoppingCartStore.setShoppingCartItemsWithAmounts();
+        }
+
+    function removeProductFromCart(productName: string, productPrice: string, ProductImage: string) {
+        const shoppingCartItem: ShoppingCartItem = {
+            name: productName,
+            price: productPrice,
+            image: ProductImage
+        }
+        shoppingCartStore.removeProductFromCart(shoppingCartItem)
+        shoppingCartStore.setShoppingCartItemsWithAmounts();
+    }
+
     return (
         <>
             <Tabs mt="20px" mb="30px" p="20px" colorScheme="red" variant="enclosed">
@@ -24,8 +48,7 @@ function ShoppingCart() {
                     <Tab _selected={{ color: "white", bg: "red.600" }}>Purchase History</Tab>
                 </TabList>
                 <TabPanels>
-                    <TabPanel>
-                        
+                    <TabPanel>  
                         {isShoppingCartLoaded ?
                         shoppingCartStore.shoppingCartItemsWithAmounts.length > 0 ? (
                             <>
@@ -42,19 +65,19 @@ function ShoppingCart() {
                                                 </Heading>
                                             </Box>
                                             <Box>
-                                                <Text as="h1" p="10px">
+                                                <Text as="h1" pt="10px">
                                                     x {shoppingCartItem.amount}
                                                 </Text>
                                             </Box>
-                                            {/* <Box>
-                                                <Button margin="-10" size="sm" leftIcon={<AddIcon/>}></Button>
-                                                <Button margin="-10" size="sm" leftIcon={<MinusIcon/>}></Button>
-                                            </Box> */}
+                                            <Box>
+                                                <Button mt="10px" onClick={() => {addItemToShoppingCart(shoppingCartItem.name, shoppingCartItem.price, shoppingCartItem.image)}} ml={15} size="sm"><AddIcon/></Button>
+                                                <Button mt="10px" onClick={() => {removeProductFromCart(shoppingCartItem.name, shoppingCartItem.price, shoppingCartItem.image)}} ml={15} size="sm"><MinusIcon/></Button>
+                                            </Box>
                                         </Flex>
                                     </Card>
                                 ))}
                                 <Text as="h1" p="10px" fontWeight="bold" bg="red.200">
-                                    Total Price: {shoppingCartStore.sumTotalPrice()}  ₪
+                                    Total Price: {shoppingCartStore.totalPrice}  ₪
                                 </Text>
                             </>
                         ) : (
@@ -89,6 +112,6 @@ function ShoppingCart() {
             ) : (null)}
         </>
     );
-}
+})
 
-export default ShoppingCart;
+

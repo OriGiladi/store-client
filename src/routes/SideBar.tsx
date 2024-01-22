@@ -1,11 +1,10 @@
-import { List, ListIcon, ListItem } from "@chakra-ui/react"
+import { List, ListItem } from "@chakra-ui/react"
 import { NavLink } from "react-router-dom"
 import { observer } from "mobx-react";
 import rootStore from "../rootStore";
 
 const SideBar = observer(() => {
     const { userStore, shoppingCartStore } = rootStore 
-    const userJwt = userStore.userJwt
     return (
         <List style={{ position: "fixed", overflowY: "auto" }} color="white" fontSize="1.2em" spacing={4}>
             <ListItem >
@@ -18,7 +17,7 @@ const SideBar = observer(() => {
                     (<NavLink to='/cart'>My Shopping Cart </NavLink>)
                 }
             </ListItem>
-        {!userJwt ? (
+        {!userStore.userJwt ? (
             <>
                 <ListItem>
                     <NavLink to='/login'> Log in </NavLink>
