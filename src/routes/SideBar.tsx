@@ -1,30 +1,29 @@
-import { List, ListIcon, ListItem } from "@chakra-ui/react"
+import { List, ListItem } from "@chakra-ui/react"
 import { NavLink } from "react-router-dom"
-import {CalendarIcon, EditIcon} from "@chakra-ui/icons"
 import { observer } from "mobx-react";
 import rootStore from "../rootStore";
 
 const SideBar = observer(() => {
-    const { userStore } = rootStore 
-    const userJwt = userStore.userJwt
+    const { userStore, shoppingCartStore } = rootStore 
     return (
-        <List color="white" fontSize="1.2em" spacing={4}>
+        <List style={{ position: "fixed", overflowY: "auto" }} color="white" fontSize="1.2em" spacing={4}>
             <ListItem >
-                <ListIcon as={CalendarIcon} color="white"/>
-                <NavLink to='/'>Catalog</NavLink>
+                <NavLink to='/'>Product Catalog</NavLink>
             </ListItem>
 
             <ListItem>
-                <NavLink to='/cart'>My Shopping Cart</NavLink>
+                {shoppingCartStore.totalAmount > 0 ? 
+                    ( <NavLink to='/cart'>My Shopping Cart ({shoppingCartStore.totalAmount})</NavLink>):
+                    (<NavLink to='/cart'>My Shopping Cart </NavLink>)
+                }
             </ListItem>
-        {!userJwt? (
+        {!userStore.userJwt ? (
             <>
                 <ListItem>
                     <NavLink to='/login'> Log in </NavLink>
                 </ListItem>
 
                 <ListItem>
-                    <ListIcon as={EditIcon} color="white"/>
                     <NavLink to='/register'>Register</NavLink>
                 </ListItem>
             </>
