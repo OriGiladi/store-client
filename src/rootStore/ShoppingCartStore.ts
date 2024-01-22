@@ -7,9 +7,10 @@ export interface ShoppingCartItem {
     image: string;
 }
 
+type ShoppingCartItems =  {item: ShoppingCartItem; quantity: number} []
 class ShoppingCartStore {
     rootStore: RootStore;
-    shoppingCartItems: Array<{ item: ShoppingCartItem; quantity: number }>;
+    shoppingCartItems: ShoppingCartItems;
     totalPrice: number;
     totalAmount: number;
     constructor(rootStore: RootStore) {
