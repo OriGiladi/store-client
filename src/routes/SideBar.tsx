@@ -12,8 +12,8 @@ const SideBar = observer(() => {
             </ListItem>
 
             <ListItem>
-                {shoppingCartStore.shoppingCartItems.length > 0 ? 
-                    ( <NavLink to='/cart'>My Shopping Cart ({shoppingCartStore.shoppingCartItems.length})</NavLink>):
+                {shoppingCartStore.totalAmount > 0 ? 
+                    ( <NavLink to='/cart'>My Shopping Cart ({shoppingCartStore.totalAmount})</NavLink>):
                     (<NavLink to='/cart'>My Shopping Cart </NavLink>)
                 }
             </ListItem>

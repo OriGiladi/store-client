@@ -1,76 +1,68 @@
 import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
 
-export interface ShoppingCartItem{ // TODO: move it to a better place
-    name: string,
-    price: string,
-    image: string
+export interface ShoppingCartItem {
+    name: string;
+    price: string;
+    image: string;
 }
-export interface shoppingCartItemsWithAmounts{
-    name: string,
-    price: string,
-    image: string,
-    amount: number,
-} 
+
 class ShoppingCartStore {
     rootStore: RootStore;
-    shoppingCartItems: ShoppingCartItem [];
-    shoppingCartItemsWithAmounts: shoppingCartItemsWithAmounts [];
+    shoppingCartItems: Array<{ item: ShoppingCartItem; quantity: number }>;
     totalPrice: number;
+    totalAmount: number;
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
-        this.shoppingCartItems = []
-        this.shoppingCartItemsWithAmounts = []
-        this.totalPrice = 0
+        this.shoppingCartItems = [];
+        this.totalPrice = 0;
+        this.totalAmount = 0;
         makeAutoObservable(this);
     }
-    setShoppingCartItems(shoppingCartItems: ShoppingCartItem []) {
-        this.shoppingCartItems = shoppingCartItems;
-    }
-    setTotalPrice(totalPrice: number) {
-        this.totalPrice = totalPrice;
-    }
-    addToTotalPrice(price: number) {
+
+    addToTotalPriceAndAmount(price: number) {
         this.totalPrice += price;
+        this.totalAmount += 1;
     }
-    deacreseFromTotalPrice(price: number) {
+
+    decreaseFromTotalPriceAndAmount(price: number) {
         this.totalPrice -= price;
+        this.totalAmount -= 1;
     }
+
     addProductToCart(shoppingCartItem: ShoppingCartItem) {
-        this.shoppingCartItems.push(shoppingCartItem);
-        this.addToTotalPrice(Number(shoppingCartItem.price)) // updating the total sum
-        this.setShoppingCartItemsWithAmounts(); // updating the list with the amount
+    const existingItem = this.shoppingCartItems.find(
+        (item) => item.item.name === shoppingCartItem.name
+    );
+
+    if (existingItem) {
+            existingItem.quantity += 1;
+    } else {
+        this.shoppingCartItems.push({
+        item: shoppingCartItem,
+        quantity: 1,
+        });
     }
+
+    this.addToTotalPriceAndAmount(Number(shoppingCartItem.price));
+    }
+
     removeProductFromCart(shoppingCartItem: ShoppingCartItem) {
-        const indexToRemove = this.shoppingCartItems.findIndex(element => element.name === shoppingCartItem.name);
-        if (indexToRemove !== -1) {
-            this.shoppingCartItems.splice(indexToRemove, 1);
+        const existingItemIndex = this.shoppingCartItems.findIndex(
+        (item) => item.item.name === shoppingCartItem.name
+    );
+
+    if (existingItemIndex !== -1) {
+        const existingItem = this.shoppingCartItems[existingItemIndex];
+        if (existingItem.quantity > 1) {
+            existingItem.quantity -= 1;
+        } else {
+            this.shoppingCartItems.splice(existingItemIndex, 1);
         }
-        this.deacreseFromTotalPrice(Number(shoppingCartItem.price)) // updating the total sum
-        this.setShoppingCartItemsWithAmounts(); // updating the list with the amount
-    }
-    setShoppingCartItemsWithAmounts(){ // adding the amout picked to each item
-        this.shoppingCartItemsWithAmounts = [] // resets the list before the calculation
-        const shoppingCartNames: string[] = []
-        this.shoppingCartItems.forEach(shoppingCartItem => {
-            if(!shoppingCartNames.includes(shoppingCartItem.name)){
-                shoppingCartNames.push(shoppingCartItem.name)
-                this.shoppingCartItemsWithAmounts.push({
-                    name: shoppingCartItem.name,
-                    price: shoppingCartItem.price,
-                    image: shoppingCartItem.image,
-                    amount: 1
-                })
-            }
-            else{
-                this.shoppingCartItemsWithAmounts.forEach(item => {
-                    if(item.name === shoppingCartItem.name){
-                        item.amount += 1;
-                    }
-                })
-            }
-        })
+
+        this.decreaseFromTotalPriceAndAmount(Number(shoppingCartItem.price));
+        }
     }
 }
-export default ShoppingCartStore
 
+export default ShoppingCartStore;

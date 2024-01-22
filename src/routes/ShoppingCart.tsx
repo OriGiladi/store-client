@@ -13,10 +13,9 @@ export const ShoppingCart = observer(() => {
         intent: "capture"
     };
     const { userStore, shoppingCartStore } = rootStore;
-    const [isShoppingCartLoaded, setShoppingCartLoaded] = useState(false) // makes sure that the shoppingCartItemsWithAmounts is displayed only when the loading is done 
+    const [isShoppingCartLoaded, setShoppingCartLoaded] = useState(false) // makes sure that the shoppingCartItems is displayed only when the loading is done 
 
     useEffect(() => {
-        shoppingCartStore.setShoppingCartItemsWithAmounts();
         setShoppingCartLoaded(true);
     }, [shoppingCartStore]);
 
@@ -27,7 +26,6 @@ export const ShoppingCart = observer(() => {
                 image: ProductImage
             }
             shoppingCartStore.addProductToCart(shoppingCartItem)
-            shoppingCartStore.setShoppingCartItemsWithAmounts();
         }
 
     function removeProductFromCart(productName: string, productPrice: string, ProductImage: string) {
@@ -37,7 +35,6 @@ export const ShoppingCart = observer(() => {
             image: ProductImage
         }
         shoppingCartStore.removeProductFromCart(shoppingCartItem)
-        shoppingCartStore.setShoppingCartItemsWithAmounts();
     }
 
     return (
@@ -50,28 +47,48 @@ export const ShoppingCart = observer(() => {
                 <TabPanels>
                     <TabPanel>  
                         {isShoppingCartLoaded ?
-                        shoppingCartStore.shoppingCartItemsWithAmounts.length > 0 ? (
+                        shoppingCartStore.shoppingCartItems.length > 0 ? (
                             <>
-                                {shoppingCartStore.shoppingCartItemsWithAmounts.map((shoppingCartItem) => (
+                                {shoppingCartStore.shoppingCartItems.map((shoppingCartItem) => (
                                     <Card mb={15} padding={3}>
                                         <Flex gap={15}>
-                                            <Avatar src={shoppingCartItem.image} />
+                                            <Avatar src={shoppingCartItem.item.image} />
                                             <Box w="150px" h="50px">
                                                 <Heading as="h3" mb="10px" size="sm">
-                                                    {shoppingCartItem.name}
+                                                    {shoppingCartItem.item.name}
                                                 </Heading>
                                                 <Heading as="h3" size="sm">
-                                                    {shoppingCartItem.price} ₪
+                                                    {shoppingCartItem.item.price} ₪
                                                 </Heading>
                                             </Box>
                                             <Box>
                                                 <Text as="h1" pt="10px">
-                                                    x {shoppingCartItem.amount}
+                                                    x {shoppingCartItem.quantity}
                                                 </Text>
                                             </Box>
                                             <Box>
-                                                <Button mt="10px" onClick={() => {addItemToShoppingCart(shoppingCartItem.name, shoppingCartItem.price, shoppingCartItem.image)}} ml={15} size="sm"><AddIcon/></Button>
-                                                <Button mt="10px" onClick={() => {removeProductFromCart(shoppingCartItem.name, shoppingCartItem.price, shoppingCartItem.image)}} ml={15} size="sm"><MinusIcon/></Button>
+                                                <Button mt="10px" 
+                                                onClick={() => {
+                                                    addItemToShoppingCart(
+                                                        shoppingCartItem.item.name,
+                                                        shoppingCartItem.item.price,
+                                                        shoppingCartItem.item.image
+                                                        )}}
+                                                        ml={15} 
+                                                        size="sm">
+                                                        <AddIcon/>
+                                                </Button>
+                                                <Button 
+                                                mt="10px" 
+                                                onClick={() => {
+                                                    removeProductFromCart(
+                                                        shoppingCartItem.item.name, 
+                                                        shoppingCartItem.item.price, 
+                                                        shoppingCartItem.item.image)}} 
+                                                        ml={15} 
+                                                        size="sm">
+                                                            <MinusIcon/>
+                                                </Button>
                                             </Box>
                                         </Flex>
                                     </Card>
@@ -101,13 +118,13 @@ export const ShoppingCart = observer(() => {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            {userStore.userJwt && shoppingCartStore.shoppingCartItemsWithAmounts.length > 0  ? (
+            {userStore.userJwt && shoppingCartStore.shoppingCartItems.length > 0  ? (
                <Suspense fallback={<div>Loading...</div>}> {/* TODO: make it work properly */}
                     <PayPalScriptProvider loadingStatus={SCRIPT_LOADING_STATE.RESOLVED} options={initialOptions}>
                         <PayPalButtons />
                     </PayPalScriptProvider>
                 </Suspense>
-            ) : shoppingCartStore.shoppingCartItemsWithAmounts.length > 0 ? (
+            ) : shoppingCartStore.shoppingCartItems.length > 0 ? (
                 <Text fontWeight="bold">Perchusing is accessible to registered users only</Text>
             ) : (null)}
         </>
