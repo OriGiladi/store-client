@@ -1,10 +1,10 @@
 import { useState, ChangeEvent } from "react";
-import { Form, redirect} from "react-router-dom";
+import { Form, redirect, useActionData} from "react-router-dom";
 import '../index.css'
 import axios from 'axios';
 import { registrationValidators } from "../validators/registrationValidators";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import { baseUrl } from "../utils/constants";
+import { authActionError, baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
 const {userStore} = rootStore
 
@@ -52,7 +52,7 @@ export async function registrationAction({ request }: { request: Request }) {
     
         } catch (error) {
             console.error(error);
-            return { response: false, data: null };
+            return {message: "This email adress is already taken"}
         }
     }
     else{
@@ -63,6 +63,7 @@ export async function registrationAction({ request }: { request: Request }) {
 
 
 const Registration = () => {
+    const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
     const [formData, setFormData] = useState<FormData>({
         firstName: "",
         lastName: "",
@@ -124,7 +125,7 @@ const Registration = () => {
                         name="email"
                         id="txtEmail"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{validationResult.email}</FormHelperText>
+                        <FormHelperText color="red.500">{errorInAction ? errorInAction.message : validationResult.email }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">

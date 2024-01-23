@@ -1,9 +1,11 @@
 import { useState, ChangeEvent } from "react";
-import { Form, json, useNavigate,   } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import { LoginRequest, baseUrl } from "../utils/constants";
+import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
 import rootStore from '../rootStore'
+
+
 
 export async function loginAction({ request }: { request: Request }) {
     const {userStore} = rootStore
@@ -28,30 +30,21 @@ export async function loginAction({ request }: { request: Request }) {
         }
             
         userStore.userJwtAuthentication()
-        return response
+        return redirect('/')
     } catch (error) {
-
-        if (error.response.status === 401 || error.response.status === 404 ) // TODO: don't use magic numbers
+        if(axios.isAxiosError(error))
         {
-            throw json(
-                {
-                    message: "Invalid email or password",
-                },
-            );
-        }
-        else {  
-            throw json(
-                {
-                    message: "There is a problem in our server",
-                },
-            );
-        }
+            if (error.response?.status === 401 || error.response?.status === 404 ) // TODO: don't use magic numbers
+                return {message: "Invalid email or password"}
+        } 
+        else
+            return {message: "There is a problem in our server"}
     }
 }
 
 const Login = () => {
     const {userStore} = rootStore
-    const navigate = useNavigate();
+    const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
     const [formData, setFormData] = useState<LoginRequest>({
         email: "",
         password: ""
@@ -60,7 +53,6 @@ const Login = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    const [loginError, setLoginError] = useState("")
     return (
         <>
         {!userStore.userJwt ?
@@ -82,11 +74,9 @@ const Login = () => {
                 </FormControl>
 
                 <FormControl>
-                    
                         <FormHelperText color="red.500" mb="40px" fontWeight="600">
-                            {loginError}
+                            {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
                         </FormHelperText>
-                    
                 </FormControl>
                 
 
@@ -98,8 +88,6 @@ const Login = () => {
             )
         }
         </>
-        
     )
 }
-
 export default Login

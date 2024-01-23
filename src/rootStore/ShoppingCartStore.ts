@@ -6,10 +6,10 @@ export interface ShoppingCartItem {
     price: string;
     image: string;
 }
-
+type ShoppingCartItems =  {item: ShoppingCartItem; quantity: number} []
 class ShoppingCartStore {
     rootStore: RootStore;
-    shoppingCartItems: Array<{ item: ShoppingCartItem; quantity: number }>;
+    shoppingCartItems: ShoppingCartItems;
     totalPrice: number;
     totalAmount: number;
     constructor(rootStore: RootStore) {
@@ -19,7 +19,7 @@ class ShoppingCartStore {
         this.totalAmount = 0;
         makeAutoObservable(this);
     }
-
+    // TODO: create a clear cart option
     addToTotalPriceAndAmount(price: number) {
         this.totalPrice += price;
         this.totalAmount += 1;
