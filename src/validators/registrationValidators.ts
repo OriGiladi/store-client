@@ -1,3 +1,4 @@
+// TODO: break this huge function to smaller functions (one for each property)
 export const registrationValidators = (firstName: string, lastName: string, email: string, password: string) => {
 
     const namePattern: RegExp = /^[A-Za-z]+$/;

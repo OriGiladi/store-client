@@ -6,7 +6,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
 import { registrationAction } from "./routes/Registration";
-import Login ,{ loginAction } from "./routes/login";
+import Login ,{ loginAction } from "./routes/Login";
 import  RootLayout  from "./routes/rootLayout";
 import { Dashboard, productsLoader } from "./routes/Dashboard";
 import {ShoppingCart} from "./routes/ShoppingCart";
@@ -54,13 +54,14 @@ const router = createBrowserRouter([
                 element: <ShoppingCart />,
             },
             {
-                path: "/forgot",
-                element: <ForgotPassword />,
-            },
-            {
                 path: "/login",
                 element: <Login />,
                 action: loginAction,
+            },
+            {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
+                //action: loginAction,
             },
             {
                 path: "/register",
@@ -71,7 +72,6 @@ const router = createBrowserRouter([
                 path: "*",
                 element: <ErorrPage />
             }
-            
         ],
     },
     {

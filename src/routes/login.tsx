@@ -1,11 +1,10 @@
 import { useState, ChangeEvent } from "react";
-import { Form, redirect, useActionData } from "react-router-dom";
+import { Form, NavLink, redirect, useActionData } from "react-router-dom";
 import axios from "axios";
-import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
 import rootStore from '../rootStore'
-
-
+import ForgotPassword from "./ForgotPassword";
 
 export async function loginAction({ request }: { request: Request }) {
     const {userStore} = rootStore
@@ -61,14 +60,23 @@ const Login = () => {
             <Form method="post" id="register-form" action="/login">
                 <FormControl mb="40px">
                         <FormLabel> Email:</FormLabel>
-                        <Input  type="text"
+                        <Input type="text"
                         name="email"
                         onChange={handleChange}/>
                 </FormControl>
 
+                <NavLink to={"/forgot-password"}>
+                    <Text 
+                    textAlign={'left'}
+                    color="blue" 
+                    _hover={{ cursor: 'pointer' }}>
+                        Forgot your password?
+                    </Text>
+                </NavLink>
+
                 <FormControl mb="40px">
                         <FormLabel> Password:</FormLabel>
-                        <Input  type="password"
+                        <Input type="password"
                         name="password"
                         onChange={handleChange}/>
                 </FormControl>
@@ -78,7 +86,6 @@ const Login = () => {
                             {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
                         </FormHelperText>
                 </FormControl>
-                
 
             <Button colorScheme="red" type="submit">Submit</Button>
             </Form>
