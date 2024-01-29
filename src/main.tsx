@@ -14,7 +14,7 @@ import { Product, productLoader } from "./routes/Product";
 import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct, editProductAction } from "./routes/EditProduct";
-import ForgotPassword from "./routes/ForgotPassword";
+import ForgotPassword, { forgotPasswordAction } from "./routes/ForgotPassword";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -59,9 +59,9 @@ const router = createBrowserRouter([
                 action: loginAction,
             },
             {
-                path: "/forgot-password",
+                path: "/forgot-password/:email",
                 element: <ForgotPassword />,
-                //action: loginAction,
+                action: forgotPasswordAction,
             },
             {
                 path: "/register",

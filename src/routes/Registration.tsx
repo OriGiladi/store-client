@@ -144,7 +144,7 @@ const Registration = () => {
                         onChange={handleChange}/>
                     </FormControl>
                     
-                    <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Submit</Button>
+                    <Button mb="50px" colorScheme="red" id="btnRegistration" type="submit" onClick={validate}>Submit</Button>
                 </Form>
             </Box>
         ):
@@ -152,8 +152,6 @@ const Registration = () => {
             <Heading textAlign="center" my='30' p="10px">
             You are already registered </Heading>
         )}
-            
-
         </>
     );
 };

@@ -4,7 +4,6 @@ import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
 import rootStore from '../rootStore'
-import ForgotPassword from "./ForgotPassword";
 
 export async function loginAction({ request }: { request: Request }) {
     const {userStore} = rootStore
@@ -57,22 +56,23 @@ const Login = () => {
         {!userStore.userJwt ?
         ( <Box textAlign="center" maxWidth='480px'>
             <Heading my='30' p="10px">Log In</Heading>
-            <Form method="post" id="register-form" action="/login">
-                <FormControl mb="40px">
+            <Form method="post" id="login-form" action="/login">
+                <FormControl mb="10px">
                         <FormLabel> Email:</FormLabel>
                         <Input type="text"
                         name="email"
                         onChange={handleChange}/>
                 </FormControl>
-
-                <NavLink to={"/forgot-password"}>
-                    <Text 
-                    textAlign={'left'}
-                    color="blue" 
-                    _hover={{ cursor: 'pointer' }}>
-                        Forgot your password?
-                    </Text>
+                <FormControl mb="40px">
+                    <NavLink to={`/forgot-password/${formData.email}`}>
+                        <Text 
+                        textAlign={'left'}
+                        color="blue" 
+                        _hover={{ cursor: 'pointer' }}>
+                            Forgot your password?
+                        </Text>
                 </NavLink>
+                </FormControl>
 
                 <FormControl mb="40px">
                         <FormLabel> Password:</FormLabel>

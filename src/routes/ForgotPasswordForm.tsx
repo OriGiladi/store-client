@@ -1,25 +1,15 @@
-import { AlertDialog,
-        AlertDialogBody, 
-        AlertDialogContent, 
-        AlertDialogFooter, 
-        AlertDialogHeader, 
-        AlertDialogOverlay, 
-        Button,
-        Text,
-        Input,
-        useDisclosure} 
-        from '@chakra-ui/react'
-import React from 'react';
+import { Button, Text, Input } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
+import { Form } from 'react-router-dom';
+import { LoginRequest } from '../utils/constants';
 
-const ForgotPasswordForm = ({ email, isOpen, generatedConfirmationCode }:{ email: string, isOpen: boolean, generatedConfirmationCode:number }) => {
+const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: string, generatedConfirmationCode: number }) => {
     const [confirmationCode, setConfirmationCode] = useState('');
-    const [newPassword, setNewPassword] = useState('');
     const [isConfirmationCodeCorrect, setIsConfirmationCodeCorrect] = useState(false);
-    const {  onClose } : {
-        onClose: () => void;
-    } = useDisclosure()
-    const cancelRef = React.useRef<HTMLButtonElement>(null)
+    const [formData, setFormData] = useState<LoginRequest>({ 
+        email: email,
+        password: ""
+    });
     const handleConfirmationCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputCode = event.target.value.replace(/[^0-9]/g, ''); // Allow only numeric input
         setConfirmationCode(inputCode.slice(0, 6)); // Limit to 6 characters
@@ -31,57 +21,47 @@ const ForgotPasswordForm = ({ email, isOpen, generatedConfirmationCode }:{ email
             alert('This is not the right confirmation code')
         }
     }
+    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
     return (
-        <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}>
-            <AlertDialogOverlay>
-                <AlertDialogContent>
-                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                    Reset your password
-                    </AlertDialogHeader>
-
-                    <AlertDialogBody>
-                        {!isConfirmationCodeCorrect ? 
-                        (
-                            <>
-                                <Text mb={30}> A verification code was sent to {email}</Text>
-                                <Input
-                                    type="text"
-                                    placeholder="Enter the code here"
-                                    value={confirmationCode}
-                                    onChange={handleConfirmationCodeChange}
-                                    maxLength={6}
-                                    inputMode="numeric"
-                                />
-                            </>
-                        ) :
-                        (<>
-                            <Text mb={30}> Enter your new password:</Text>
-                            <Input
-                                type="text"
-                                value={newPassword}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                    setNewPassword(e.target.value);
-                                }}
-                            />
-                            <Button colorScheme='red'  ml={3}>
-                                Save
-                            </Button>
-                        </>)
-                        }   
-                    </AlertDialogBody>
-                    
-                    <AlertDialogFooter>
-                        <Button colorScheme='red' onClick={() => validateConfirmationCode()} ml={3}>
-                            Confirm
-                        </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-                </AlertDialogOverlay>
-        </AlertDialog>
+        <>
+        {!isConfirmationCodeCorrect ? 
+            (
+                <>
+                    <Text mb={30}> A verification code was sent to {email}</Text>
+                    <Input
+                        type="text"
+                        placeholder="Enter the code here"
+                        value={confirmationCode}
+                        onChange={handleConfirmationCodeChange}
+                        maxLength={6}
+                        inputMode="numeric"
+                        mb={30}
+                    />
+                    <Button colorScheme='red' onClick={() => validateConfirmationCode()} ml={3}>
+                        Confirm
+                    </Button>
+                </>
+            ) :
+            (<>
+                <Form method="post" id="forgot-password-form" action={`/forgot-password/${email}`}>
+                    <Text mb={30}> Enter your new password:</Text>
+                    <Input
+                        type="text"
+                        name='password'
+                        value={formData.password}
+                        onChange={handlePasswordChange}
+                    />
+                    <Button colorScheme='red' ml={3} type='submit'>
+                        Save
+                    </Button>
+                </Form>
+            </>)
+            }      
+        </>
     )
 }
 

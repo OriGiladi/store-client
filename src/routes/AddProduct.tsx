@@ -123,7 +123,7 @@ export function AddProduct() {
                     onChange={handleChange}/>
                 </FormControl>
                 
-                <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Submit</Button>
+                <Button mb="50px" colorScheme="red" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
             </Form>
         </Box>
     )
