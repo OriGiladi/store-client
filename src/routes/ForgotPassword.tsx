@@ -11,7 +11,7 @@ const {forgotPasswordStore} = rootStore
 
 export async function forgotPasswordAction({ request }: { request: Request }) {
     const formData = await request.formData()
-    const {password} = Object.fromEntries(formData);
+    const { password } = Object.fromEntries(formData);
     const requestBody = {
         email: forgotPasswordStore.email,
         password: password
@@ -32,7 +32,7 @@ export async function forgotPasswordAction({ request }: { request: Request }) {
         }
     }
     else{
-        return {message: validationResult.password} // displays the validation error
+        return { message: validationResult.password } // displays the validation error
     }
 }
 
@@ -42,8 +42,16 @@ const ForgotPassword = () => {
     const [generatedConfirmationCode, setGeneratedConfirmationCode] = useState<number | undefined>(0);
     const isFirstRender = useRef(true);
     const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
+    
     const generateConfirmationCode = () => {
-        const confirmedCode = Math.round(Math.random() * 1000000); // TODO: replace 1000000 with a constant
+        let isSixFigure = false;
+        let confirmedCode;
+        while (!isSixFigure) {
+            confirmedCode = Math.round(Math.random() * 1000000); // TODO: replace 1000000 with a constant
+            if (confirmedCode.toString().length === 6) {
+                isSixFigure = true;
+            }
+        }
         setGeneratedConfirmationCode(confirmedCode);
         return confirmedCode;
     };
@@ -95,5 +103,3 @@ export const  forgotPassweordLoader: LoaderFunction = async () => {
     forgotPasswordStore.setIsSuchUser(res.data as boolean)
     return null
 }
-
-

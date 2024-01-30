@@ -1,4 +1,4 @@
-import { Button, Text, Input, useToast } from '@chakra-ui/react'
+import { Button, Text, Input, useToast, HStack, PinInput, PinInputField } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Form } from 'react-router-dom';
 import { LoginRequest } from '../utils/constants';
@@ -11,11 +11,9 @@ const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: stri
         email: email,
         password: ""
     });
-    const handleConfirmationCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const inputCode = event.target.value.replace(/[^0-9]/g, ''); // Allow only numeric input
-        setConfirmationCode(inputCode.slice(0, 6)); // Limit to 6 characters
+    const handleConfirmationCodeChange = (event: string) => {
+        setConfirmationCode(event); 
     }
-
     const validateConfirmationCode = () => {
         if(Number(confirmationCode) === generatedConfirmationCode)
         {
@@ -50,16 +48,19 @@ const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: stri
             (
                 <>
                     <Text mb={30}> A verification code was sent to {email}</Text>
-                    <Input
-                        type="text"
-                        placeholder="Enter the code here"
+                    <HStack>
+                        <PinInput 
                         value={confirmationCode}
-                        onChange={handleConfirmationCodeChange}
-                        maxLength={6}
-                        inputMode="numeric"
-                        mb={30}
-                    />
-                    <Button colorScheme='red' onClick={() => validateConfirmationCode()} ml={3}>
+                        onChange={handleConfirmationCodeChange}>
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                        </PinInput>
+                    </HStack>
+                    <Button mt={30} colorScheme='red' onClick={() => validateConfirmationCode()} ml={3}>
                         Confirm
                     </Button>
                 </>
