@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Form, NavLink, redirect, useActionData } from "react-router-dom";
+import { Form, redirect,useNavigate, useActionData } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
@@ -41,7 +41,8 @@ export async function loginAction({ request }: { request: Request }) {
 }
 
 const Login = () => {
-    const {userStore} = rootStore
+    const {userStore, forgotPasswordStore} = rootStore;
+    const navigate = useNavigate()
     const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
     const [formData, setFormData] = useState<LoginRequest>({
         email: "",
@@ -51,6 +52,15 @@ const Login = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+    function sendToForgotPasswordPage(email: string) {
+        if(email)
+        {
+            forgotPasswordStore.setEmail(email)
+            navigate('/forgot-password')
+        }
+        
+    }
+
     return (
         <>
         {!userStore.userJwt ?
@@ -63,22 +73,24 @@ const Login = () => {
                         name="email"
                         onChange={handleChange}/>
                 </FormControl>
-                <FormControl mb="40px">
-                    <NavLink to={`/forgot-password/${formData.email}`}>
-                        <Text 
-                        textAlign={'left'}
-                        color="blue" 
-                        _hover={{ cursor: 'pointer' }}>
-                            Forgot your password?
-                        </Text>
-                </NavLink>
-                </FormControl>
 
                 <FormControl mb="40px">
                         <FormLabel> Password:</FormLabel>
                         <Input type="password"
                         name="password"
                         onChange={handleChange}/>
+                </FormControl>
+
+                <FormControl mb="40px">
+                    <Text 
+                        onClick={() => {
+                            sendToForgotPasswordPage(formData.email)
+                        }}
+                        textAlign={'left'}
+                        color="blue" 
+                        _hover={{ cursor: 'pointer' }}>
+                            Forgot your password?
+                    </Text>
                 </FormControl>
 
                 <FormControl>
