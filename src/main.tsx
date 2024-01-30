@@ -14,6 +14,9 @@ import { Product, productLoader } from "./routes/Product";
 import { AddProduct, addProductAction } from "./routes/AddProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct, editProductAction } from "./routes/EditProduct";
+import ForgotPassword, { forgotPassweordLoader, forgotPasswordAction } from "./routes/ForgotPassword";
+import ErrorPage from "./error-routes/error";
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -28,7 +31,6 @@ const router = createBrowserRouter([
                 path: 'product/:id',
                 element: <Product />,
                 loader: productLoader,
-                // errorElement: <ProductPageError /> 
                 errorElement: <ErorrPage />
             },
             {
@@ -58,6 +60,13 @@ const router = createBrowserRouter([
                 action: loginAction,
             },
             {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
+                action: forgotPasswordAction,
+                loader: forgotPassweordLoader,
+                errorElement: <ErrorPage/>
+            },
+            {
                 path: "/register",
                 element: <Registration />,
                 action: registrationAction,
@@ -66,7 +75,6 @@ const router = createBrowserRouter([
                 path: "*",
                 element: <ErorrPage />
             }
-            
         ],
     },
     {

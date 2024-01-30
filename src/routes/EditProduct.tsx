@@ -35,7 +35,6 @@ function extractProductIdFromUrl(url: string): string | null { // TODO: move to 
 }
 
 export async function editProductAction({ request }: { request: Request }) {
-    // const loader = useLoaderData()
     const productId = extractProductIdFromUrl(window.location.href)
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
@@ -142,7 +141,7 @@ export function EditProduct() {
                 onChange={handleChange}/>
             </FormControl>
             
-            <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Edit</Button>
+            <Button mb="50px" colorScheme="red" id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
         </Form>
     </Box>
     )
