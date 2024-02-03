@@ -2,11 +2,13 @@ import { useState, ChangeEvent } from "react";
 import { Form, redirect, useActionData} from "react-router-dom";
 import '../index.css'
 import axios from 'axios';
-import { registrationValidators } from "../validators/registrationValidators";
+import { firstNameValidator, lastNameValidator, emailValidator, passwordValidator } from "../validators/registrationValidators";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import { authActionError, baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
+import { registrationActionError } from '../utils/types';
 import rootStore from "../rootStore";
-const {userStore} = rootStore
+import { getHeaders } from "../utils/sdk";
+const { userStore } = rootStore
 
 interface FormData {
     firstName: string;
@@ -37,14 +39,14 @@ export async function registrationAction({ request }: { request: Request }) {
         password,
         image 
     };
-    const validationResult = registrationValidators(firstName.toString(), lastName.toString(), email.toString(), password.toString()) 
-    if(validationResult.firstName === '' && validationResult.lastName === '' && validationResult.email === '' && validationResult.password === '' )
+    if(firstNameValidator(firstName.toString()) === '' &&
+    lastNameValidator(lastName.toString())=== '' && 
+    emailValidator(email.toString()) === '' && 
+    passwordValidator(password.toString()) === '' )
     {
         try {
-            const response = await axios.post(`${baseUrl}/register`, requestData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            const response = await axios.post(`${BASE_URL}/register`, requestData, {
+                headers: getHeaders()
             });
             localStorage.setItem('userJwt', response.data.token)
             userStore.userJwtAuthentication()
@@ -52,18 +54,24 @@ export async function registrationAction({ request }: { request: Request }) {
     
         } catch (error) {
             console.error(error);
-            return {message: "This email adress is already taken"}
+            return { validationMessage:{ email: "This email adress is already taken" } }
         }
     }
     else{
-        return redirect(`/register`);
+       // return redirect(`/register`);
+        return { validationMessage: {
+                firstName: firstNameValidator(firstName.toString()),
+                lastName: lastNameValidator(lastName.toString()),
+                email: emailValidator(email.toString()),
+                password: passwordValidator(password.toString())
+            }}
     }
 }
 
 
 
 const Registration = () => {
-    const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
+    const errorInAction: registrationActionError = useActionData() as registrationActionError // returns the error in the action if occurs
     const [formData, setFormData] = useState<FormData>({
         firstName: "",
         lastName: "",
@@ -77,6 +85,7 @@ const Registration = () => {
         email: "",
         password: "",
     });
+    
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,14 +93,9 @@ const Registration = () => {
         setFormData({ ...formData, [name]: value });
     };
     const validate = () =>{
-        setValidationResult( 
-            registrationValidators(
-                formData.firstName.toString(), 
-                formData.lastName.toString(),
-                formData.email.toString(), 
-                formData.password.toString()
-            )
-        )
+        if(errorInAction?.validationMessage) {
+            setValidationResult(errorInAction.validationMessage) 
+        }
     }
 
     return (
@@ -107,7 +111,7 @@ const Registration = () => {
                         name="firstName"
                         id="txtFirstName"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{validationResult.firstName}</FormHelperText>
+                        <FormHelperText color="red.500">{ validationResult.firstName }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -116,7 +120,7 @@ const Registration = () => {
                         name="lastName"
                         id="txtLastName"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{validationResult.lastName}</FormHelperText>
+                        <FormHelperText color="red.500">{ validationResult.lastName }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -125,7 +129,7 @@ const Registration = () => {
                         name="email"
                         id="txtEmail"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{errorInAction ? errorInAction.message : validationResult.email }</FormHelperText>
+                        <FormHelperText color="red.500">{ validationResult.email }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -134,7 +138,7 @@ const Registration = () => {
                         name="password"
                         id="txtPassword"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{validationResult.password}</FormHelperText>
+                        <FormHelperText color="red.500">{ validationResult.password }</FormHelperText>
                     </FormControl>
                     
                     <FormControl mb="40px">

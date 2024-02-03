@@ -4,8 +4,9 @@ import '../index.css'
 import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import { Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
+import { extractParameterFromUrl, getHeadersWithJwt } from "../utils/sdk";
 const { userStore, productStore } = rootStore
 
 interface FormData {
@@ -28,14 +29,8 @@ interface LoadedData {
     data: Product 
 }
 
-function extractProductIdFromUrl(url: string): string | null { // TODO: move to utils
-    const segments = url.split('/');
-    const lastSegment = segments[segments.length - 1];
-    return lastSegment || null;
-}
-
 export async function editProductAction({ request }: { request: Request }) {
-    const productId = extractProductIdFromUrl(window.location.href)
+    const productId = extractParameterFromUrl(window.location.href)
     const data = await request.formData()
     const userInfo = Object.fromEntries(data);
     const { name, price, description, image } = userInfo;
@@ -50,11 +45,8 @@ export async function editProductAction({ request }: { request: Request }) {
     if(validationResult.price === '')
     {
         try {
-            await axios.patch(`${baseUrl}/product/${productId}`, requestData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${userStore.userJwt}`
-                }
+            await axios.patch(`${BASE_URL}/product/${productId}`, requestData, {
+                headers: getHeadersWithJwt(userStore.userJwt as string)
             });
             productStore.setAllProducts(await productStore.loadAllProducts()) // saving the edited product in productStore by reloading all the products
             return redirect("/");
@@ -72,7 +64,7 @@ export async function editProductAction({ request }: { request: Request }) {
 export function EditProduct() {
     const [productId, setProductId] = useState("")
     useEffect(() => {
-        setProductId(extractProductIdFromUrl(window.location.href) as string)
+        setProductId(extractParameterFromUrl(window.location.href) as string)
         if(!userStore.isAdmin)
         {
             redirect("/error")

@@ -5,8 +5,9 @@ import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
+import { getHeadersWithJwt } from "../utils/sdk";
 
 const {userStore} = rootStore
     interface FormData {
@@ -40,11 +41,8 @@ export async function addProductActionDialog({ request }: { request: Request}) {
     if(validationResult.price === '')
     {
         try {
-            await axios.post(`${baseUrl}/product`, requestData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${userStore.userJwt}`
-                }
+            await axios.post(`${BASE_URL}/product`, requestData, {
+                headers: getHeadersWithJwt(userStore.userJwt as string)
             });
 
             onclose

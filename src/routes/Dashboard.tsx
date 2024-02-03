@@ -3,18 +3,13 @@ import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteProductBtn } from "./DeleteProductBtn";
 import axios from "axios";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
 import { observer } from "mobx-react";
 import {ShoppingCartItem} from '../rootStore/ShoppingCartStore'
 const {userStore, productStore, shoppingCartStore} = rootStore
-interface Product{ // TODO: move it to a better place
-    _id: string,
-    name: string,
-    price: string,
-    description: string,
-    image: string
-}
+import { Product } from "../rootStore/ProductStore";
+import { getHeadersWithJwt } from "../utils/sdk";
 
 interface LoadedData {
     data: Product []
@@ -24,11 +19,8 @@ export async function deleteProductAction({ request }: { request: Request }){
     const userInfo = Object.fromEntries(data)
     const { id } = userInfo
     try {
-        await axios.delete(`${baseUrl}/product/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": `Bearer ${userStore.userJwt}`
-            }
+        await axios.delete(`${BASE_URL}/product/${id}`, {
+            headers: getHeadersWithJwt(userStore.userJwt as string)
         });
         return { response: true, data: "succeeded" };
     } catch (error) {
@@ -118,6 +110,6 @@ export const Dashboard =  observer(() => {
 })
 
 export async function productsLoader() {
-    const res = await fetch(`${baseUrl}/product`)
+    const res = await fetch(`${BASE_URL}/product`)
     return res.json()
 }

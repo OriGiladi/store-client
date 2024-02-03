@@ -1,6 +1,7 @@
 import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
+import { getHeadersWithJwt } from "../utils/sdk";
 
 interface User {
     _id: string;
@@ -32,10 +33,8 @@ class UserStore {
     userJwtAuthentication() {
         const userJwt = localStorage.getItem("userJwt");
         if (userJwt) {
-        fetch(`${baseUrl}/users/me`, {
-            headers: {
-            Authorization: "Bearer " + userJwt,
-            }
+        fetch(`${BASE_URL}/users/me`, {
+            headers: getHeadersWithJwt(userJwt as string),
         })
             .then((res) => res.json())
             .then((data) => {

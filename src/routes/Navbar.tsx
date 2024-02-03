@@ -7,6 +7,7 @@ import {
     HStack,
     useToast,
     Avatar,
+    Tooltip,
 } from "@chakra-ui/react";
 import {StarIcon} from "@chakra-ui/icons"
 import { useNavigate } from 'react-router-dom';
@@ -48,21 +49,25 @@ const Navbar = observer(() => {
 
     return (
         <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="10px">
-        <Heading display={{base:"block", md:"block" }} as="h1">The Shop</Heading>
+        <Heading display={{ base: "block", md: "block" }} as="h1">The Shop</Heading>
         <Spacer />
         {userStore.user ? (
-            <HStack spacing="20px">
-            <Avatar name={userStore.user.firstName} src={userStore.user.image} /> {/* TODO: add an edit profile optoion (if possible by clicking the Avatar element) */}
-            <Text display={{base:"block", md:"block"  }}> {userStore.user.firstName} {userStore.user.lastName}</Text>
-            <Button colorScheme="red" onClick={logOut}>
-                Logout
-            </Button>
-                { userStore.isAdmin ? (<StarIcon color="red.500"/>) : (null) } {/* TODO: when mouse hovering the star display the text Admin */}
-            </HStack>
+            <>
+                <HStack spacing="20px">
+                    <Avatar name={userStore.user.firstName} src={userStore.user.image} />
+                    <Text display={{ base: "block", md: "block" }}> {userStore.user.firstName} {userStore.user.lastName}</Text>
+                    <Button colorScheme="red" onClick={logOut}>
+                        Logout
+                    </Button>
+                    <Tooltip label={userStore.isAdmin ? 'Admin' : ''}>
+                        {userStore.isAdmin ? (<StarIcon color="red.500" />) : (null)}
+                    </Tooltip>
+                </HStack>
+            </>
         ) : (
             <Text>Log in to purchase items</Text>
         )}
-        </Flex>
+    </Flex>
     );
 });
 export default Navbar

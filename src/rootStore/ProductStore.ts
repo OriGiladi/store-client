@@ -1,8 +1,8 @@
 import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 
-interface Product{ // TODO: move it to a better place
+export interface Product{ 
     _id: string,
     name: string,
     price: string,
@@ -23,7 +23,7 @@ class ProductStore {
         this.allProducts = allProducts;
     }
     async loadAllProducts() {
-        const res = await fetch(`${baseUrl}/product`)
+        const res = await fetch(`${BASE_URL}/product`)
         const loaded: LoadedData = await res.json() as LoadedData 
         return loaded.data;
     }

@@ -1,12 +1,14 @@
 import { Suspense, useEffect, useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
-import { emailJsServiceId, emailJsPublicKey, emailJsTemplateId, baseUrl, authActionError } from '../utils/constants';
+import { EMAIL_JS_SERVICE_ID, EMAIL_JS_PUBLIC_KEY, EMAIL_JS_TEMPLATE_ID, BASE_URL, SIX_DIGIT_CONVERTOR, CONFIRMATION_CODE_LENGTH } from '../utils/constants';
+import {authActionError } from '../utils/types';
 import ForgotPasswordForm from './ForgotPasswordForm';
 import { LoaderFunction, redirect, useActionData } from 'react-router-dom';
-import { registrationValidators } from '../validators/registrationValidators';
+import { passwordValidator } from '../validators/registrationValidators';
 import axios from 'axios';
 import { Box, Text } from '@chakra-ui/react';
 import rootStore from '../rootStore';
+import { getHeaders } from '../utils/sdk';
 const {forgotPasswordStore} = rootStore
 
 export async function forgotPasswordAction({ request }: { request: Request }) {
@@ -16,14 +18,12 @@ export async function forgotPasswordAction({ request }: { request: Request }) {
         email: forgotPasswordStore.email,
         password: password
     }
-    const validationResult = registrationValidators("", "", "", requestBody.password as string) // TODO: create a password validation function
-    if( validationResult.password === '' )
+    const passwordValidationError = passwordValidator(requestBody.password as string)
+    if( passwordValidationError === '' )
     {
         try {
-            await axios.patch(`${baseUrl}/login`, requestBody, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            await axios.patch(`${BASE_URL}/login`, requestBody, {
+                headers: getHeaders()
             });
             return redirect("/login");
         } catch (error) {
@@ -32,7 +32,7 @@ export async function forgotPasswordAction({ request }: { request: Request }) {
         }
     }
     else{
-        return { message: validationResult.password } // displays the validation error
+        return { message: passwordValidationError } // displays the validation error
     }
 }
 
@@ -46,9 +46,9 @@ const ForgotPassword = () => {
     const generateConfirmationCode = () => {
         let isSixFigure = false;
         let confirmedCode;
-        while (!isSixFigure) {
-            confirmedCode = Math.round(Math.random() * 1000000); // TODO: replace 1000000 with a constant
-            if (confirmedCode.toString().length === 6) {
+        while ( !isSixFigure ) { // if case the random number is not six figure, we generate another number
+            confirmedCode = Math.round( Math.random() * ( Math.pow( 10, CONFIRMATION_CODE_LENGTH )));// return a 6 figure random namber
+            if ( confirmedCode.toString().length === CONFIRMATION_CODE_LENGTH ) {
                 isSixFigure = true;
             }
         }
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
                     to_email: forgotPasswordStore.email,
                 };
     
-                emailjs.send(emailJsServiceId, emailJsTemplateId, mailParams, emailJsPublicKey)
+                emailjs.send(EMAIL_JS_SERVICE_ID, EMAIL_JS_TEMPLATE_ID, mailParams, EMAIL_JS_PUBLIC_KEY)
                     .then((result) => {
                         console.log(result)
                         console.log(result.text);
@@ -96,10 +96,8 @@ const ForgotPassword = () => {
 export default ForgotPassword;
 
 export const  forgotPassweordLoader: LoaderFunction = async () => {
-    const res = await axios.post(`${baseUrl}/login/isSuchUser`, {email: forgotPasswordStore.email}, {
-        headers: {
-            'Content-Type': 'application/json'
-        }})
+    const res = await axios.post(`${BASE_URL}/login/isSuchUser`, {email: forgotPasswordStore.email}, {
+        headers: getHeaders()})
     forgotPasswordStore.setIsSuchUser(res.data as boolean)
     return null
 }

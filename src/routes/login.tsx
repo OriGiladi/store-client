@@ -2,8 +2,10 @@ import { useState, ChangeEvent } from "react";
 import { Form, redirect,useNavigate, useActionData } from "react-router-dom";
 import axios from "axios";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
-import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
+import {authActionError, LoginRequest } from '../utils/types';
+import { BASE_URL, NOT_FOUND_STATUS_CODE, UNAUTHORIZED_STATUS_CODE } from "../utils/constants";
 import rootStore from '../rootStore'
+import { getHeaders } from "../utils/sdk";
 
 export async function loginAction({ request }: { request: Request }) {
     const {userStore} = rootStore
@@ -15,11 +17,7 @@ export async function loginAction({ request }: { request: Request }) {
         password
     };
     try {
-        const response = await axios.post(`${baseUrl}/login`, requestData, {
-            headers: { // TODO: create getHeader function in utils
-                'Content-Type': 'application/json',
-            }
-        });
+        const response = await axios.post(`${BASE_URL}/login`, requestData, { headers: getHeaders() });
         localStorage.setItem('userJwt', response.data.token)
         if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
         {
@@ -30,13 +28,14 @@ export async function loginAction({ request }: { request: Request }) {
         userStore.userJwtAuthentication()
         return redirect('/')
     } catch (error) {
-        if(axios.isAxiosError(error))
-        {
-            if (error.response?.status === 401 || error.response?.status === 404 ) // TODO: don't use magic numbers
-                return {message: "Invalid email or password"}
+        if(axios.isAxiosError(error)){
+            if (error.response?.status === UNAUTHORIZED_STATUS_CODE || error.response?.status === NOT_FOUND_STATUS_CODE ){
+                return { message: "Invalid email or password" }
+            }
         } 
-        else
-            return {message: "There is a problem in our server"}
+        else{
+            return { message: "There is a problem in our server" }
+        }
     }
 }
 

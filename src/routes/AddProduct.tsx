@@ -4,8 +4,9 @@ import '../index.css'
 import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import { baseUrl } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
+import { getHeadersWithJwt } from "../utils/sdk";
 const { userStore, productStore} = rootStore
     interface FormData {
         name: string;
@@ -37,11 +38,8 @@ export async function addProductAction({ request }: { request: Request }) {
     if(validationResult.price === '')
     {
         try {
-            await axios.post(`${baseUrl}/product`, requestData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${userStore.userJwt}`
-                }
+            await axios.post(`${BASE_URL}/product`, requestData, {
+                headers: getHeadersWithJwt(userStore.userJwt as string)
             });
             productStore.setAllProducts(await productStore.loadAllProducts()) // saving the added product in productStore by reloading all the products
             return redirect("/");
