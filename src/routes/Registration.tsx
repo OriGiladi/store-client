@@ -1,13 +1,9 @@
 import { useState, ChangeEvent } from "react";
-import { Form, redirect, useActionData} from "react-router-dom";
+import { Form, useActionData} from "react-router-dom";
 import '../index.css'
-import axios from 'axios';
-import { firstNameValidator, lastNameValidator, emailValidator, passwordValidator } from "../validators/registrationValidators";
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import { BASE_URL } from "../utils/constants";
 import { registrationActionError } from '../utils/types';
 import rootStore from "../rootStore";
-import { getHeaders } from "../utils/sdk";
 const { userStore } = rootStore
 
 interface FormData {
@@ -23,52 +19,6 @@ interface Validation {
     email: string;
     password: string;
 }
-
-
-export async function registrationAction({ request }: { request: Request }) {
-    const data = await request.formData()
-    const userInfo = Object.fromEntries(data);
-    const { firstName, lastName, email, password } = userInfo;
-    let {image} = userInfo
-    if(image === "")
-        image = "none";
-    const requestData = {
-        firstName,
-        lastName,
-        email,
-        password,
-        image 
-    };
-    if(firstNameValidator(firstName.toString()) === '' &&
-    lastNameValidator(lastName.toString())=== '' && 
-    emailValidator(email.toString()) === '' && 
-    passwordValidator(password.toString()) === '' )
-    {
-        try {
-            const response = await axios.post(`${BASE_URL}/register`, requestData, {
-                headers: getHeaders()
-            });
-            localStorage.setItem('userJwt', response.data.token)
-            userStore.userJwtAuthentication()
-            return redirect("/");
-    
-        } catch (error) {
-            console.error(error);
-            return { validationMessage:{ email: "This email adress is already taken" } }
-        }
-    }
-    else{
-       // return redirect(`/register`);
-        return { validationMessage: {
-                firstName: firstNameValidator(firstName.toString()),
-                lastName: lastNameValidator(lastName.toString()),
-                email: emailValidator(email.toString()),
-                password: passwordValidator(password.toString())
-            }}
-    }
-}
-
-
 
 const Registration = () => {
     const errorInAction: registrationActionError = useActionData() as registrationActionError // returns the error in the action if occurs

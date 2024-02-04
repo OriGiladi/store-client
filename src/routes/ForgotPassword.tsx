@@ -1,40 +1,12 @@
 import { Suspense, useEffect, useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
-import { EMAIL_JS_SERVICE_ID, EMAIL_JS_PUBLIC_KEY, EMAIL_JS_TEMPLATE_ID, BASE_URL, SIX_DIGIT_CONVERTOR, CONFIRMATION_CODE_LENGTH } from '../utils/constants';
+import { EMAIL_JS_SERVICE_ID, EMAIL_JS_PUBLIC_KEY, EMAIL_JS_TEMPLATE_ID, CONFIRMATION_CODE_LENGTH } from '../utils/constants';
 import {authActionError } from '../utils/types';
 import ForgotPasswordForm from './ForgotPasswordForm';
-import { LoaderFunction, redirect, useActionData } from 'react-router-dom';
-import { passwordValidator } from '../validators/registrationValidators';
-import axios from 'axios';
+import { useActionData } from 'react-router-dom';
 import { Box, Text } from '@chakra-ui/react';
 import rootStore from '../rootStore';
-import { getHeaders } from '../utils/sdk';
 const {forgotPasswordStore} = rootStore
-
-export async function forgotPasswordAction({ request }: { request: Request }) {
-    const formData = await request.formData()
-    const { password } = Object.fromEntries(formData);
-    const requestBody = {
-        email: forgotPasswordStore.email,
-        password: password
-    }
-    const passwordValidationError = passwordValidator(requestBody.password as string)
-    if( passwordValidationError === '' )
-    {
-        try {
-            await axios.patch(`${BASE_URL}/login`, requestBody, {
-                headers: getHeaders()
-            });
-            return redirect("/login");
-        } catch (error) {
-            console.error(error);
-            return {message: "There is a server error"}
-        }
-    }
-    else{
-        return { message: passwordValidationError } // displays the validation error
-    }
-}
 
 const ForgotPassword = () => {
     const [isUserExist, setIsUserExist] = useState(false);
@@ -95,9 +67,3 @@ const ForgotPassword = () => {
 };
 export default ForgotPassword;
 
-export const  forgotPassweordLoader: LoaderFunction = async () => {
-    const res = await axios.post(`${BASE_URL}/login/isSuchUser`, {email: forgotPasswordStore.email}, {
-        headers: getHeaders()})
-    forgotPasswordStore.setIsSuchUser(res.data as boolean)
-    return null
-}

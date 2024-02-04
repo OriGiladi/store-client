@@ -2,31 +2,14 @@ import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, F
 import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteProductBtn } from "./DeleteProductBtn";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
 import { observer } from "mobx-react";
 import {ShoppingCartItem} from '../rootStore/ShoppingCartStore'
 const {userStore, productStore, shoppingCartStore} = rootStore
 import { Product } from "../rootStore/ProductStore";
-import { getHeadersWithJwt } from "../utils/sdk";
 
 interface LoadedData {
     data: Product []
-}
-export async function deleteProductAction({ request }: { request: Request }){
-    const data = await request.formData()
-    const userInfo = Object.fromEntries(data)
-    const { id } = userInfo
-    try {
-        await axios.delete(`${BASE_URL}/product/${id}`, {
-            headers: getHeadersWithJwt(userStore.userJwt as string)
-        });
-        return { response: true, data: "succeeded" };
-    } catch (error) {
-        console.error(error);
-        return { response: false, data: null };
-    }
 }
 
 export const Dashboard =  observer(() => {
@@ -108,8 +91,3 @@ export const Dashboard =  observer(() => {
         </SimpleGrid>
     )
 })
-
-export async function productsLoader() {
-    const res = await fetch(`${BASE_URL}/product`)
-    return res.json()
-}

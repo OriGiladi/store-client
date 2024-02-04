@@ -3,7 +3,7 @@ import { Form, redirect} from "react-router-dom";
 import '../index.css'
 import axios from 'axios';
 import { addingProductValidator } from "../validators/product";
-import {  AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input, useDisclosure } from "@chakra-ui/react";
+import {  AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button,  FormControl, FormHelperText, FormLabel, Input, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
