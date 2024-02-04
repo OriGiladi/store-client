@@ -1,8 +1,6 @@
 import { Box, Button, Card, CardHeader, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { NavLink, redirect, useLoaderData } from "react-router-dom";
 import { AddIcon} from '@chakra-ui/icons'
-import { LoaderFunction } from 'react-router-dom';
-import { baseUrl } from "../utils/constants";
 
 interface Product{
     _id: string,
@@ -47,10 +45,4 @@ export function Product() {
             </CardHeader>
         </Card>
     )
-}
-
-export const  productLoader: LoaderFunction = async ({params}) => {
-    const {id} = params
-    const res = await fetch(`${baseUrl}/product/${id}`)
-    return res.json()
 }

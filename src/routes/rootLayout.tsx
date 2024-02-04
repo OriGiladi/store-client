@@ -1,10 +1,8 @@
 import { Outlet } from "react-router-dom"
 import { Container, Grid, GridItem } from "@chakra-ui/react"
-import { baseUrl } from "../utils/constants"
 import Navbar from "./Navbar"
 import SideBar from "./SideBar"
 import { observer } from "mobx-react";
-import rootStore from "../rootStore"
 
 const RootLayout = observer(() => {
     return (
@@ -26,13 +24,3 @@ const RootLayout = observer(() => {
     )
 })
 export default RootLayout
-
-export async function userLoader() {
-    const {userStore} = rootStore
-    const res = await fetch(`${baseUrl}/users/me`, {
-        headers: {
-        Authorization: 'Bearer ' + userStore.userJwt}}
-    )
-    return res.json()
-}
-

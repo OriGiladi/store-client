@@ -2,8 +2,9 @@ import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Al
 import { DeleteIcon} from '@chakra-ui/icons'
 import React from 'react'
 import axios from 'axios';
-import { baseUrl } from '../utils/constants';
+import { BASE_URL } from '../utils/constants';
 import rootStore from '../rootStore';
+import { getHeadersWithJwt } from '../utils/sdk';
 interface Product{
     _id: string,
     name: string,
@@ -21,11 +22,8 @@ export function DeleteProductBtn({product}: {product: Product}) {
     const onDelete = async (id: string) => {
         const { userStore, productStore} = rootStore
         try {
-            await axios.delete(`${baseUrl}/product/${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": `Bearer ${userStore.userJwt}`
-                }
+            await axios.delete(`${BASE_URL}/product/${id}`, {
+                headers: getHeadersWithJwt(userStore.userJwt as string)
             });
             productStore.setAllProducts(await productStore.loadAllProducts()) // saving the deleted product in productStore by reloading all the products
             onClose()

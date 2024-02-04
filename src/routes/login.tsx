@@ -1,44 +1,8 @@
 import { useState, ChangeEvent } from "react";
-import { Form, redirect,useNavigate, useActionData } from "react-router-dom";
-import axios from "axios";
+import { Form, useNavigate, useActionData } from "react-router-dom";
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
-import { LoginRequest, authActionError, baseUrl } from "../utils/constants";
+import {authActionError, LoginRequest } from '../utils/types';
 import rootStore from '../rootStore'
-
-export async function loginAction({ request }: { request: Request }) {
-    const {userStore} = rootStore
-    const data = await request.formData()
-    const userInfo = Object.fromEntries(data);
-    const { email, password } = userInfo;
-    const requestData = {
-        email,
-        password
-    };
-    try {
-        const response = await axios.post(`${baseUrl}/login`, requestData, {
-            headers: { // TODO: create getHeader function in utils
-                'Content-Type': 'application/json',
-            }
-        });
-        localStorage.setItem('userJwt', response.data.token)
-        if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
-        {
-            localStorage.setItem('isAdmin', response.data.admin)
-            userStore.setIsAdmin(response.data.admin)
-        }
-            
-        userStore.userJwtAuthentication()
-        return redirect('/')
-    } catch (error) {
-        if(axios.isAxiosError(error))
-        {
-            if (error.response?.status === 401 || error.response?.status === 404 ) // TODO: don't use magic numbers
-                return {message: "Invalid email or password"}
-        } 
-        else
-            return {message: "There is a problem in our server"}
-    }
-}
 
 const Login = () => {
     const {userStore, forgotPasswordStore} = rootStore;

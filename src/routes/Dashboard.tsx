@@ -2,39 +2,14 @@ import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, F
 import {  NavLink, useLoaderData } from "react-router-dom";
 import {ViewIcon, AddIcon, EditIcon} from '@chakra-ui/icons'
 import { DeleteProductBtn } from "./DeleteProductBtn";
-import axios from "axios";
-import { baseUrl } from "../utils/constants";
 import rootStore from "../rootStore";
 import { observer } from "mobx-react";
 import {ShoppingCartItem} from '../rootStore/ShoppingCartStore'
 const {userStore, productStore, shoppingCartStore} = rootStore
-interface Product{ // TODO: move it to a better place
-    _id: string,
-    name: string,
-    price: string,
-    description: string,
-    image: string
-}
+import { Product } from "../rootStore/ProductStore";
 
 interface LoadedData {
     data: Product []
-}
-export async function deleteProductAction({ request }: { request: Request }){
-    const data = await request.formData()
-    const userInfo = Object.fromEntries(data)
-    const { id } = userInfo
-    try {
-        await axios.delete(`${baseUrl}/product/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": `Bearer ${userStore.userJwt}`
-            }
-        });
-        return { response: true, data: "succeeded" };
-    } catch (error) {
-        console.error(error);
-        return { response: false, data: null };
-    }
 }
 
 export const Dashboard =  observer(() => {
@@ -116,8 +91,3 @@ export const Dashboard =  observer(() => {
         </SimpleGrid>
     )
 })
-
-export async function productsLoader() {
-    const res = await fetch(`${baseUrl}/product`)
-    return res.json()
-}

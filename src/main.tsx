@@ -5,16 +5,22 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 //pages
 import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
-import { registrationAction } from "./routes/Registration";
-import Login ,{ loginAction } from "./routes/Login";
+import { registrationAction } from "./actionsAndLoaders/registration";
+import{ loginAction } from './actionsAndLoaders/login';
+import Login from "./routes/login";
 import  RootLayout  from "./routes/rootLayout";
-import { Dashboard, productsLoader } from "./routes/Dashboard";
+import { Dashboard } from "./routes/Dashboard";
+import { allProductsLoader } from "./actionsAndLoaders/dashboard";
+import { productLoader } from "./actionsAndLoaders/product";
 import {ShoppingCart} from "./routes/ShoppingCart";
-import { Product, productLoader } from "./routes/Product";
-import { AddProduct, addProductAction } from "./routes/AddProduct";
+import { Product } from "./routes/Product";
+import { AddProduct } from "./routes/AddProduct";
+import { addProductAction } from "./actionsAndLoaders/addProduct";
 import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
-import { EditProduct, editProductAction } from "./routes/EditProduct";
-import ForgotPassword, { forgotPassweordLoader, forgotPasswordAction } from "./routes/ForgotPassword";
+import { EditProduct } from "./routes/EditProduct";
+import { editProductAction } from "./actionsAndLoaders/editProduct";
+import ForgotPassword from "./routes/ForgotPassword";
+import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
 import ErrorPage from "./error-routes/error";
 
 const router = createBrowserRouter([
@@ -25,7 +31,7 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Dashboard />,
-                loader: productsLoader,
+                loader: allProductsLoader,
             },
             {
                 path: 'product/:id',
