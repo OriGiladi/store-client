@@ -5,11 +5,12 @@ export interface ShoppingCartItem {
     name: string;
     price: string;
     image: string;
+    description?: string;
 }
-type ShoppingCartItems =  {item: ShoppingCartItem; quantity: number} []
+export type ShoppingCartWithQuantity =  {item: ShoppingCartItem; quantity: number} 
 class ShoppingCartStore {
     rootStore: RootStore;
-    shoppingCartItems: ShoppingCartItems;
+    shoppingCartItems: ShoppingCartWithQuantity [];
     totalPrice: number;
     totalAmount: number;
     constructor(rootStore: RootStore) {

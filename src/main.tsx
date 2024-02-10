@@ -22,6 +22,7 @@ import { editProductAction } from "./actionsAndLoaders/editProduct";
 import ForgotPassword from "./routes/ForgotPassword";
 import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
 import ErrorPage from "./error-routes/error";
+import { Cart } from "./routes/ShoppingCart/Cart";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <ShoppingCart />,
+            },
+            {
+                path: "/dcart",
+                element: <Cart />,
             },
             {
                 path: "/login",

@@ -17,6 +17,12 @@ const SideBar = observer(() => {
                     (<NavLink to='/cart'>My Shopping Cart </NavLink>)
                 }
             </ListItem>
+            <ListItem>
+                {shoppingCartStore.totalAmount > 0 ? 
+                    ( <NavLink to='/dcart'>My Disigned Shopping Cart ({shoppingCartStore.totalAmount})</NavLink>):
+                    (<NavLink to='/dcart'>My Disigned Shopping Cart </NavLink>)
+                }
+            </ListItem>
         {!userStore.userJwt ? (
             <>
                 <ListItem>
