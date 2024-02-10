@@ -25,11 +25,12 @@ export const Dashboard =  observer(() => {
         products = productStore.allProducts
     }
 
-    function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string): void {
+    function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
         const shoppingCartItem: ShoppingCartItem = {
             name: productName,
             price: productPrice,
-            image: ProductImage
+            image: ProductImage,
+            description: productDescription,
         }
         shoppingCartStore.addProductToCart(shoppingCartItem)
         toast({ // a popup that shows that the product has been added to the cart
@@ -83,7 +84,7 @@ export const Dashboard =  observer(() => {
                         <CardFooter>
                             <HStack>
                                 <Button bg="red.300" leftIcon={<ViewIcon/>}> <NavLink to={ `/product/${product._id}`}>View</NavLink> </Button>
-                                <Button bg="red.300" onClick={() => addItemToShoppingCart(product.name, product.price, product.image)} leftIcon={<AddIcon/>}> Add To Cart </Button>
+                                <Button bg="red.300" onClick={() => addItemToShoppingCart(product.name, product.price, product.image, product.description)} leftIcon={<AddIcon/>}> Add To Cart </Button>
                             </HStack>
                         </CardFooter>
                 </Card>

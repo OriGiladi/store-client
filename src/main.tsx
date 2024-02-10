@@ -12,7 +12,6 @@ import  RootLayout  from "./routes/rootLayout";
 import { Dashboard } from "./routes/Dashboard";
 import { allProductsLoader } from "./actionsAndLoaders/dashboard";
 import { productLoader } from "./actionsAndLoaders/product";
-import {ShoppingCart} from "./routes/ShoppingCart";
 import { Product } from "./routes/Product";
 import { AddProduct } from "./routes/AddProduct";
 import { addProductAction } from "./actionsAndLoaders/addProduct";
@@ -22,6 +21,7 @@ import { editProductAction } from "./actionsAndLoaders/editProduct";
 import ForgotPassword from "./routes/ForgotPassword";
 import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
 import ErrorPage from "./error-routes/error";
+import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
 
 const router = createBrowserRouter([
     {

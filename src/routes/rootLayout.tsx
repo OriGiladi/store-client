@@ -16,7 +16,7 @@ const RootLayout = observer(() => {
             </GridItem>
             <GridItem as="main" colSpan={{base: 6, lg: 4, xl: 5}} p="40px">
                 <Navbar/>
-                <Container>
+                <Container maxW="100%">
                     <Outlet/>
                 </Container>
             </GridItem>
