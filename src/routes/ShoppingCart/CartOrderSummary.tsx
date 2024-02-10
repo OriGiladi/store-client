@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import rootStore from '../../rootStore'
+import { observer } from "mobx-react";
 const { shoppingCartStore, userStore } = rootStore 
 
 type OrderSummaryItemProps = {
@@ -29,7 +30,7 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
     )
 }
 
-export const CartOrderSummary = () => {
+export const CartOrderSummary = observer(() => {
     return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
         <Heading size="md">Order Summary</Heading>
@@ -51,7 +52,6 @@ export const CartOrderSummary = () => {
             Total
             </Text>
             <Text fontSize="xl" fontWeight="extrabold">
-            {/* {formatPrice(shoppingCartStore.totalPrice)} */}
             {(shoppingCartStore.totalPrice)} ₪
             </Text>
         </Flex>
@@ -66,4 +66,4 @@ export const CartOrderSummary = () => {
         
     </Stack>
     )
-}
+})

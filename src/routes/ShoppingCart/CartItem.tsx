@@ -1,21 +1,10 @@
 import { CloseButton, Flex, Link, Select, SelectProps, useColorModeValue } from '@chakra-ui/react'
 import { PriceTag } from './PriceTag'
 import { CartProductMeta } from './CartProductMeta'
-import { ShoppingCartWithQuantity } from '../../rootStore/ShoppingCartStore'
-
-// type CartItemProps = {
-//     isGiftWrapping?: boolean
-//     name: string
-//     description: string
-//     quantity: number
-//     price: number
-//     currency: string
-//     imageUrl: string
-//     onChangeQuantity?: (quantity: number) => void
-//     onClickGiftWrapping?: () => void
-//     onClickDelete?: () => void
-// }
-
+import rootStore from '../../rootStore'
+import { observer } from "mobx-react";
+import { ShoppingCartItem, ShoppingCartWithQuantity } from '../../rootStore/ShoppingCartStore'
+const { shoppingCartStore } = rootStore
 const QuantitySelect = (props: SelectProps) => {
     return (
         <Select
@@ -24,15 +13,23 @@ const QuantitySelect = (props: SelectProps) => {
         focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
         {...props}
         >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
         </Select>
     )
 }
 
-export function CartItem ( {shoppingCartItem}: {shoppingCartItem: ShoppingCartWithQuantity}) {
+export const CartItem = observer(function  ({shoppingCartItem}: {shoppingCartItem: ShoppingCartWithQuantity}) { 
+
+    function onChangeQuantity(shoppingCartItem: ShoppingCartItem, quantity: number) {
+        shoppingCartStore.ChangeQuantity(shoppingCartItem, quantity)
+    }
+
+    function onClickDelete(shoppingCartItem: ShoppingCartItem): void {
+        shoppingCartStore.ChangeQuantity(shoppingCartItem, 0)
+    }
 
     return (
         <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align="center">
@@ -40,19 +37,20 @@ export function CartItem ( {shoppingCartItem}: {shoppingCartItem: ShoppingCartWi
             name={shoppingCartItem.item.name}
             description={shoppingCartItem.item.description as string}
             image={shoppingCartItem.item.image}
-            isGiftWrapping={true} // TODO: insert isGiftWrapping option
+            isGiftWrapping={true}
         />
 
         {/* Desktop */}
         <Flex width="full" justify="space-between" display={{ base: 'none', md: 'flex' }}>
             <QuantitySelect
-            value={shoppingCartItem.quantity} // ???
-            // onChange={(e) => {
-            //     onChangeQuantity?.(+e.currentTarget.value)
-            // }}
+            value={shoppingCartItem.quantity} 
+            onChange={(e) => {
+                onChangeQuantity(shoppingCartItem.item, Number(e.currentTarget.value))
+            }}
             />
             <PriceTag price={Number(shoppingCartItem.item.price)} currency={"ILS"} />
-            <CloseButton aria-label={`Delete ${shoppingCartItem.item.name} from cart`}/* onClick={onClickDelete}*/ />
+            <CloseButton aria-label={`Delete ${shoppingCartItem.item.name} from cart`} onClick={() => 
+                { onClickDelete(shoppingCartItem.item)}} />
         </Flex>
 
         {/* Mobile */}
@@ -63,17 +61,19 @@ export function CartItem ( {shoppingCartItem}: {shoppingCartItem: ShoppingCartWi
             justify="space-between"
             display={{ base: 'flex', md: 'none' }}
         >
-            <Link fontSize="sm" textDecor="underline">
+            <Link fontSize="sm" 
+            textDecor="underline"
+            onClick={() => { onClickDelete(shoppingCartItem.item)}}>
             Delete
             </Link>
             <QuantitySelect
             value={shoppingCartItem.quantity}
-            // onChange={(e) => {
-            //     onChangeQuantity?.(+e.currentTarget.value)
-            // }}
+            onChange={(e) => {
+                onChangeQuantity(shoppingCartItem.item, Number(e.currentTarget.value))
+            }}
             />
             <PriceTag price={ Number(shoppingCartItem.item.price) } currency={"ILS"} />
         </Flex>
         </Flex>
     )
-}
+})

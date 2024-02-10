@@ -20,50 +20,56 @@ class ShoppingCartStore {
         this.totalAmount = 0;
         makeAutoObservable(this);
     }
-    // TODO: create a clear cart option
-    addToTotalPriceAndAmount(price: number) {
+    updateTotalPriceAndAmount(price: number, amount: number) {
         this.totalPrice += price;
-        this.totalAmount += 1;
+        this.totalAmount += amount;
     }
 
-    decreaseFromTotalPriceAndAmount(price: number) {
-        this.totalPrice -= price;
-        this.totalAmount -= 1;
+    ChangeQuantity(shoppingCartItem: ShoppingCartItem, quantity: number) {
+        const existingItem = this.shoppingCartItems.find(
+            (item) => item.item.name === shoppingCartItem.name
+        ); 
+        if (existingItem) {
+            this.updateTotalPriceAndAmount((Number(shoppingCartItem.price) * 
+            (quantity - existingItem.quantity)),  quantity - existingItem.quantity);
+                existingItem.quantity = quantity;
+            if(quantity === 0) {
+                this.removeProductFromCart(shoppingCartItem);
+            }
+        } 
+        
     }
-
     addProductToCart(shoppingCartItem: ShoppingCartItem) {
-    const existingItem = this.shoppingCartItems.find(
-        (item) => item.item.name === shoppingCartItem.name
-    );
+        const existingItem = this.shoppingCartItems.find(
+            (item) => item.item.name === shoppingCartItem.name
+        );
 
-    if (existingItem) {
-            existingItem.quantity += 1;
-    } else {
-        this.shoppingCartItems.push({
-        item: shoppingCartItem,
-        quantity: 1,
-        });
-    }
-
-    this.addToTotalPriceAndAmount(Number(shoppingCartItem.price));
-    }
-
-    removeProductFromCart(shoppingCartItem: ShoppingCartItem) {
-        const existingItemIndex = this.shoppingCartItems.findIndex(
-        (item) => item.item.name === shoppingCartItem.name
-    );
-
-    if (existingItemIndex !== -1) {
-        const existingItem = this.shoppingCartItems[existingItemIndex];
-        if (existingItem.quantity > 1) {
-            existingItem.quantity -= 1;
+        if (existingItem) {
+                existingItem.quantity += 1;
         } else {
-            this.shoppingCartItems.splice(existingItemIndex, 1);
+            this.shoppingCartItems.push({
+            item: shoppingCartItem,
+            quantity: 1,
+            });
         }
 
-        this.decreaseFromTotalPriceAndAmount(Number(shoppingCartItem.price));
+        this.updateTotalPriceAndAmount(Number(shoppingCartItem.price), 1);
+        }
+
+        removeProductFromCart(shoppingCartItem: ShoppingCartItem) {
+            const existingItemIndex = this.shoppingCartItems.findIndex(
+            (item) => item.item.name === shoppingCartItem.name
+        );
+
+        if (existingItemIndex !== -1) {
+            const existingItem = this.shoppingCartItems[existingItemIndex];
+            if (existingItem.quantity > 1) {
+                existingItem.quantity -= 1;
+            } else {
+                this.shoppingCartItems.splice(existingItemIndex, 1);
+            }
+            }
         }
     }
-}
 
 export default ShoppingCartStore;

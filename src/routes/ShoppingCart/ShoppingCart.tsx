@@ -7,11 +7,12 @@ import {
     Stack,
     useColorModeValue as mode,
 } from '@chakra-ui/react'
+import { observer } from "mobx-react";
 import { CartItem } from './CartItem'
 import { CartOrderSummary } from './CartOrderSummary'
 import rootStore from '../../rootStore'
 const { shoppingCartStore, userStore } = rootStore 
-export const Cart = () => (
+export const ShoppingCart = observer(() => (
     <Box
     maxW={{ base: '3xl', lg: '7xl' }}
     mx="auto"
@@ -50,4 +51,4 @@ export const Cart = () => (
         </Flex>
     </Stack>
     </Box>
-)
+))
