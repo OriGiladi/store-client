@@ -5,7 +5,7 @@ export interface ShoppingCartItem {
     name: string;
     price: string;
     image: string;
-    description?: string;
+    description: string;
 }
 export type ShoppingCartWithQuantity =  {item: ShoppingCartItem; quantity: number} 
 class ShoppingCartStore {
@@ -24,6 +24,10 @@ class ShoppingCartStore {
         this.totalPrice += price;
         this.totalAmount += amount;
     }
+    setTotalPriceAndAmountFor(price: number) {
+        this.totalPrice = price;
+        this.totalAmount = 1;
+    }
 
     ChangeQuantity(shoppingCartItem: ShoppingCartItem, quantity: number) {
         const existingItem = this.shoppingCartItems.find(
@@ -37,8 +41,15 @@ class ShoppingCartStore {
                 this.removeProductFromCart(shoppingCartItem);
             }
         } 
-        
     }
+    quickShop(shoppingCartItem: ShoppingCartItem) {
+        this.shoppingCartItems = []
+        this.shoppingCartItems.push({
+            item: shoppingCartItem,
+            quantity: 1,
+        });
+        this.setTotalPriceAndAmountFor(Number(shoppingCartItem.price));
+    }  
     addProductToCart(shoppingCartItem: ShoppingCartItem) {
         const existingItem = this.shoppingCartItems.find(
             (item) => item.item.name === shoppingCartItem.name

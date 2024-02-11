@@ -10,7 +10,6 @@ const SideBar = observer(() => {
             <ListItem >
                 <NavLink to='/'>Product Catalog</NavLink>
             </ListItem>
-
             <ListItem>
                 {shoppingCartStore.totalAmount > 0 ? 
                     ( <NavLink to='/cart'>My Shopping Cart ({shoppingCartStore.totalAmount})</NavLink>):

@@ -8,6 +8,7 @@ import {
     useToast,
     Avatar,
     Tooltip,
+    Box,
 } from "@chakra-ui/react";
 import {StarIcon} from "@chakra-ui/icons"
 import { useNavigate } from 'react-router-dom';
@@ -59,9 +60,14 @@ const Navbar = observer(() => {
                     <Button colorScheme="red" onClick={logOut}>
                         Logout
                     </Button>
-                    <Tooltip label={userStore.isAdmin ? 'Admin' : ''}>
-                        {userStore.isAdmin ? (<StarIcon color="red.500" />) : (null)}
-                    </Tooltip>
+                    
+                    {userStore.isAdmin && (
+                        <Box>
+                            <Tooltip label={userStore.isAdmin ? 'Admin' : ''}>
+                                <StarIcon color="red.500" />
+                            </Tooltip>
+                        </Box>
+                    )}    
                 </HStack>
             </>
         ) : (

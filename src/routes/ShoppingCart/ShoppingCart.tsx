@@ -3,14 +3,15 @@ import {
     Flex,
     Heading,
     HStack,
-    Link,
     Stack,
-    useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { observer } from "mobx-react";
 import { CartItem } from './CartItem'
 import { CartOrderSummary } from './CartOrderSummary'
 import rootStore from '../../rootStore'
+import { NavLink } from 'react-router-dom'
+
+
 const { shoppingCartStore, userStore } = rootStore 
 export const ShoppingCart = observer(() => (
     <Box
@@ -41,11 +42,21 @@ export const ShoppingCart = observer(() => (
         {userStore.userJwt && shoppingCartStore.shoppingCartItems.length > 0  ? (
                 <HStack mt="6" fontWeight="semibold">
                     <p>or</p>
-                    <Link href='/' color={mode('pink.500', 'pink.200')}>Continue shopping</Link>
+                    <NavLink to="/"
+                    style={{
+                    color: "#B83280",
+                    textDecoration: 'none',
+                    transition: 'color 0.15s ease-in-out',
+                    }} >Continue shopping</NavLink>
                 </HStack>
             ) : (
                 <HStack mt="6" fontWeight="semibold">
-                    <Link href='/' color={mode('pink.500', 'pink.200')}>Continue shopping</Link>
+                    <NavLink to="/"
+                    style={{
+                    color: "#B83280",
+                    textDecoration: 'none',
+                    transition: 'color 0.15s ease-in-out',
+                    }} >Continue shopping</NavLink>
                 </HStack>
             )}
         </Flex>

@@ -51,7 +51,7 @@ const Login = () => {
                             sendToForgotPasswordPage(formData.email)
                         }}
                         textAlign={'left'}
-                        color="blue" 
+                        colorScheme="pink" 
                         _hover={{ cursor: 'pointer' }}>
                             Forgot your password?
                     </Text>

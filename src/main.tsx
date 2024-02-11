@@ -9,7 +9,7 @@ import { registrationAction } from "./actionsAndLoaders/registration";
 import{ loginAction } from './actionsAndLoaders/login';
 import Login from "./routes/login";
 import  RootLayout  from "./routes/rootLayout";
-import { Dashboard } from "./routes/Dashboard";
+
 import { allProductsLoader } from "./actionsAndLoaders/dashboard";
 import { productLoader } from "./actionsAndLoaders/product";
 import { Product } from "./routes/Product";
@@ -22,6 +22,7 @@ import ForgotPassword from "./routes/ForgotPassword";
 import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
 import ErrorPage from "./error-routes/error";
 import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
+import Dashboard from "./routes/Product/Dashboard";
 
 const router = createBrowserRouter([
     {
