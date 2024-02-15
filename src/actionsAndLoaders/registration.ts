@@ -30,7 +30,7 @@ export async function registrationAction({ request }: { request: Request }) {
             const response = await axios.post(`${BASE_URL}/register`, requestData, {
                 headers: getHeaders()
             });
-            localStorage.setItem('userJwt', response.data.token)
+            localStorage.setItem('userJwt', response.data.userJwt)
             userStore.userJwtAuthentication()
             return redirect("/");
     

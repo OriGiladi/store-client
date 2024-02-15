@@ -11,8 +11,6 @@ const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
     useEffect(() => { // reauthenticates when refreshing the page
         if(localStorage.getItem('userJwt'))
             userStore.userJwtAuthentication()
-        if(localStorage.getItem("isAdmin"))
-            userStore.setIsAdmin(localStorage.getItem("isAdmin") as unknown as boolean) // TODO: work with adminJwt
     }, [])
 
     return (
@@ -26,9 +24,9 @@ const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
                 <HStack spacing="20px">
                     <Text display={{ base: "block", md: "block" }}> {userStore.user.firstName} {userStore.user.lastName}</Text>                    
                     <Avatar name={userStore.user.firstName} src={userStore.user.image} />
-                    {userStore.isAdmin && (
+                    {userStore.userRole === "ADMIN" && (
                         <Box>
-                            <Tooltip label={userStore.isAdmin ? 'Admin' : ''}>
+                            <Tooltip label={'Admin'}>
                                 <StarIcon/>
                             </Tooltip>
                         </Box>

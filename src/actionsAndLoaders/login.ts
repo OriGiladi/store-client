@@ -15,13 +15,8 @@ export async function loginAction({ request }: { request: Request }) {
     };
     try {
         const response = await axios.post(`${BASE_URL}/login`, requestData, { headers: getHeaders() });
-        localStorage.setItem('userJwt', response.data.token)
-        if(response.data.admin) // TODO: deal with admin as I'm dealing with token 
-        {
-            localStorage.setItem('isAdmin', response.data.admin)
-            userStore.setIsAdmin(response.data.admin)
-        }
-            
+        localStorage.setItem('userJwt', response.data.userJwt)
+        userStore.setUserRoleWithJwt(response.data.userJwt)        
         userStore.userJwtAuthentication()
         return redirect('/')
     } catch (error) {
