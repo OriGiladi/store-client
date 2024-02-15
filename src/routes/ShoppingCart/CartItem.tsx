@@ -1,5 +1,5 @@
 import { CloseButton, Flex, Link, Select, SelectProps, useColorModeValue } from '@chakra-ui/react'
-import { PriceTag } from './PriceTag'
+import { PriceTag } from '../PriceTag'
 import { CartProductMeta } from './CartProductMeta'
 import rootStore from '../../rootStore'
 import { observer } from "mobx-react";
@@ -10,7 +10,7 @@ const QuantitySelect = (props: SelectProps) => {
         <Select
         maxW="64px"
         aria-label="Select quantity"
-        focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
+        focusBorderColor={useColorModeValue('pink.500', 'pink.200')}
         {...props}
         >
             <option value="1">1</option>
@@ -21,7 +21,7 @@ const QuantitySelect = (props: SelectProps) => {
     )
 }
 
-export const CartItem = observer(function  ({shoppingCartItem}: {shoppingCartItem: ShoppingCartWithQuantity}) { 
+export const CartItem = observer(function ({shoppingCartItem}: {shoppingCartItem: ShoppingCartWithQuantity}) { 
 
     function onChangeQuantity(shoppingCartItem: ShoppingCartItem, quantity: number) {
         shoppingCartStore.ChangeQuantity(shoppingCartItem, quantity)

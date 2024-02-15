@@ -59,9 +59,9 @@ const ForgotPassword = () => {
                 {isMessageSent ? (
                     <ForgotPasswordForm email={forgotPasswordStore.email as string} generatedConfirmationCode={generatedConfirmationCode as number} />
                 ) : null}
-                {errorInAction ? <Box mt={20} color="red.500">{errorInAction.message}</Box> : null}
+                {errorInAction ? <Box mt={20} color="pink.500">{errorInAction.message}</Box> : null}
             </Suspense>
-        ) : (<Text color="red.500"> There is no user with this email</Text>)}
+        ) : (<Text color="pink.500"> There is no user with this email</Text>)}
         </>
     );
 };

@@ -61,7 +61,7 @@ const Registration = () => {
                         name="firstName"
                         id="txtFirstName"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{ validationResult.firstName }</FormHelperText>
+                        <FormHelperText color="pink.500">{ validationResult.firstName }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -70,7 +70,7 @@ const Registration = () => {
                         name="lastName"
                         id="txtLastName"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{ validationResult.lastName }</FormHelperText>
+                        <FormHelperText color="pink.500">{ validationResult.lastName }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -79,7 +79,7 @@ const Registration = () => {
                         name="email"
                         id="txtEmail"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{ validationResult.email }</FormHelperText>
+                        <FormHelperText color="pink.500">{ validationResult.email }</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -88,7 +88,7 @@ const Registration = () => {
                         name="password"
                         id="txtPassword"
                         onChange={handleChange}/>
-                        <FormHelperText color="red.500">{ validationResult.password }</FormHelperText>
+                        <FormHelperText color="pink.500">{ validationResult.password }</FormHelperText>
                     </FormControl>
                     
                     <FormControl mb="40px">
@@ -98,7 +98,7 @@ const Registration = () => {
                         onChange={handleChange}/>
                     </FormControl>
                     
-                    <Button mb="50px" colorScheme="red" id="btnRegistration" type="submit" onClick={validate}>Submit</Button>
+                    <Button mb="50px" colorScheme="pink" id="btnRegistration" type="submit" onClick={validate}>Submit</Button>
                 </Form>
             </Box>
         ):

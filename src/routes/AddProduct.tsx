@@ -63,7 +63,7 @@ export function AddProduct() {
                     <Input  type="text"
                     name="price"
                     onChange={handleChange}/>
-                    <FormHelperText color="red.500">{validationResult.price}</FormHelperText>
+                    <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
                 </FormControl>
 
                 <FormControl mb="40px">
@@ -80,7 +80,7 @@ export function AddProduct() {
                     onChange={handleChange}/>
                 </FormControl>
                 
-                <Button mb="50px" colorScheme="red" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
             </Form>
         </Box>
     )

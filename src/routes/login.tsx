@@ -51,19 +51,19 @@ const Login = () => {
                             sendToForgotPasswordPage(formData.email)
                         }}
                         textAlign={'left'}
-                        color="blue" 
+                        style={{color:"#B83280"}}
                         _hover={{ cursor: 'pointer' }}>
                             Forgot your password?
                     </Text>
                 </FormControl>
 
                 <FormControl>
-                        <FormHelperText color="red.500" mb="40px" fontWeight="600">
+                        <FormHelperText color="pink.500" mb="40px" fontWeight="600">
                             {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
                         </FormHelperText>
                 </FormControl>
 
-            <Button colorScheme="red" type="submit">Submit</Button>
+            <Button colorScheme="pink" type="submit">Submit</Button>
             </Form>
             </Box>) :
             ( <Heading textAlign="center" my='30' p="10px">

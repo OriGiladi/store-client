@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useDisclosure } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, IconButton, LightMode, useDisclosure } from '@chakra-ui/react'
 import { DeleteIcon} from '@chakra-ui/icons'
 import React from 'react'
 import axios from 'axios';
@@ -36,9 +36,24 @@ export function DeleteProductBtn({product}: {product: Product}) {
 
     return (
         <>
-            <Button m="5px"  onClick={onOpen}>
-                <DeleteIcon/>
-            </Button>
+            <LightMode>
+                <IconButton
+                onClick={onOpen}
+                isRound
+                position="absolute"
+                top="4"
+                right="4"
+                bg="white"
+                color="gray.900"
+                size="sm"
+                _hover={{ transform: 'scale(1.1)' }}
+                sx={{ ':hover > svg': { transform: 'scale(1.1)' } }}
+                transition="all 0.15s ease"
+                icon={<DeleteIcon/>} // Use Icon component and pass FontAwesomeIcon as 'as' prop
+                boxShadow="base"
+                aria-label="Delete"
+                />
+        </LightMode>
 
             <AlertDialog
                 isOpen={isOpen}
