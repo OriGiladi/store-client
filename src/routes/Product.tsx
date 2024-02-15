@@ -37,8 +37,8 @@ export function Product() {
                         <Box>
                             <Text mb="40px" color="gray.500"  size="lg">{product.description}</Text>
                             <Text mb="40px" color="black.500" size="lg">{product.price} ILS</Text>
-                            <Button size="sm" colorScheme="red" mb="20px" ><NavLink to='/cart'> Buy This Product </NavLink> </Button>
-                            <Button size="sm"   colorScheme="red" leftIcon={<AddIcon/>}> Add To Cart </Button>
+                            <Button size="sm" colorScheme="pink" mb="20px" ><NavLink to='/cart'> Buy This Product </NavLink> </Button>
+                            <Button size="sm"   colorScheme="pink" leftIcon={<AddIcon/>}> Add To Cart </Button>
                         </Box>
                     </Box>
                 </Flex>

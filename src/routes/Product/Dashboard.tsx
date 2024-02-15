@@ -26,7 +26,7 @@ const DesignedDashboard = observer(() => {
         <>
         {userStore.isAdmin ? (
             <Flex justifyContent="center" alignItems="center">
-                <Button colorScheme="pink" width="50%" m="5px">
+                <Button colorScheme="pink" className='addProductBtn' m="5px">
                     <NavLink to="/add-product" style={{ textDecoration: 'none', color: 'inherit' }}>
                         Add a new product
                     </NavLink>

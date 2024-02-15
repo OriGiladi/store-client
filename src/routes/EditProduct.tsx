@@ -77,7 +77,7 @@ export function EditProduct() {
                 name="price"
                 defaultValue={product.price}
                 onChange={handleChange}/>
-                <FormHelperText color="red.500">{validationResult.price}</FormHelperText>
+                <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
             </FormControl>
 
             <FormControl mb="40px">
@@ -99,7 +99,7 @@ export function EditProduct() {
                 onChange={handleChange}/>
             </FormControl>
             
-            <Button mb="50px" colorScheme="red" id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
+            <Button mb="50px" colorScheme="pink" id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
         </Form>
     </Box>
     )

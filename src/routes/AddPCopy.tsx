@@ -126,7 +126,7 @@ export function AddProductCopy() {
                                     <Input  type="text"
                                     name="price"
                                     onChange={handleChange}/>
-                                    <FormHelperText color="red.500">{validationResult.price}</FormHelperText>
+                                    <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
                                 </FormControl>
 
                                 <FormControl mb="40px">
@@ -143,7 +143,7 @@ export function AddProductCopy() {
                                     onChange={handleChange}/>
                                 </FormControl>
                                 
-                                <Button mb="50px" colorScheme="red" id="btnSubmit" type="submit" onClick={validate}>Submit</Button>
+                                <Button mb="50px" colorScheme="pink" id="btnSubmit" type="submit" onClick={validate}>Submit</Button>
                                 <Button ref={cancelRef} onClick={onClose}>
                                     Cancel
                                 </Button>

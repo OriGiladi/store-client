@@ -81,6 +81,21 @@ class ShoppingCartStore {
             }
             }
         }
-    }
+        isQuantityTooBig(shoppingCartItem: ShoppingCartItem) {
+            const existingItem = this.shoppingCartItems.find(
+                (item) => item.item.name === shoppingCartItem.name
+            );
+    
+            if (existingItem) {
+                if(existingItem.quantity >= 4) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+}
+
 
 export default ShoppingCartStore;

@@ -42,16 +42,27 @@ export const ProductCard = observer((props: Props) => {
             image: ProductImage,
             description: productDescription,
         }
-        shoppingCartStore.addProductToCart(shoppingCartItem)
-        toast({ // a popup that shows that the product has been added to the cart
-            title: "Added to shopping cart",
-            description: `${productName}`,
-            duration: 5000,
-            isClosable: true,
-            status: "success",
-            position: "bottom-left",
-            colorScheme: 'pink'
-        });
+        if(!shoppingCartStore.isQuantityTooBig(shoppingCartItem)){
+            shoppingCartStore.addProductToCart(shoppingCartItem)
+            toast({ // a popup that shows that the product has been added to the cart
+                title: "Added to shopping cart",
+                description: `${productName}`,
+                duration: 5000,
+                isClosable: true,
+                status: "success",
+                position: "bottom-left",
+                colorScheme: 'pink'
+            });
+        }
+        else{
+            toast({ // a popup that shows that the product has been added to the cart
+                title: "You can't order more than 4 items of the same product",
+                duration: 5000,
+                isClosable: true,
+                status: "error",
+                position: "bottom-left",
+            });
+        }
     }
     function quickShopTheProduct(productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
         const shoppingCartItem: ShoppingCartItem = {

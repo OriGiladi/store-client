@@ -1,22 +1,24 @@
 import { Outlet } from "react-router-dom"
 import { Container, Grid, GridItem } from "@chakra-ui/react"
-import Navbar from "./Navbar"
-import SideBar from "./SideBar"
 import { observer } from "mobx-react";
+import Navbar from "./NavBar";
+import SideBar from "./SideBar";
+import { useState } from "react";
 
 const RootLayout = observer(() => {
+    const [isSideBarOpen, setSidebar] = useState(false);
+    const showSidebar = () => setSidebar(!isSideBarOpen);
     return (
         <Grid templateColumns="repeat(6, 1fr)" bg="gray.50">
             <GridItem as="aside"
             colSpan={{base: 6, lg: 2, xl: 1}}
-            bg='red.500' 
             minHeight={{lg:'100vh'}} 
             p={{base: '20px', lg: "30px"}}>
-                <SideBar/>
+            <SideBar isSideBarOpen={isSideBarOpen} showSidebar={showSidebar}/>
             </GridItem>
             <GridItem as="main" colSpan={{base: 6, lg: 4, xl: 5}} p="40px">
-                <Navbar/>
-                <Container maxW="100%">
+                <Navbar  showSidebar={showSidebar}/>
+                <Container style={{marginTop:'100px'}} maxW="100%">
                     <Outlet/>
                 </Container>
             </GridItem>
