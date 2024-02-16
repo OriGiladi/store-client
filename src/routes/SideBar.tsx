@@ -19,7 +19,6 @@ const SideBar = observer(({ isSideBarOpen, showSidebar }: { isSideBarOpen: boole
         localStorage.removeItem("isAdmin");
         userStore.setUser();
         userStore.setUserJwt();
-        userStore.setIsAdmin()
         toast({
         title: "You have signed out",
         duration: 5000,

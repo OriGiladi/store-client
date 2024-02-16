@@ -2,7 +2,7 @@ import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
 import { BASE_URL } from "../utils/constants";
 import { getHeadersWithJwt } from "../utils/sdk";
-
+import { jwtDecode } from "jwt-decode";
 interface User {
     _id: string;
     firstName: string;
@@ -11,12 +11,15 @@ interface User {
     password: string;
     image: string
 }
-
+interface decodedJwt{
+    id: string;
+    userRole: "USER" | "ADMIN";
+}
 class UserStore {
     rootStore: RootStore;
     user: User | undefined;
     userJwt: string | undefined;
-    isAdmin: boolean | undefined;
+    userRole: "USER" | "ADMIN" | undefined;
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
         makeAutoObservable(this);
@@ -24,8 +27,8 @@ class UserStore {
     setUser(user?: User) {
         this.user = user;
     }
-    setIsAdmin(isAdmin?: boolean) {
-        this.isAdmin = isAdmin;
+    setUserRole(userRole?: "USER" | "ADMIN") {
+        this.userRole = userRole;
     }
     setUserJwt(userJwt?: string) {
         this.userJwt = userJwt;
@@ -39,10 +42,11 @@ class UserStore {
             .then((res) => res.json())
             .then((data) => {
             this.setUser((data as User));
-            this.setUserJwt(userJwt as string)
+            this.setUserJwt(userJwt as string)  
+            this.setUserRole((jwtDecode(userJwt as string) as decodedJwt).userRole) 
             })
             .catch((error) => {
-            console.error("Error fetching user data:", error);
+                console.error("Error fetching user data:", error);
             });
         }
     }
