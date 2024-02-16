@@ -87,7 +87,7 @@ export const ProductCard = observer((props: Props) => {
                 borderRadius={{ base: 'md', md: 'xl' }}
             />
             </AspectRatio>
-            {userStore.isAdmin ? (
+            {userStore.userRole === "ADMIN" ? ( // TODO: get "ADMIN" from an enum file
                 <>
                     <DeleteProductBtn product={product}/>
                     <IconButton

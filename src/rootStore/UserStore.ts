@@ -27,10 +27,6 @@ class UserStore {
     setUser(user?: User) {
         this.user = user;
     }
-    setUserRoleWithJwt(userJwt: string){
-        const decodedJwt: decodedJwt = jwtDecode(userJwt) as decodedJwt
-        this.setUserRole(decodedJwt.userRole)
-    }
     setUserRole(userRole?: "USER" | "ADMIN") {
         this.userRole = userRole;
     }
@@ -46,8 +42,8 @@ class UserStore {
             .then((res) => res.json())
             .then((data) => {
             this.setUser((data as User));
-            this.setUserJwt(userJwt as string)   
-            this.setUserRoleWithJwt(userJwt as string)
+            this.setUserJwt(userJwt as string)  
+            this.setUserRole((jwtDecode(userJwt as string) as decodedJwt).userRole) 
             })
             .catch((error) => {
                 console.error("Error fetching user data:", error);

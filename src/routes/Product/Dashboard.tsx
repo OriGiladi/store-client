@@ -24,7 +24,7 @@ const DesignedDashboard = observer(() => {
     }
     return (
         <>
-        {userStore.isAdmin ? (
+        {userStore.userRole === "ADMIN" ? ( // TODO: get "ADMIN" from an enum file
             <Flex justifyContent="center" alignItems="center">
                 <Button colorScheme="pink" className='addProductBtn' m="5px">
                     <NavLink to="/add-product" style={{ textDecoration: 'none', color: 'inherit' }}>

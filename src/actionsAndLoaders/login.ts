@@ -15,8 +15,7 @@ export async function loginAction({ request }: { request: Request }) {
     };
     try {
         const response = await axios.post(`${BASE_URL}/login`, requestData, { headers: getHeaders() });
-        localStorage.setItem('userJwt', response.data.userJwt)
-        userStore.setUserRoleWithJwt(response.data.userJwt)        
+        localStorage.setItem('userJwt', response.data.userJwt)       
         userStore.userJwtAuthentication()
         return redirect('/')
     } catch (error) {
