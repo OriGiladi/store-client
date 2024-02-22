@@ -24,7 +24,7 @@ import { observer } from 'mobx-react'
 import { useNavigate } from 'react-router'
 import { DeleteProductBtn } from '../DeleteProductBtn'
 import { NavLink } from 'react-router-dom'
-const { shoppingCartStore, userStore } = rootStore
+const { shoppingCartStore, userStore, productStore } = rootStore
 interface Props {
     product: Product
     rootProps?: StackProps
@@ -34,7 +34,7 @@ export const ProductCard = observer((props: Props) => {
     const toast = useToast();
     const navigate = useNavigate()
     const { product, rootProps } = props
-    const { name, image, price/*, salePrice, rating*/ } = product
+    const { name, image, price,/*, salePrice,ratings */ } = product
     function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
         const shoppingCartItem: ShoppingCartItem = {
             name: productName,
@@ -126,10 +126,10 @@ export const ProductCard = observer((props: Props) => {
             <PriceTag price={Number(price)} /*salePrice={salePrice}*/ currency="ILS" />
             </Stack>
             <HStack>
-            <Rating defaultValue={2} size="sm" />
-            <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
-                12 Reviews
-            </Text>
+                <Rating defaultValue={productStore.getTotalRateOfProduct(product)} product={product} />
+                <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
+                    {product.ratings.length} Raters
+                </Text>
             </HStack>
         </Stack>
         <Stack align="center">
