@@ -13,7 +13,7 @@ import {
     useColorModeValue,
     useToast,
 } from '@chakra-ui/react'
-import { Rating } from './Rating'
+import { Rating } from './Rating/Rating'
 import { EditIcon } from '@chakra-ui/icons'
 import { FavouriteButton } from './FavouriteButton'
 import { PriceTag } from '../PriceTag'
