@@ -21,18 +21,19 @@ export const Rating = ({defaultValue,  product}:{defaultValue: number, product: 
     const toast = useToast()
     const [ inputRating, setInputRating ] = useState(1)
     function handleRatingProduct(): void {
+        productStore.addRating(product, inputRating, userStore.user?._id as string)
+        toast({ 
+            title: "Thanks for rating",
+            duration: 5000,
+            isClosable: true,
+            status: "success",
+            position: "top",
+        });
+        onClose()
+    }
+    function checkIfRated(): void {
         const rated = productStore.isRatedByTheUser(product, userStore.user?._id as string)
-        if( rated === false){
-            productStore.addRating(product, inputRating, userStore.user?._id as string)
-            toast({ 
-                title: "Thanks for rating",
-                duration: 5000,
-                isClosable: true,
-                status: "success",
-                position: "top",
-            });
-        }
-        else{
+        if(rated){
             toast({
                 title: "You already rated this product",
                 duration: 5000,
@@ -41,14 +42,17 @@ export const Rating = ({defaultValue,  product}:{defaultValue: number, product: 
                 position: "top",
             });
         }
-        onClose()
+        else{
+            onOpen()
+        }
     }
 
     return (
         <>
             <Tooltip label={userStore.user ? 'Rate this product' : 'Rating is avalable to registered users only'}>
                 <Box>
-                    <HStack spacing="0.5" _hover={{ cursor: 'pointer' }} onClick={userStore.user ? onOpen : undefined}>
+                    <HStack spacing="0.5" _hover={{ cursor: 'pointer' }} 
+                    onClick={userStore.user ? () => { checkIfRated() } : undefined}>
                         {Array.from({ length: maxStars })
                             .map((_, index) => index + 1)
                             .map((index) => (
@@ -72,12 +76,15 @@ export const Rating = ({defaultValue,  product}:{defaultValue: number, product: 
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
-                                How much do you rate this product? 
+                                How much do you rate this product from 1-5? 
                                 <br/>
                                 <br/>
                                 <NumberInput 
                                 defaultValue={inputRating} 
                                 min={1} max={5}
+                                clampValueOnBlur={true}
+                                allowMouseWheel={false} 
+                                keepWithinRange={true} 
                                 onChange={(inputRating) => setInputRating(Number(inputRating))}
                                 value={inputRating}>
                                 <NumberInputField />
