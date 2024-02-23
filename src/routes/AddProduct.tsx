@@ -18,7 +18,7 @@ const { userStore } = rootStore
 export function AddProduct() {
 
     useEffect(() => {
-        if(!userStore.isAdmin){
+        if(!(userStore.userRole === "ADMIN")){ // TODO: get ADMIN from an enum file
             throw new Error("Unauthorize")
         }
     }, [])
