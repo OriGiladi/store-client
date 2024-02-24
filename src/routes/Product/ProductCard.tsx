@@ -35,8 +35,9 @@ export const ProductCard = observer((props: Props) => {
     const navigate = useNavigate()
     const { product, rootProps } = props
     const { name, image, price,/*, salePrice,ratings */ } = product
-    function addItemToShoppingCart(productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
+    function addItemToShoppingCart(productId: string, productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
         const shoppingCartItem: ShoppingCartItem = {
+            _id: productId,
             name: productName,
             price: productPrice,
             image: ProductImage,
@@ -64,8 +65,9 @@ export const ProductCard = observer((props: Props) => {
             });
         }
     }
-    function quickShopTheProduct(productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
+    function quickShopTheProduct(productId: string, productName: string, productPrice: string, ProductImage: string, productDescription: string): void {
         const shoppingCartItem: ShoppingCartItem = {
+            _id: productId,
             name: productName,
             price: productPrice,
             image: ProductImage,
@@ -136,14 +138,14 @@ export const ProductCard = observer((props: Props) => {
             <Button 
             colorScheme="pink" 
             width="full"  
-            onClick={() => addItemToShoppingCart(product.name, product.price, product.image, product.description)}>
+            onClick={() => addItemToShoppingCart(product._id, product.name, product.price, product.image, product.description)}>
             Add to cart
             </Button>
             <Link
             textDecoration="underline"
             fontWeight="medium"
             color={useColorModeValue('gray.600', 'gray.400')}
-            onClick={() => quickShopTheProduct(product.name, product.price, product.image, product.description)}
+            onClick={() => quickShopTheProduct(product._id, product.name, product.price, product.image, product.description)}
             >
             Quick shop
             </Link>

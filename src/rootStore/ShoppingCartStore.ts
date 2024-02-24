@@ -2,6 +2,7 @@ import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
 
 export interface ShoppingCartItem {
+    _id: string;
     name: string;
     price: string;
     image: string;
@@ -94,6 +95,14 @@ class ShoppingCartStore {
                     return false;
                 }
             }
+        }
+        getIdAndQauntity(){ // returns an array that consists of the product id's and their quantity (for creating an order)
+            type order = { product: string, quantity: number};
+            const myOrder: order[] = [];
+            this.shoppingCartItems.forEach(item => {
+                myOrder.push({product: item.item._id, quantity: item.quantity})
+            })
+            return myOrder
         }
 }
 
