@@ -8,6 +8,8 @@ import { observer } from 'mobx-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@chakra-ui/react";
 import rootStore from '../rootStore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHistory } from '@fortawesome/free-solid-svg-icons';
 const { userStore, shoppingCartStore } = rootStore;
 
 const SideBar = observer(({ isSideBarOpen, showSidebar }: { isSideBarOpen: boolean, showSidebar: () => void }) => {
@@ -67,12 +69,22 @@ const SideBar = observer(({ isSideBarOpen, showSidebar }: { isSideBarOpen: boole
                 </li>
             </>
             ) :
-            (<li className={"nav-text"} onClick={() => { logout()}}>
-                <Link to="">
-                    <HiArrowSmLeft/>
-                    <span>Sign Out</span>
-                </Link>
-            </li>)
+            (
+            <>
+                <li className={"nav-text"}>
+                    <Link to={`purchase-history/${userStore.user?._id}`}>
+                        <FontAwesomeIcon icon={faHistory} />
+                        <span> Purchase History</span>
+                    </Link>
+                </li>
+                <li className={"nav-text"} onClick={() => { logout()}}>
+                    <Link to="">
+                        <HiArrowSmLeft/>
+                        <span>Sign Out</span>
+                    </Link>
+                </li>
+            </>
+            )
         }
         </ul>
         </nav>

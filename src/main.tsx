@@ -23,6 +23,8 @@ import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders
 import ErrorPage from "./error-routes/error";
 import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
 import Dashboard from "./routes/Product/Dashboard";
+import { ordersByUserIdLoader } from "./actionsAndLoaders/purchaseHirstory";
+import PurcahseHistory from "./routes/PurcahseHistory";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +74,11 @@ const router = createBrowserRouter([
                 action: forgotPasswordAction,
                 loader: forgotPassweordLoader,
                 errorElement: <ErrorPage/>
+            },
+            {
+                path: 'purchase-history/:userId',
+                element: <PurcahseHistory />,
+                loader: ordersByUserIdLoader,
             },
             {
                 path: "/register",

@@ -31,7 +31,7 @@ export function EditProduct() {
     const [productId, setProductId] = useState("")
     useEffect(() => {
         setProductId(extractParameterFromUrl(window.location.href) as string)
-        if(!userStore.isAdmin)
+        if(userStore.userRole !== "ADMIN")
         {
             redirect("/error")
         }
