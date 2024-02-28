@@ -8,7 +8,7 @@ type fetchedOrder = {
     order: orderDitail []
 }
 type orderDitail = {
-    productId: string,
+    product: string,
     quantity: number
 }
 type order = {
@@ -38,7 +38,7 @@ class OrderStore {
         const orders = await this.getOrdersByUserId(userId)
         for (let i = 0; i < orders.length; i++) {
             for (let j = 0; j < orders[i].order.length; j++) {
-                const product = await this.getProductByProductId(orders[i].order[j].productId)
+                const product = await this.getProductByProductId(orders[i].order[j].product)
                 this.userOrders.push({product: product, quantity: orders[i].order[j].quantity})
             }
         }
