@@ -24,7 +24,8 @@ import ErrorPage from "./error-routes/error";
 import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
 import Dashboard from "./routes/Product/Dashboard";
 import { ordersByUserIdLoader } from "./actionsAndLoaders/purchaseHirstory";
-import PurcahseHistory from "./routes/PurcahseHistory";
+import OrderHistory from "./routes/OrderHistory";
+import OrderDetails from "./routes/OrderHistory";
 
 const router = createBrowserRouter([
     {
@@ -76,8 +77,12 @@ const router = createBrowserRouter([
                 errorElement: <ErrorPage/>
             },
             {
-                path: 'purchase-history/:userId',
-                element: <PurcahseHistory />,
+                path: 'order-ditails',
+                element: <OrderDetails />
+            },
+            {
+                path: 'order-history/:userId',
+                element: <OrderHistory />,
                 loader: ordersByUserIdLoader,
             },
             {

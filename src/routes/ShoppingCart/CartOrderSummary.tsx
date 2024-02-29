@@ -36,10 +36,12 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
 
 export const CartOrderSummary = observer(() => {
     const toast = useToast();
+    const today = new Date();
     async function createOrder() {
         const requestData = {
             user: userStore.user?._id,
-            order: shoppingCartStore.getIdAndQauntity()
+            order: shoppingCartStore.getIdAndQauntity(),
+            createdAt: today
         }
         try {
             await axios.post(`${BASE_URL}/order`, JSON.stringify(requestData), {

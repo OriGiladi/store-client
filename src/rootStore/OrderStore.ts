@@ -9,11 +9,13 @@ type fetchedOrder = {
 }
 type orderDitail = {
     product: string,
-    quantity: number
+    quantity: number,
+    createdAt: Date
 }
-type order = {
+export type order = {
     product: Product,
-    quantity: number
+    quantity: number,
+    createdAt: Date
 }
 class OrderStore {
     rootStore: RootStore;
@@ -39,7 +41,7 @@ class OrderStore {
         for (let i = 0; i < orders.length; i++) {
             for (let j = 0; j < orders[i].order.length; j++) {
                 const product = await this.getProductByProductId(orders[i].order[j].product)
-                this.userOrders.push({product: product, quantity: orders[i].order[j].quantity})
+                this.userOrders.push({product: product, quantity: orders[i].order[j].quantity, createdAt: orders[i].order[j].createdAt})
             }
         }
     }
