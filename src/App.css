@@ -38,6 +38,9 @@
     transition: 350ms;
     width: 19%;
 }
+.container{
+    width: 50%
+}
 @media only screen and (max-width: 1200px) {
     .nav-menu.active {
         width: 100%;
@@ -47,6 +50,9 @@
     }
     main{
         z-index: 100;
+    }
+    .container{
+        width: 100%
     }
 }
 @media only screen and (max-width: 500px) {
@@ -60,6 +66,7 @@
         margin-top: 35%;
         z-index: 100;
     }
+    
 }
 @media only screen and (min-width: 1200px) {
     .addProductBtn{

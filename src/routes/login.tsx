@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { Form, useNavigate, useActionData } from "react-router-dom";
-import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
 import {authActionError, LoginRequest } from '../utils/types';
 import rootStore from '../rootStore'
 
@@ -27,49 +27,51 @@ const Login = () => {
 
     return (
         <>
-        {!userStore.userJwt ?
-        ( <Box textAlign="center" maxWidth='480px'>
-            <Heading my='30' p="10px">Log In</Heading>
-            <Form method="post" id="login-form" action="/login">
-                <FormControl mb="10px">
-                        <FormLabel> Email:</FormLabel>
-                        <Input type="text"
-                        name="email"
-                        onChange={handleChange}/>
-                </FormControl>
+            <Flex justifyContent="center" alignItems="center">
+            {!userStore.userJwt ?
+            ( <Box textAlign="center" className="container">
+                <Heading my='30' p="10px">Log In</Heading>
+                <Form method="post" id="login-form" action="/login">
+                    <FormControl mb="10px">
+                            <FormLabel> Email:</FormLabel>
+                            <Input type="text"
+                            name="email"
+                            onChange={handleChange}/>
+                    </FormControl>
 
-                <FormControl mb="40px">
-                        <FormLabel> Password:</FormLabel>
-                        <Input type="password"
-                        name="password"
-                        onChange={handleChange}/>
-                </FormControl>
+                    <FormControl mb="40px">
+                            <FormLabel> Password:</FormLabel>
+                            <Input type="password"
+                            name="password"
+                            onChange={handleChange}/>
+                    </FormControl>
 
-                <FormControl mb="40px">
-                    <Text 
-                        onClick={() => {
-                            sendToForgotPasswordPage(formData.email)
-                        }}
-                        textAlign={'left'}
-                        style={{color:"#B83280"}}
+                    <FormControl mb="40px">
+                        <Text 
+                            onClick={() => {
+                                sendToForgotPasswordPage(formData.email)
+                            }}
+                            textAlign={'left'}
+                            style={{color:"#B83280"}}
                         _hover={{ cursor: 'pointer' }}>
                             Forgot your password?
-                    </Text>
-                </FormControl>
+                        </Text>
+                    </FormControl>
 
-                <FormControl>
-                        <FormHelperText color="pink.500" mb="40px" fontWeight="600">
-                            {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
-                        </FormHelperText>
-                </FormControl>
+                    <FormControl>
+                            <FormHelperText color="pink.500" mb="40px" fontWeight="600">
+                                {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
+                            </FormHelperText>
+                    </FormControl>
 
-            <Button colorScheme="pink" type="submit">Submit</Button>
-            </Form>
-            </Box>) :
-            ( <Heading textAlign="center" my='30' p="10px">
-            You are already logged in</Heading>  
-            )
-        }
+                    <Button colorScheme="pink" type="submit">Submit</Button>
+                </Form>
+                </Box>) :
+                ( <Heading textAlign="center" my='30' p="10px">
+                You are already logged in</Heading>  
+                )
+            }
+            </Flex>
         </>
     )
 }
