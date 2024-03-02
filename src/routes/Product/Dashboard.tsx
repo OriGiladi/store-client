@@ -11,7 +11,7 @@ interface LoadedData {
     data: Product []
 }
 
-const DesignedDashboard = observer(() => {
+const Dashboard = observer(() => {
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     let products: Product [] = []
     if(!productStore.allProducts)
@@ -50,5 +50,5 @@ const DesignedDashboard = observer(() => {
     )
 })
 
-export default DesignedDashboard
+export default Dashboard
 

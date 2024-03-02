@@ -7,7 +7,7 @@ import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
 import { registrationAction } from "./actionsAndLoaders/registration";
 import{ loginAction } from './actionsAndLoaders/login';
-import Login from "./routes/login";
+import Login from "./routes/Login";
 import  RootLayout  from "./routes/rootLayout";
 
 import { allProductsLoader } from "./actionsAndLoaders/dashboard";

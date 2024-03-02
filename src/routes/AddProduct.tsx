@@ -53,14 +53,14 @@ export function AddProduct() {
             <Form method="post" action="/add-product">
                     <FormControl mb="40px">
                         <FormLabel> Product Name:</FormLabel>
-                        <Input  type="text"
+                        <Input type="text"
                         name="name"
                         onChange={handleChange}/>
                     </FormControl>
 
                     <FormControl mb="40px">
                         <FormLabel> Price:</FormLabel>
-                        <Input  type="text"
+                        <Input type="text"
                         name="price"
                         onChange={handleChange}/>
                         <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
