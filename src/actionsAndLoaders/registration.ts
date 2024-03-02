@@ -1,5 +1,4 @@
 import { redirect } from "react-router-dom";
-import '../index.css'
 import axios from 'axios';
 import { firstNameValidator, lastNameValidator, emailValidator, passwordValidator } from "../validators/registrationValidators";
 import { BASE_URL } from "../utils/constants";

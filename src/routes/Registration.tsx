@@ -1,6 +1,5 @@
 import { useState, ChangeEvent } from "react";
 import { Form, useActionData} from "react-router-dom";
-import '../index.css'
 import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { registrationActionError } from '../utils/types';
 import rootStore from "../rootStore";

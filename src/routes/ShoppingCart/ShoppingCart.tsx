@@ -31,8 +31,8 @@ export const ShoppingCart = observer(() => (
         </Heading>
 
         <Stack spacing="6">
-            {shoppingCartStore.shoppingCartItems.map((item) => (
-            <CartItem  shoppingCartItem={ item } />
+            {shoppingCartStore.shoppingCartItems.map((item, index) => (
+            <CartItem key={index}  shoppingCartItem={ item } />
             ))}
         </Stack>
         </Stack>

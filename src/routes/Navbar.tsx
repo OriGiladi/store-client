@@ -25,6 +25,7 @@ const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
                         position: "bottom",
                     });
                     localStorage.removeItem('userJwt')
+                    userStore.user = undefined
                 }
             }
             catch{
