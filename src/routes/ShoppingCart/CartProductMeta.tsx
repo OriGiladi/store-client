@@ -26,6 +26,7 @@ export const CartProductMeta = (props: CartProductMetaProps) => {
         alt={name}
         draggable="false"
         loading="lazy"
+        className='orderImage'
         />
         <Box pt="4">
             <Stack spacing="0.5">

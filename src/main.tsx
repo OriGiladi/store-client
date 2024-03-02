@@ -15,7 +15,6 @@ import { productLoader } from "./actionsAndLoaders/product";
 import { Product } from "./routes/Product";
 import { AddProduct } from "./routes/AddProduct";
 import { addProductAction } from "./actionsAndLoaders/addProduct";
-import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
 import { EditProduct } from "./routes/EditProduct";
 import { editProductAction } from "./actionsAndLoaders/editProduct";
 import ForgotPassword from "./routes/ForgotPassword";
@@ -48,11 +47,6 @@ const router = createBrowserRouter([
                 element: <AddProduct />,
                 action: addProductAction,
                 errorElement: <ErorrPage />
-            },
-            {
-                path: 'add-product-copy',
-                element: <AddProductCopy/>,
-                action: addProductActionDialog,
             },
             {
                 path: 'edit-product/:id', 

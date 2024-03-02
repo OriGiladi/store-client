@@ -11,7 +11,6 @@ const OrderItem = ({order}: {order: order}) => {
                         <CartProductMeta
                             name={order.product.name}
                             description={""}
-                            // description={order.product.description}
                             image={order.product.image}
                             isGiftWrapping={true}
                         />

@@ -1,6 +1,5 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { Form, redirect, useLoaderData} from "react-router-dom";
-import '../index.css'
 import { addingProductValidator } from "../validators/product";
 import { Avatar, Box, Button,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
 import rootStore from "../rootStore";
