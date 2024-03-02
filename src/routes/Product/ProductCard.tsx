@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 import { Rating } from './Rating/Rating'
 import { EditIcon } from '@chakra-ui/icons'
-import { FavouriteButton } from './FavouriteButton'
 import { PriceTag } from '../PriceTag'
 import { Product } from '../../rootStore/ProductStore'
 import rootStore from '../../rootStore'
@@ -111,14 +110,7 @@ export const ProductCard = observer((props: Props) => {
                         </NavLink> 
                     </IconButton>
                 </>
-            ) : ( 
-                <FavouriteButton
-                position="absolute"
-                top="4"
-                right="4"
-                aria-label={`Add ${name} to your favourites`}
-                />
-            )}
+            ) : (null)}
         </Box>
         <Stack>
             <Stack spacing="1">
