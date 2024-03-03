@@ -3,6 +3,7 @@ import { Form } from "react-router-dom";
 import { addingProductValidator } from "../validators/product";
 import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import rootStore from "../rootStore";
+import { userRole } from "../utils/constants";
 const { userStore } = rootStore
     interface FormData {
         name: string;
@@ -17,7 +18,7 @@ const { userStore } = rootStore
 export function AddProduct() {
 
     useEffect(() => {
-        if(!(userStore.userRole === "ADMIN")){ // TODO: get ADMIN from an enum file
+        if(!(userStore.userRole === userRole.admin)){ 
             throw new Error("Unauthorize")
         }
     }, [])

@@ -23,6 +23,7 @@ import { observer } from 'mobx-react'
 import { useNavigate } from 'react-router'
 import { DeleteProductBtn } from '../DeleteProductBtn'
 import { NavLink } from 'react-router-dom'
+import { userRole } from '../../utils/constants'
 const { shoppingCartStore, userStore, productStore } = rootStore
 interface Props {
     product: Product
@@ -88,7 +89,7 @@ export const ProductCard = observer((props: Props) => {
                 borderRadius={{ base: 'md', md: 'xl' }}
             />
             </AspectRatio>
-            {userStore.userRole === "ADMIN" ? ( // TODO: get "ADMIN" from an enum file
+            {userStore.userRole === userRole.admin ? ( 
                 <>
                     <DeleteProductBtn product={product}/>
                     <IconButton
