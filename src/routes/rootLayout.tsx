@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import { Container, Grid, GridItem } from "@chakra-ui/react"
 import { observer } from "mobx-react";
-import Navbar from "./NavBar";
+import Navbar from "./Navbar";
 import SideBar from "./SideBar";
 import { useState } from "react";
 
