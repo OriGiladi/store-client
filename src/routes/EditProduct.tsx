@@ -4,6 +4,7 @@ import { addingProductValidator } from "../validators/product";
 import { Avatar, Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
 import rootStore from "../rootStore";
 import { extractParameterFromUrl } from "../utils/sdk";
+import { userRole } from "../utils/constants";
 const { userStore } = rootStore
 
 interface FormData {
@@ -30,7 +31,7 @@ export function EditProduct() {
     const [productId, setProductId] = useState("")
     useEffect(() => {
         setProductId(extractParameterFromUrl(window.location.href) as string)
-        if(userStore.userRole !== "ADMIN")
+        if(userStore.userRole !== userRole.admin)
         {
             redirect("/error")
         }

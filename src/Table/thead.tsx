@@ -6,8 +6,8 @@ export const Thead = (props: TableHeadProps) => {
 
     return (
         <ChakraThead {...rest}>
-        {React.isValidElement(children) &&
+            {React.isValidElement(children) &&
             React.cloneElement(children, { inHeader: true })}
         </ChakraThead>
-    );
+    );  
 };
