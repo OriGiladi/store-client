@@ -39,7 +39,7 @@ function Checkout() {
         }
     }
 
-    const onCreateOrder = async (data: CreateOrderData, actions: CreateOrderActions) => {
+    const onCreateOrder = async (_data: CreateOrderData, actions: CreateOrderActions) => {
         return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [
@@ -54,7 +54,7 @@ function Checkout() {
         });
     }
 
-    const onApproveOrder = async (data: OnApproveData, actions: OnApproveActions) => {
+    const onApproveOrder = async (_data: OnApproveData, actions: OnApproveActions) => {
         return actions.order?.capture().then(async (details) => {
             const payerName = details?.payer?.name?.given_name as string;
             await createOrder(payerName);
