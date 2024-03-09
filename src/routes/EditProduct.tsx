@@ -99,8 +99,9 @@ export function EditProduct() {
                         defaultValue={product.image}
                         onChange={handleChange}/>
                     </FormControl>
-                    
-                    <Button mb="50px" colorScheme="pink" id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
+                    <Box textAlign={"center"}>
+                        <Button mb="50px" colorScheme="pink" padding={5} id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
+                    </Box>
                 </Form>
             </Box>
         </Flex>

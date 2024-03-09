@@ -32,7 +32,6 @@ export async function registrationAction({ request }: { request: Request }) {
             localStorage.setItem('userJwt', response.data.userJwt)
             userStore.userJwtAuthentication()
             return redirect("/");
-    
         } catch (error) {
             console.error(error);
             return { validationMessage:{ email: "This email adress is already taken" } }

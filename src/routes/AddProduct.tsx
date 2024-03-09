@@ -80,8 +80,9 @@ export function AddProduct() {
                         name="image"
                         onChange={handleChange}/>
                     </FormControl>
-                    
-                    <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                    <Box textAlign={"center"}>
+                        <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                    </Box>
                 </Form>
             </Box>
         </Flex>
