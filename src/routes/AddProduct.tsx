@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { Form } from "react-router-dom";
 import { addingProductValidator } from "../validators/product";
-import {  Box, Button,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
+import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import rootStore from "../rootStore";
+import { userRole } from "../utils/constants";
 const { userStore } = rootStore
     interface FormData {
         name: string;
@@ -17,7 +18,7 @@ const { userStore } = rootStore
 export function AddProduct() {
 
     useEffect(() => {
-        if(!(userStore.userRole === "ADMIN")){ // TODO: get ADMIN from an enum file
+        if(!(userStore.userRole === userRole.admin)){ 
             throw new Error("Unauthorize")
         }
     }, [])
@@ -47,41 +48,43 @@ export function AddProduct() {
     };
 
     return (
-        <Box>
-            <Heading size="lg" mb="20px"> Add product properties</Heading>
-        <Form method="post" action="/add-product">
-                <FormControl mb="40px">
-                    <FormLabel> Product Name:</FormLabel>
-                    <Input  type="text"
-                    name="name"
-                    onChange={handleChange}/>
-                </FormControl>
+        <Flex justifyContent={"center"}>
+            <Box className="container">
+                <Heading size="lg" mb="20px"> Add product properties</Heading>
+            <Form method="post" action="/add-product">
+                    <FormControl mb="40px">
+                        <FormLabel> Product Name:</FormLabel>
+                        <Input type="text"
+                        name="name"
+                        onChange={handleChange}/>
+                    </FormControl>
 
-                <FormControl mb="40px">
-                    <FormLabel> Price:</FormLabel>
-                    <Input  type="text"
-                    name="price"
-                    onChange={handleChange}/>
-                    <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
-                </FormControl>
+                    <FormControl mb="40px">
+                        <FormLabel> Price:</FormLabel>
+                        <Input type="text"
+                        name="price"
+                        onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
+                    </FormControl>
 
-                <FormControl mb="40px">
-                    <FormLabel> Description:</FormLabel>
-                    <Input  type="text"
-                    name="description"
-                    onChange={handleChange}/>
-                </FormControl>
-                
-                <FormControl mb="40px">
-                    <FormLabel> Image URL :</FormLabel>
-                    <Input  type="text"
-                    name="image"
-                    onChange={handleChange}/>
-                </FormControl>
-                
-                <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
-            </Form>
-        </Box>
+                    <FormControl mb="40px">
+                        <FormLabel> Description:</FormLabel>
+                        <Input  type="text"
+                        name="description"
+                        onChange={handleChange}/>
+                    </FormControl>
+                    
+                    <FormControl mb="40px">
+                        <FormLabel> Image URL :</FormLabel>
+                        <Input  type="text"
+                        name="image"
+                        onChange={handleChange}/>
+                    </FormControl>
+                    
+                    <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                </Form>
+            </Box>
+        </Flex>
     )
 }
 

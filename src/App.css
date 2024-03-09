@@ -7,9 +7,10 @@
     position: fixed;
     width: 100%;
     top: 0;
+    left: 0;
     z-index: 1000; 
     margin-bottom: 80px; 
-    padding-right: 25%;
+    padding-right: 10%;
 }
 .navbar *{
     color: #f5f5f5;
@@ -38,6 +39,9 @@
     transition: 350ms;
     width: 19%;
 }
+.container{
+    width: 50%
+}
 @media only screen and (max-width: 1200px) {
     .nav-menu.active {
         width: 100%;
@@ -48,6 +52,9 @@
     main{
         z-index: 100;
     }
+    .container{
+        width: 100%
+    }
 }
 @media only screen and (max-width: 500px) {
     .nav-menu.active {
@@ -57,9 +64,10 @@
         z-index: 1000;
     }
     main{
-        margin-top: 35%;
+        margin-top: 5%;
         z-index: 100;
     }
+    
 }
 @media only screen and (min-width: 1200px) {
     .addProductBtn{

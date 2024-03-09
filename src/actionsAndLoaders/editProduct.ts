@@ -5,6 +5,13 @@ import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
 import { extractParameterFromUrl, getHeadersWithJwt } from "../utils/sdk";
 const { userStore, productStore } = rootStore
+import { LoaderFunction } from 'react-router-dom';
+
+export const  editProductLoader: LoaderFunction = async ({params}) => {
+    const {id} = params
+    const res = await fetch(`${BASE_URL}/product/${id}`)
+    return res.json()
+}
 
 export async function editProductAction({ request }: { request: Request }) {
     const productId = extractParameterFromUrl(window.location.href)

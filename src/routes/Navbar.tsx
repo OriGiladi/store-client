@@ -7,6 +7,7 @@ import rootStore from '../rootStore';
 import { Avatar, Box, HStack, Text, Tooltip, useToast } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import { jwtDecode } from 'jwt-decode';
+import { userRole } from '../utils/constants';
 const { userStore } = rootStore;
 const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
     const toast = useToast()
@@ -25,7 +26,9 @@ const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
                         position: "bottom",
                     });
                     localStorage.removeItem('userJwt')
-                    userStore.user = undefined
+                    userStore.setUser()
+                    userStore.setUserRole()
+                    userStore.setUserJwt()
                 }
             }
             catch{
@@ -45,7 +48,7 @@ const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
                 <HStack spacing="20px">
                     <Text display={{ base: "block", md: "block" }}> {userStore.user.firstName} {userStore.user.lastName}</Text>                    
                     <Avatar name={userStore.user.firstName} src={userStore.user.image} />
-                    {userStore.userRole === "ADMIN" && (
+                    {userStore.userRole === userRole.admin && (
                         <Box>
                             <Tooltip label={'Admin'}>
                                 <StarIcon/>

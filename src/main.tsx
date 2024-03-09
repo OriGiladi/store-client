@@ -7,24 +7,20 @@ import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
 import { registrationAction } from "./actionsAndLoaders/registration";
 import{ loginAction } from './actionsAndLoaders/login';
-import Login from "./routes/login";
+import Login from "./routes/Login";
 import  RootLayout  from "./routes/rootLayout";
-
 import { allProductsLoader } from "./actionsAndLoaders/dashboard";
-import { productLoader } from "./actionsAndLoaders/product";
-import { Product } from "./routes/Product";
 import { AddProduct } from "./routes/AddProduct";
 import { addProductAction } from "./actionsAndLoaders/addProduct";
 import { EditProduct } from "./routes/EditProduct";
-import { editProductAction } from "./actionsAndLoaders/editProduct";
+import { editProductAction, editProductLoader } from "./actionsAndLoaders/editProduct";
 import ForgotPassword from "./routes/ForgotPassword";
 import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
 import ErrorPage from "./error-routes/error";
 import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
 import Dashboard from "./routes/Product/Dashboard";
-import { ordersByUserIdLoader } from "./actionsAndLoaders/purchaseHirstory";
+import { ordersByUserIdLoader } from "./actionsAndLoaders/orderHirstory";
 import OrderHistory from "./routes/OrderHistory";
-import OrderDetails from "./routes/OrderHistory";
 
 const router = createBrowserRouter([
     {
@@ -37,12 +33,6 @@ const router = createBrowserRouter([
                 loader: allProductsLoader,
             },
             {
-                path: 'product/:id',
-                element: <Product />,
-                loader: productLoader,
-                errorElement: <ErorrPage />
-            },
-            {
                 path: 'add-product',
                 element: <AddProduct />,
                 action: addProductAction,
@@ -52,7 +42,7 @@ const router = createBrowserRouter([
                 path: 'edit-product/:id', 
                 element: <EditProduct/>,
                 action: editProductAction,
-                loader: productLoader 
+                loader: editProductLoader 
             },
             {
                 path: "/cart",
@@ -71,11 +61,7 @@ const router = createBrowserRouter([
                 errorElement: <ErrorPage/>
             },
             {
-                path: 'order-ditails',
-                element: <OrderDetails />
-            },
-            {
-                path: 'order-history/:userId',
+                path: '/order-history/:userId',
                 element: <OrderHistory />,
                 loader: ordersByUserIdLoader,
             },

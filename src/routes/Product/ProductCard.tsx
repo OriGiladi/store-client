@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 import { Rating } from './Rating/Rating'
 import { EditIcon } from '@chakra-ui/icons'
-import { FavouriteButton } from './FavouriteButton'
 import { PriceTag } from '../PriceTag'
 import { Product } from '../../rootStore/ProductStore'
 import rootStore from '../../rootStore'
@@ -24,6 +23,7 @@ import { observer } from 'mobx-react'
 import { useNavigate } from 'react-router'
 import { DeleteProductBtn } from '../DeleteProductBtn'
 import { NavLink } from 'react-router-dom'
+import { userRole } from '../../utils/constants'
 const { shoppingCartStore, userStore, productStore } = rootStore
 interface Props {
     product: Product
@@ -89,7 +89,7 @@ export const ProductCard = observer((props: Props) => {
                 borderRadius={{ base: 'md', md: 'xl' }}
             />
             </AspectRatio>
-            {userStore.userRole === "ADMIN" ? ( // TODO: get "ADMIN" from an enum file
+            {userStore.userRole === userRole.admin ? ( 
                 <>
                     <DeleteProductBtn product={product}/>
                     <IconButton
@@ -111,14 +111,7 @@ export const ProductCard = observer((props: Props) => {
                         </NavLink> 
                     </IconButton>
                 </>
-            ) : ( 
-                <FavouriteButton
-                position="absolute"
-                top="4"
-                right="4"
-                aria-label={`Add ${name} to your favourites`}
-                />
-            )}
+            ) : (null)}
         </Box>
         <Stack>
             <Stack spacing="1">

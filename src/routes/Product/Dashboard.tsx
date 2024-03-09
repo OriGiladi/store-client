@@ -6,12 +6,13 @@ import { useLoaderData } from 'react-router'
 import { Product } from "../../rootStore/ProductStore";
 import { observer } from 'mobx-react'
 import { NavLink } from 'react-router-dom'
+import { userRole } from '../../utils/constants'
 const { productStore, userStore } = rootStore
 interface LoadedData {
     data: Product []
 }
 
-const DesignedDashboard = observer(() => {
+const Dashboard = observer(() => {
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     let products: Product [] = []
     if(!productStore.allProducts)
@@ -24,7 +25,7 @@ const DesignedDashboard = observer(() => {
     }
     return (
         <>
-        {userStore.userRole === "ADMIN" ? ( // TODO: get "ADMIN" from an enum file
+        {userStore.userRole === userRole.admin ? (
             <Flex justifyContent="center" alignItems="center">
                 <Button colorScheme="pink" className='addProductBtn' m="5px">
                     <NavLink to="/add-product" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -50,5 +51,5 @@ const DesignedDashboard = observer(() => {
     )
 })
 
-export default DesignedDashboard
+export default Dashboard
 
