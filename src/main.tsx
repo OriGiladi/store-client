@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import '@fontsource/ubuntu';
+
 //pages
 import ErorrPage from "./error-routes/error";
 import Registration from "./routes/Registration";
@@ -82,7 +84,12 @@ const router = createBrowserRouter([
     }
 ]);  
 
-const theme = extendTheme()
+const theme = extendTheme({
+    fonts: {
+        heading: `'Ubuntu', sans-serif`,
+        body: `'Ubuntu', sans-serif`,
+    },
+})
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

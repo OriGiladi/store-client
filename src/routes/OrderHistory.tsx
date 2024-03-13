@@ -1,5 +1,5 @@
 import { Table, Thead, Tbody, Tr, Th, Td } from "../Table";
-import { Box, Text, TableContainer } from '@chakra-ui/react'
+import { Box, Text, TableContainer, Heading } from '@chakra-ui/react'
 import rootStore from '../rootStore'
 import OrderItem from './OrderItem'
 const { orderStore } = rootStore
@@ -7,6 +7,7 @@ const { orderStore } = rootStore
 function OrderHistory() {
     return (
         <>
+            <Heading textAlign="center" my='30' p="10px"> Your Order History </Heading>
             {orderStore.userOrders.length > 0 ?
             (   <Box mb={10}>
                 <TableContainer>
@@ -42,7 +43,7 @@ function OrderHistory() {
                         </Thead>
                     </Table>
                 </TableContainer>
-            </Box>) : (<Text> No orders yet</Text> )}
+            </Box>) : (<Text> No didn't order anything yet</Text> )}
         </>
     )
 }

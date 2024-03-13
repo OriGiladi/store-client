@@ -1,18 +1,19 @@
-import { Box, Button, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex,} from '@chakra-ui/react'
 import { ProductCard } from './ProductCard'
 import rootStore from '../../rootStore'
 import { ProductGrid } from './ProductGrid'
 import { useLoaderData } from 'react-router'
 import { Product } from "../../rootStore/ProductStore";
 import { observer } from 'mobx-react'
-import { NavLink } from 'react-router-dom'
 import { userRole } from '../../utils/constants'
+import { useNavigate } from "react-router-dom";
 const { productStore, userStore } = rootStore
 interface LoadedData {
     data: Product []
 }
 
 const Dashboard = observer(() => {
+    const navigate = useNavigate()
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     let products: Product [] = []
     if(!productStore.allProducts)
@@ -23,14 +24,16 @@ const Dashboard = observer(() => {
     else{
         products = productStore.allProducts
     }
+    function addProductNavigation() {
+        navigate('/add-product')
+    }
+
     return (
         <>
         {userStore.userRole === userRole.admin ? (
             <Flex justifyContent="center" alignItems="center">
-                <Button colorScheme="pink" className='addProductBtn' m="5px">
-                    <NavLink to="/add-product" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Button colorScheme="pink" className='addProductBtn' m="5px" onClick={() => { addProductNavigation()}}>
                         Add a new product
-                    </NavLink>
                 </Button>
             </Flex>
         ): ( null )}
