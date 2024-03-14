@@ -1,6 +1,6 @@
 import { Flex, Stack } from '@chakra-ui/layout'
-import { CartProductMeta } from './ShoppingCart/CartProductMeta'
-import { order } from '../rootStore/OrderStore'
+import { CartProductMeta } from '../ShoppingCart/CartProductMeta'
+import { order } from '../../rootStore/OrderStore'
 
 
 const OrderItem = ({order}: {order: order}) => {

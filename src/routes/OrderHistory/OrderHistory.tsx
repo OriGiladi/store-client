@@ -1,7 +1,8 @@
-import { Table, Thead, Tbody, Tr, Th, Td } from "../Table";
+import { Table, Thead, Tbody, Tr, Th, Td } from "../../Table";
 import { Box, Text, TableContainer, Heading } from '@chakra-ui/react'
-import rootStore from '../rootStore'
+import rootStore from '../../rootStore'
 import OrderItem from './OrderItem'
+import { PriceTag } from "../../utils/PriceTag";
 const { orderStore } = rootStore
 
 function OrderHistory() {
@@ -27,8 +28,12 @@ function OrderHistory() {
                                 <Td><OrderItem order={order}/></Td>
                                 <Td>{order.createdAt.getDate()}/{order.createdAt.getMonth() + 1}/{order.createdAt.getFullYear()}</Td>  
                                 <Td>{order.quantity}</Td>
-                                <Td isNumeric>{ Number(order.product.price)} ₪</Td>
-                                <Td isNumeric> { Number(order.product.price) * order.quantity} ₪</Td>
+                                <Td isNumeric>
+                                    <PriceTag price={Number(order.product.price)} currency="ILS" />
+                                </Td>
+                                <Td isNumeric>
+                                    <PriceTag price={Number(order.product.price) * order.quantity} currency="ILS" />
+                                </Td>
                             </Tr>
                         ))}
                         </Tbody>

@@ -1,10 +1,10 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useToast } from '@chakra-ui/toast';
 import { useNavigate } from "react-router-dom";
-import rootStore from '../rootStore';
-import { BASE_URL, currency } from '../utils/constants';
+import rootStore from '../../rootStore';
+import { BASE_URL, currency } from '../../utils/constants';
 import axios from 'axios';
-import { getHeadersWithJwt } from '../utils/sdk';
+import { getHeadersWithJwt } from '../../utils/sdk';
 import { CreateOrderActions, CreateOrderData, OnApproveActions, OnApproveData } from "@paypal/paypal-js";
 const { userStore, shoppingCartStore } = rootStore
 function Checkout() {

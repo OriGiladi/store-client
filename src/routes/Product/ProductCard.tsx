@@ -15,13 +15,13 @@ import {
 } from '@chakra-ui/react'
 import { Rating } from './Rating/Rating'
 import { EditIcon } from '@chakra-ui/icons'
-import { PriceTag } from '../PriceTag'
+import { PriceTag } from '../../utils/PriceTag'
 import { Product } from '../../rootStore/ProductStore'
 import rootStore from '../../rootStore'
 import { ShoppingCartItem } from '../../rootStore/ShoppingCartStore'
 import { observer } from 'mobx-react'
 import { useNavigate } from 'react-router'
-import { DeleteProductBtn } from '../DeleteProductBtn'
+import { DeleteProductBtn } from '../AdminFeatures/DeleteProductBtn'
 import { NavLink } from 'react-router-dom'
 import { userRole } from '../../utils/constants'
 const { shoppingCartStore, userStore, productStore } = rootStore
@@ -118,7 +118,7 @@ export const ProductCard = observer((props: Props) => {
             <Text fontWeight="medium" color={useColorModeValue('gray.700', 'gray.400')}>
                 {name}
             </Text>
-            <PriceTag price={Number(price)} /*salePrice={salePrice}*/ currency="ILS" />
+            <PriceTag price={Number(price)} currency="ILS" />
             </Stack>
             <HStack>
                 <Rating defaultValue={productStore.getTotalRateOfProduct(product)} product={product} />

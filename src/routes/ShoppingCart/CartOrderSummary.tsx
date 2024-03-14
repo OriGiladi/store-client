@@ -12,7 +12,8 @@ import { observer } from "mobx-react";
 import { paypalInitialOptions } from '../../utils/constants';
 import { useState } from 'react';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import Checkout from '../Checkout';
+import Checkout from './Checkout';
+import { PriceTag } from '../../utils/PriceTag';
 const { shoppingCartStore, userStore } = rootStore 
 
 
@@ -29,7 +30,7 @@ export const CartOrderSummary = observer(() => {
                 Total
                 </Text>
                 <Text fontSize="xl" fontWeight="extrabold">
-                {(shoppingCartStore.totalPrice)} ₪
+                <PriceTag price={Number(shoppingCartStore.totalPrice)} currency="ILS" />
                 </Text>
             </Flex>
             </Stack>

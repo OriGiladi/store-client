@@ -1,5 +1,5 @@
 import { CloseButton, Flex, Link, Select, SelectProps, useColorModeValue } from '@chakra-ui/react'
-import { PriceTag } from '../PriceTag'
+import { PriceTag } from '../../utils/PriceTag'
 import { CartProductMeta } from './CartProductMeta'
 import rootStore from '../../rootStore'
 import { observer } from "mobx-react";
