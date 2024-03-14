@@ -1,37 +1,32 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import { Form } from "react-router-dom";
-import { addingProductValidator } from "../validators/product";
-import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
-import rootStore from "../rootStore";
-import { userRole } from "../utils/constants";
-const { userStore } = rootStore
+import { productProperties, productValidator } from "../validators/product";
+import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input, Textarea } from "@chakra-ui/react";
+import { observer } from "mobx-react";
     interface FormData {
         name: string;
         price: string;
         description: string;
         image: string
     }
-    interface Validation {
-        price: string;
-    }
 
-export function AddProduct() {
+export const AddProduct = observer(() => {
 
-    useEffect(() => {
-        if(!(userStore.userRole === userRole.admin)){ 
-            throw new Error("Unauthorize")
-        }
-    }, [])
-
-    const [validationResult, setValidationResult] = useState<Validation>({
-        price: ""
+    const [validationResult, setValidationResult] = useState<productProperties>({
+        name: "",
+        price: "",
+        description: "",
+        image: ""
     });
 
     const validate = () =>{
         setValidationResult( 
-            addingProductValidator(
-                formData.price.toString()
-            )
+            productValidator({
+                name: formData.name.toString(),
+                price: formData.price.toString(),
+                description: formData.description.toString(),
+                image: formData.image.toString()
+            })
         )
     }
 
@@ -42,7 +37,7 @@ export function AddProduct() {
         image: ""
     });
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -57,6 +52,7 @@ export function AddProduct() {
                         <Input type="text"
                         name="name"
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.name}</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -69,23 +65,26 @@ export function AddProduct() {
 
                     <FormControl mb="40px">
                         <FormLabel> Description:</FormLabel>
-                        <Input  type="text"
+                        <Textarea
                         name="description"
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.description}</FormHelperText>
                     </FormControl>
                     
                     <FormControl mb="40px">
                         <FormLabel> Image URL :</FormLabel>
-                        <Input  type="text"
+                        <Textarea
                         name="image"
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.image}</FormHelperText>
                     </FormControl>
-                    
-                    <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                    <Box textAlign={"center"}>
+                        <Button mb="50px" colorScheme="pink" id="btnAddProduct" type="submit" onClick={validate}>Submit</Button>
+                    </Box>
                 </Form>
             </Box>
         </Flex>
     )
-}
+})
 
 

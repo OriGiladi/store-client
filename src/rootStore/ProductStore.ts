@@ -53,7 +53,7 @@ class ProductStore {
             ratings: product.ratings,
         }
         try {
-            await axios.patch(`${BASE_URL}/product/${product._id}`, requestBody, {
+            await axios.patch(`${BASE_URL}/product/rate/${product._id}`, requestBody, {
                 headers: getHeaders()
             });
             return {message: "Succeeded"}

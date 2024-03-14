@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { Form, redirect, useLoaderData} from "react-router-dom";
-import { addingProductValidator } from "../validators/product";
-import { Avatar, Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input } from "@chakra-ui/react";
+import { productProperties, productValidator } from "../validators/product";
+import { Avatar, Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Textarea } from "@chakra-ui/react";
 import rootStore from "../rootStore";
 import { extractParameterFromUrl } from "../utils/sdk";
 import { userRole } from "../utils/constants";
@@ -12,9 +12,6 @@ interface FormData {
     price: string;
     description: string;
     image: string;
-}
-interface Validation {
-    price: string;
 }
 interface Product{
     name: string,
@@ -39,23 +36,29 @@ export function EditProduct() {
     }, [])
     const loaded: LoadedData  = useLoaderData() as LoadedData 
     const product: Product  = loaded.data;
-    const [validationResult, setValidationResult] = useState<Validation>({
-        price: ""
-    });
-    const validate = () =>{
-        setValidationResult( 
-            addingProductValidator(
-                formData.price.toString()
-            )
-        )
-    }
-    const [formData, setFormData] = useState<FormData>({
+    const [validationResult, setValidationResult] = useState<productProperties>({
         name: "",
         price: "",
         description: "",
         image: ""
     });
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const validate = () =>{
+        setValidationResult( 
+            productValidator({
+                name: formData.name.toString(),
+                price: formData.price.toString(),
+                description: formData.description.toString(),
+                image: formData.image.toString()
+            })
+        )
+    }
+    const [formData, setFormData] = useState<FormData>({
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        image: product.image
+    });
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -70,6 +73,7 @@ export function EditProduct() {
                         name="name"
                         defaultValue={product.name}
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.name}</FormHelperText>
                     </FormControl>
 
                     <FormControl mb="40px">
@@ -83,10 +87,11 @@ export function EditProduct() {
 
                     <FormControl mb="40px">
                         <FormLabel> Description:</FormLabel>
-                        <Input  type="text"
+                        <Textarea 
                         name="description"
                         defaultValue={product.description}
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.description}</FormHelperText>
                     </FormControl>
                     
                     <FormControl mb="40px">
@@ -94,13 +99,15 @@ export function EditProduct() {
                         <FormLabel> Image URL :</FormLabel>
                         <Avatar src={product.image} />
                     </HStack>
-                        <Input  type="text"
+                        <Textarea
                         name="image"
                         defaultValue={product.image}
                         onChange={handleChange}/>
+                        <FormHelperText color="pink.500">{validationResult.image}</FormHelperText>
                     </FormControl>
-                    
-                    <Button mb="50px" colorScheme="pink" id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
+                    <Box textAlign={"center"}>
+                        <Button mb="50px" colorScheme="pink" padding={5} id="btnEditProduct" type="submit" onClick={validate}>Edit</Button>
+                    </Box>
                 </Form>
             </Box>
         </Flex>

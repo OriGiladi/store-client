@@ -1,6 +1,6 @@
 import { RootStore } from ".";
 import { makeAutoObservable } from "mobx";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL, userRoles } from "../utils/constants";
 import { getHeadersWithJwt } from "../utils/sdk";
 import { jwtDecode } from "jwt-decode";
 interface User {
@@ -13,13 +13,13 @@ interface User {
 }
 interface decodedJwt{
     id: string;
-    userRole: "USER" | "ADMIN";
+    userRole: userRoles; 
 }
 class UserStore {
     rootStore: RootStore;
     user: User | undefined;
     userJwt: string | undefined;
-    userRole: "USER" | "ADMIN" | undefined;
+    userRole: userRoles | undefined; 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
         makeAutoObservable(this);

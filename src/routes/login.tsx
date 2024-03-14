@@ -5,7 +5,7 @@ import {authActionError, LoginRequest } from '../utils/types';
 import rootStore from '../rootStore'
 
 const Login = () => {
-    const {userStore, forgotPasswordStore} = rootStore;
+    const {forgotPasswordStore} = rootStore;
     const navigate = useNavigate()
     const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
     const [formData, setFormData] = useState<LoginRequest>({
@@ -28,49 +28,44 @@ const Login = () => {
     return (
         <>
             <Flex justifyContent="center" alignItems="center">
-            {!userStore.userJwt ?
-            ( <Box textAlign="center" className="container">
-                <Heading my='30' p="10px">Log In</Heading>
-                <Form method="post" id="login-form" action="/login">
-                    <FormControl mb="10px">
-                            <FormLabel> Email:</FormLabel>
-                            <Input type="text"
-                            name="email"
-                            onChange={handleChange}/>
-                    </FormControl>
+                <Box textAlign="center" className="container">
+                    <Heading my='30' p="10px">Log In</Heading>
+                    <Form method="post" id="login-form" action="/login">
+                        <FormControl mb="10px">
+                                <FormLabel> Email:</FormLabel>
+                                <Input type="text"
+                                name="email"
+                                onChange={handleChange}/>
+                        </FormControl>
 
-                    <FormControl mb="40px">
-                            <FormLabel> Password:</FormLabel>
-                            <Input type="password"
-                            name="password"
-                            onChange={handleChange}/>
-                    </FormControl>
+                        <FormControl mb="40px">
+                                <FormLabel> Password:</FormLabel>
+                                <Input type="password"
+                                name="password"
+                                onChange={handleChange}/>
+                        </FormControl>
 
-                    <FormControl mb="40px">
-                        <Text 
-                            onClick={() => {
-                                sendToForgotPasswordPage(formData.email)
-                            }}
-                            textAlign={'left'}
-                            style={{color:"#B83280"}}
-                        _hover={{ cursor: 'pointer' }}>
-                            Forgot your password?
-                        </Text>
-                    </FormControl>
+                        <FormControl mb="40px">
+                            <Text 
+                                onClick={() => {
+                                    sendToForgotPasswordPage(formData.email)
+                                }}
+                                textAlign={'left'}
+                                style={{color:"#B83280"}}
+                            _hover={{ cursor: 'pointer' }}>
+                                Forgot your password?
+                            </Text>
+                        </FormControl>
 
-                    <FormControl>
-                            <FormHelperText color="pink.500" mb="40px" fontWeight="600">
-                                {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
-                            </FormHelperText>
-                    </FormControl>
+                        <FormControl>
+                                <FormHelperText color="pink.500" mb="40px" fontWeight="600">
+                                    {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
+                                </FormHelperText>
+                        </FormControl>
 
-                    <Button colorScheme="pink" type="submit">Submit</Button>
-                </Form>
-                </Box>) :
-                ( <Heading textAlign="center" my='30' p="10px">
-                You are already logged in</Heading>  
-                )
-            }
+                        <Button colorScheme="pink" type="submit">Submit</Button>
+                    </Form>
+                </Box>
             </Flex>
         </>
     )

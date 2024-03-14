@@ -1,11 +1,10 @@
 import { LoaderFunction } from "react-router-dom"
 import rootStore from '../rootStore'
-const { orderStore } = rootStore
+const { orderStore, userStore } = rootStore
 
-export const ordersByUserIdLoader: LoaderFunction = async ({params}) => {
-    const {userId} = params
+export const ordersByUserIdLoader: LoaderFunction = async () => {
     if(orderStore.userOrders){
-        await orderStore.getOrders(userId as string)
+        await orderStore.getOrders(userStore.user?._id as string)
     }
     return null //the change occurs in orderStore
 }

@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import axios from 'axios';
-import { addingProductValidator } from "../validators/product";
+import { isProductValidated, productProperties, productValidator } from "../validators/product";
 import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
 const { userStore, productStore } = rootStore
@@ -13,17 +13,17 @@ export async function addProductAction({ request }: { request: Request }) {
     let {image} = userInfo
     if(image === "")
         image = "none";
-    const requestData = {
+    const productProperties = {
         name, 
         price,
         description,
         image 
-    };
-    const validationResult = addingProductValidator( price.toString()) 
-    if(validationResult.price === '')
+    } as productProperties;
+    const validationResult = productValidator(productProperties) 
+    if(isProductValidated(validationResult))
     {
         try {
-            await axios.post(`${BASE_URL}/product`, requestData, {
+            await axios.post(`${BASE_URL}/product`, productProperties, {
                 headers: getHeadersWithJwt(userStore.userJwt as string)
             });
             productStore.setAllProducts(await productStore.loadAllProducts()) // saving the added product in productStore by reloading all the products

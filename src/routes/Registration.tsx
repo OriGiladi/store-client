@@ -2,8 +2,6 @@ import { useState, ChangeEvent } from "react";
 import { Form, useActionData} from "react-router-dom";
 import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
 import { registrationActionError } from '../utils/types';
-import rootStore from "../rootStore";
-const { userStore } = rootStore
 
 interface FormData {
     firstName: string;
@@ -49,8 +47,6 @@ const Registration = () => {
 
     return (
         <>
-        {!userStore.userJwt ?
-        (
             <Flex justifyContent={"center"}>
                 <Box className="container">
                 <Heading textAlign="center" my='30' p="10px">Registration</Heading>
@@ -103,11 +99,6 @@ const Registration = () => {
                     </Form>
                 </Box>
             </Flex>
-        ):
-        (
-            <Heading textAlign="center" my='30' p="10px">
-            You are already registered </Heading>
-        )}
         </>
     );
 };

@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import axios from 'axios';
-import { addingProductValidator } from "../validators/product";
+import { isProductValidated, productProperties, productValidator } from "../validators/product";
 import { BASE_URL } from "../utils/constants";
 import rootStore from "../rootStore";
 import { extractParameterFromUrl, getHeadersWithJwt } from "../utils/sdk";
@@ -19,17 +19,17 @@ export async function editProductAction({ request }: { request: Request }) {
     const userInfo = Object.fromEntries(data);
     const { name, price, description, image } = userInfo;
 
-    const requestData = {
+    const productProperties = {
         name, 
         price,
         description,
         image ,
-    };
-    const validationResult = addingProductValidator(price.toString()) 
-    if(validationResult.price === '')
+    } as productProperties;
+    const validationResult = productValidator(productProperties) 
+    if(isProductValidated(validationResult))
     {
         try {
-            await axios.patch(`${BASE_URL}/product/${productId}`, requestData, {
+            await axios.patch(`${BASE_URL}/product/${productId}`, productProperties, {
                 headers: getHeadersWithJwt(userStore.userJwt as string)
             });
             productStore.setAllProducts(await productStore.loadAllProducts()) // saving the edited product in productStore by reloading all the products
