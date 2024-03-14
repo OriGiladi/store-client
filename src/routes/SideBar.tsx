@@ -72,7 +72,7 @@ const SideBar = observer(({ isSideBarOpen, showSidebar }: { isSideBarOpen: boole
             (
             <>
                 <li className={"nav-text"}>
-                    <Link to={`order-history/${userStore.user?._id}`}>
+                    <Link to={`order-history`}>
                         <FontAwesomeIcon icon={faHistory} />
                         <span> Order History</span>
                     </Link>

@@ -1,11 +1,8 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import { Form } from "react-router-dom";
 import { productProperties, productValidator } from "../validators/product";
 import {  Box, Button,  Flex,  FormControl, FormHelperText, FormLabel, Heading, Input, Textarea } from "@chakra-ui/react";
-import rootStore from "../rootStore";
-import { userRole } from "../utils/constants";
 import { observer } from "mobx-react";
-const { userStore } = rootStore
     interface FormData {
         name: string;
         price: string;
@@ -14,12 +11,6 @@ const { userStore } = rootStore
     }
 
 export const AddProduct = observer(() => {
-
-    useEffect(() => {
-        if(!(userStore.userRole === userRole.admin)){ 
-            throw new Error("Unauthorize")
-        }
-    }, [])
 
     const [validationResult, setValidationResult] = useState<productProperties>({
         name: "",

@@ -9,6 +9,7 @@ export const userRole = {
     user: 'USER',
     admin: 'ADMIN'
 }
+export type userRoles = "USER" | "ADMIN"
 export const currency = "ILS"
 export const paypalInitialOptions = {
     clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
