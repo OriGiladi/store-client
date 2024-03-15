@@ -22,9 +22,9 @@ import ErrorPage from "./error-routes/error";
 import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
 import Dashboard from "./routes/Product/Dashboard";
 import { ordersByUserIdLoader } from "./actionsAndLoaders/orderHirstory";
-import OrderHistory from "./routes/OrderHistory/OrderHistory";
-import ProtectedRoute from "./routes/ProtectedRoute";
+import RouteProtector from "./routes/RouteProtector";
 import { userRole, userRoles } from "./utils/constants";
+import OrderHistoryProtector from "./routes/OrderHistory/OrderHistoryProtector";
 
 const router = createBrowserRouter([
     {
@@ -38,13 +38,13 @@ const router = createBrowserRouter([
             },
             {
                 path: 'add-product',
-                element: <ProtectedRoute component={AddProduct} roles={[userRole.admin as userRoles]}  />,
+                element: <RouteProtector component={AddProduct} roles={[userRole.admin as userRoles]}  />,
                 action: addProductAction,
                 errorElement: <ErorrPage />
             },
             {
                 path: 'edit-product/:id', 
-                element:  <ProtectedRoute component={EditProduct} roles={[userRole.admin as userRoles]}  />,
+                element:  <RouteProtector component={EditProduct} roles={[userRole.admin as userRoles]}  />,
                 action: editProductAction,
                 loader: editProductLoader 
             },
@@ -60,18 +60,18 @@ const router = createBrowserRouter([
                 errorElement: <ErrorPage/>
             },
             {
-                path: '/order-history',
-                element:  <ProtectedRoute component={OrderHistory} roles={[userRole.user as userRoles, userRole.admin as userRoles]}  />,
+                path: '/order-history/:userId',
+                element:  <RouteProtector component={OrderHistoryProtector} roles={[userRole.user as userRoles, userRole.admin as userRoles]}  />,
                 loader: ordersByUserIdLoader,
             },
             {
                 path: "/register",
-                element: <ProtectedRoute component={Registration} roles={[undefined]}  />, // disables registered users to enter registration again
+                element: <RouteProtector component={Registration} roles={[undefined]}  />, // disables registered users to enter registration again
                 action: registrationAction,
             },
             {
                 path: "/login",
-                element: <ProtectedRoute component={Login} roles={[undefined]}  />,
+                element: <RouteProtector component={Login} roles={[undefined]}  />,
                 action: loginAction,
             },
             {
