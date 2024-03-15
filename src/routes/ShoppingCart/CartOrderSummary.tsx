@@ -12,7 +12,7 @@ import { observer } from "mobx-react";
 import { paypalInitialOptions } from '../../utils/constants';
 import { useState } from 'react';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import Checkout from '../Checkout';
+import Checkout from './Checkout';
 const { shoppingCartStore, userStore } = rootStore 
 
 

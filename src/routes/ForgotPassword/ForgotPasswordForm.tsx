@@ -1,7 +1,7 @@
 import { Button, Text, Input, useToast, HStack, PinInput, PinInputField } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Form } from 'react-router-dom';
-import { LoginRequest } from '../utils/types';
+import { LoginRequest } from '../../utils/types';
 
 const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: string, generatedConfirmationCode: number }) => {
     const [confirmationCode, setConfirmationCode] = useState('');

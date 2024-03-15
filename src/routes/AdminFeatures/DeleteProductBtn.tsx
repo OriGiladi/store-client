@@ -2,9 +2,9 @@ import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, Al
 import { DeleteIcon} from '@chakra-ui/icons'
 import React from 'react'
 import axios from 'axios';
-import { BASE_URL } from '../utils/constants';
-import rootStore from '../rootStore';
-import { getHeadersWithJwt } from '../utils/sdk';
+import { BASE_URL } from '../../utils/constants';
+import rootStore from '../../rootStore';
+import { getHeadersWithJwt } from '../../utils/sdk';
 interface Product{
     _id: string,
     name: string,
