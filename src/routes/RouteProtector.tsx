@@ -5,7 +5,7 @@ const { userStore } = rootStore
 import ErrorPage from '../error-routes/error';
 import { userRoles } from '../utils/constants';
 
-const ProtectedRoute: React.FC<{ component: React.FC; roles: (userRoles | undefined )[] }> = observer(({ component: Component, roles: roles }) => {
+const RouteProtector: React.FC<{ component: React.FC; roles: (userRoles | undefined )[] }> = observer(({ component: Component, roles: roles }) => {
     return (
         roles.includes(userStore.userRole) ?
         ( <Component /> ) :
@@ -13,4 +13,4 @@ const ProtectedRoute: React.FC<{ component: React.FC; roles: (userRoles | undefi
     );
 });
 
-export default ProtectedRoute
+export default RouteProtector
