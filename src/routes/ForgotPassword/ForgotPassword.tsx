@@ -1,11 +1,11 @@
 import { Suspense, useEffect, useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
-import { EMAIL_JS_SERVICE_ID, EMAIL_JS_PUBLIC_KEY, EMAIL_JS_TEMPLATE_ID, CONFIRMATION_CODE_LENGTH } from '../utils/constants';
-import {authActionError } from '../utils/types';
+import { EMAIL_JS_SERVICE_ID, EMAIL_JS_PUBLIC_KEY, EMAIL_JS_TEMPLATE_ID, CONFIRMATION_CODE_LENGTH } from '../../utils/constants';
+import {authActionError } from '../../utils/types';
 import ForgotPasswordForm from './ForgotPasswordForm';
 import { useActionData } from 'react-router-dom';
 import { Box, Text } from '@chakra-ui/react';
-import rootStore from '../rootStore';
+import rootStore from '../../rootStore';
 const {forgotPasswordStore} = rootStore
 
 const ForgotPassword = () => {

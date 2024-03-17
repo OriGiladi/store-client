@@ -1,6 +1,6 @@
-import { Table, Thead, Tbody, Tr, Th, Td } from "../Table";
+import { Table, Thead, Tbody, Tr, Th, Td } from "../../Table";
 import { Box, Text, TableContainer, Heading } from '@chakra-ui/react'
-import rootStore from '../rootStore'
+import rootStore from '../../rootStore'
 import OrderItem from './OrderItem'
 const { orderStore } = rootStore
 

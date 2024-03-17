@@ -21,7 +21,7 @@ import rootStore from '../../rootStore'
 import { ShoppingCartItem } from '../../rootStore/ShoppingCartStore'
 import { observer } from 'mobx-react'
 import { useNavigate } from 'react-router'
-import { DeleteProductBtn } from '../DeleteProductBtn'
+import { DeleteProductBtn } from '../AdminFeatures/DeleteProductBtn'
 import { NavLink } from 'react-router-dom'
 import { userRole } from '../../utils/constants'
 const { shoppingCartStore, userStore, productStore } = rootStore
