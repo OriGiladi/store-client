@@ -31,7 +31,7 @@ function Checkout() {
                 position: "top",
                 colorScheme: 'pink'
             });
-            navigate(`../order-history`)
+            navigate(`../order-history/${userStore.user?._id}`)
     
         } catch (error) {
             console.error(error);
