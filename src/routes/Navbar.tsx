@@ -1,81 +1,67 @@
-import {
-    Flex,
-    Heading,
-    Text,
-    Button,
-    Spacer,
-    HStack,
-    useToast,
-    Avatar,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { redirect, useLocation } from "react-router-dom";
+import { useEffect } from 'react';
+import * as FaIcons from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import '../App.css';
+import { observer } from 'mobx-react';
+import rootStore from '../rootStore';
+import { Avatar, Box, HStack, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
+import { jwtDecode } from 'jwt-decode';
+import { userRole } from '../utils/constants';
+const { userStore } = rootStore;
+const Navbar = observer(({ showSidebar }: { showSidebar: () => void }) => {
+    const toast = useToast()
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    useEffect(() => { // reauthenticates when refreshing the page
+        if(localStorage.getItem('userJwt')){
+            userStore.userJwtAuthentication()
+            try{
+                if(jwtDecode(localStorage.getItem('userJwt') as string).exp as number - currentTimestamp < 0){ // checks if the userJwt has expired
+                    toast({
+                        title: "Your session was expired",
+                        description: "Please login again",
+                        duration: 5000,
+                        isClosable: true,
+                        status: "error",
+                        position: "bottom",
+                    });
+                    localStorage.removeItem('userJwt')
+                    userStore.setUser()
+                    userStore.setUserRole()
+                    userStore.setUserJwt()
+                }
+            }
+            catch{
+                console.error("invalid token")
+            }  
+        }      
+    }, [currentTimestamp, toast])
 
-const baseUrl = "http://localhost:3000";
-
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    image: string;
-}
-
-export const Navbar = () => {
-const [user, setUser] = useState<User | null>(null); // Initialize as null
-
-const toast = useToast();
-
-const logOut = () => {
-    // Log out logic here, clear the token, and set user to null
-    localStorage.removeItem("token");
-    localStorage.removeItem("admin");
-    setUser(null);
-    toast({
-    title: "Logged Out",
-    description: "You have logged out",
-    duration: 5000,
-    isClosable: true,
-    status: "success",
-    position: "top",
-    });
-    const myLocation = useLocation();
-    redirect(myLocation.pathname);
-};
-
-useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-    fetch(`${baseUrl}/users/me`, {
-        headers: {
-        Authorization: "Bearer " + token,
-        }
-    })
-        .then((res) => res.json())
-        .then((data) => {
-        setUser(data);
-        })
-        .catch((error) => {
-        console.error("Error fetching user data:", error);
-        });
-    }
-}, []);
-
-return (
-    <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="10px">
-    <Heading display={{base:"block", md:"block" }} as="h1">The Shop</Heading>
-    <Spacer />
-    {user ? (
-        <HStack spacing="20px">
-        <Avatar name={user.firstName} src={user.image} />
-        <Text display={{base:"block", md:"block"  }}> {user.firstName} {user.lastName}</Text>
-        <Button colorScheme="red" onClick={logOut}>
-            Logout
-        </Button>
-        </HStack>
-    ) : (
-        <Text>Log in to purchase items</Text>
-    )}
-    </Flex>
-);
-};
+    return (
+        <>
+            <div className='navbar'>
+            <Link to='#' className='menu-bars'>
+                    <FaIcons.FaBars onClick={showSidebar} style={{marginRight:'20px'}} />
+            </Link>
+            {userStore.user ? (
+            <>
+                <HStack spacing="20px">
+                    <Text display={{ base: "block", md: "block" }}> {userStore.user.firstName} {userStore.user.lastName}</Text>                    
+                    <Avatar name={userStore.user.firstName} src={userStore.user.image} />
+                    {userStore.userRole === userRole.admin && (
+                        <Box>
+                            <Tooltip label={'Admin'}>
+                                <StarIcon/>
+                            </Tooltip>
+                        </Box>
+                    )}    
+                </HStack>
+            </>
+            ) : (
+                    <Link to='/login'>Log in to purchase items</Link>
+                )}
+        </div>
+        </>
+    );
+})
+export default Navbar;

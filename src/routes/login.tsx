@@ -1,121 +1,73 @@
-import React, { useState, ChangeEvent } from "react";
-import { Form, redirect } from "react-router-dom";
-import axios from "axios";
-import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input } from "@chakra-ui/react";
+import { useState, ChangeEvent } from "react";
+import { Form, useNavigate, useActionData } from "react-router-dom";
+import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
+import {authActionError, LoginRequest } from '../utils/types';
+import rootStore from '../rootStore'
 
-const baseUrl = 'http://localhost:3000';
-
-interface FormData {
-    email: string;
-    password: string;
-}
-
-export async function loginAction({ request }: { request: Request }) {
-    const data = await request.formData()
-    const userInfo = Object.fromEntries(data);
-    const { email, password } = userInfo;
-
-    const requestData = {
-        email,
-        password
-    };
-
-    try {
-        const response = await axios.post(`${baseUrl}/login`, requestData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        localStorage.setItem('token', response.data.token)
-        if(response.data.admin)
-            localStorage.setItem('admin', response.data.admin)
-        
-        return redirect("/");
-
-    } catch (error) {
-        console.error(error);
-        return { response: false, data: null };
-    }
-}
-
-const Login:React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
+const Login = () => {
+    const {forgotPasswordStore} = rootStore;
+    const navigate = useNavigate()
+    const errorInAction: authActionError = useActionData() as authActionError // returns the error in the action if occurs
+    const [formData, setFormData] = useState<LoginRequest>({
         email: "",
         password: ""
     });
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
-    const [loginError, setLoginError] = useState("")
-
-    const token = localStorage.getItem('token')
-
-    const validate = async () => {
-    const { email, password } = formData;
-
-    const requestData = {
-        email,
-        password
-    };
-
-    try {
-        await axios.post(`${baseUrl}/login`, requestData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        // success code
-
-    } catch (error) {
-        console.error(error);
-        setLoginError("Email or password are invalid")
-        return { response: false, data: null };
+    function sendToForgotPasswordPage(email: string) {
+        if(email)
+        {
+            forgotPasswordStore.setEmail(email)
+            navigate('/forgot-password')
+        }
+        
     }
-    }
-    
+
     return (
         <>
-        {!token ?
-        ( <Box textAlign="center" maxWidth='480px'>
-            <Heading my='30' p="10px">Log In</Heading>
-            <Form method="post" id="register-form" action="/login">
-                <FormControl mb="40px">
-                        <FormLabel> Email:</FormLabel>
-                        <Input  type="text"
-                        name="email"
-                        onChange={handleChange}/>
-                </FormControl>
+            <Flex justifyContent="center" alignItems="center">
+                <Box textAlign="center" className="container">
+                    <Heading my='30' p="10px">Log In</Heading>
+                    <Form method="post" id="login-form" action="/login">
+                        <FormControl mb="10px">
+                                <FormLabel> Email:</FormLabel>
+                                <Input type="text"
+                                name="email"
+                                onChange={handleChange}/>
+                        </FormControl>
 
-                <FormControl mb="40px">
-                        <FormLabel> Password:</FormLabel>
-                        <Input  type="password"
-                        name="password"
-                        onChange={handleChange}/>
-                </FormControl>
+                        <FormControl mb="40px">
+                                <FormLabel> Password:</FormLabel>
+                                <Input type="password"
+                                name="password"
+                                onChange={handleChange}/>
+                        </FormControl>
 
-                <FormControl>
-                    
-                        <FormHelperText color="red.500" mb="40px">
-                            {loginError}
-                        </FormHelperText>
-                    
-                </FormControl>
-                
+                        <FormControl mb="40px">
+                            <Text 
+                                onClick={() => {
+                                    sendToForgotPasswordPage(formData.email)
+                                }}
+                                textAlign={'left'}
+                                style={{color:"#B83280"}}
+                            _hover={{ cursor: 'pointer' }}>
+                                Forgot your password?
+                            </Text>
+                        </FormControl>
 
-                <Button colorScheme="red" onClick={validate} type="submit">Submit</Button>
-            </Form>
-            </Box>):
-            ( <Heading textAlign="center" my='30' p="10px">
-            You are already logged in</Heading>
-            )
-        }
+                        <FormControl>
+                                <FormHelperText color="pink.500" mb="40px" fontWeight="600">
+                                    {errorInAction ? (<Box>{errorInAction.message}</Box>) : (null)}
+                                </FormHelperText>
+                        </FormControl>
+
+                        <Button colorScheme="pink" type="submit">Submit</Button>
+                    </Form>
+                </Box>
+            </Flex>
         </>
-        
     )
 }
-
 export default Login

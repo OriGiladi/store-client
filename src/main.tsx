@@ -2,24 +2,29 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-
-
+import '@fontsource/ubuntu';
 
 //pages
-import About from "./routes/about";
 import ErorrPage from "./error-routes/error";
-import Register from "./routes/register";
-import { registerAction } from "./routes/register";
+import Registration from "./routes/Registration";
+import { registrationAction } from "./actionsAndLoaders/registration";
+import{ loginAction } from './actionsAndLoaders/login';
 import Login from "./routes/login";
-import { loginAction } from "./routes/login";
-import { RootLayout } from "./routes/rootLayout";
-import { Dashboard, productsLoader } from "./routes/Dashboard";
-import ShoppingCart from "./routes/ShoppingCart";
-import { Product, productLoader } from "./routes/Product";
-import { AddProduct, addProductAction } from "./routes/AddProduct";
-import { addProductActionDialog, AddProductCopy } from "./routes/AddPCopy";
-import { EditProduct, editProductAction } from "./routes/EditProduct";
-import { ProductPageError } from "./error-routes/productPageError";
+import  RootLayout  from "./routes/rootLayout";
+import { allProductsLoader } from "./actionsAndLoaders/dashboard";
+import { AddProduct } from "./routes/AdminFeatures/AddProduct";
+import { addProductAction } from "./actionsAndLoaders/addProduct";
+import { EditProduct } from "./routes/AdminFeatures/EditProduct";
+import { editProductAction, editProductLoader } from "./actionsAndLoaders/editProduct";
+import ForgotPassword from "./routes/ForgotPassword/ForgotPassword";
+import { forgotPasswordAction, forgotPassweordLoader } from "./actionsAndLoaders/forgotPassowrd";
+import ErrorPage from "./error-routes/error";
+import { ShoppingCart } from "./routes/ShoppingCart/ShoppingCart";
+import Dashboard from "./routes/Product/Dashboard";
+import { ordersByUserIdLoader } from "./actionsAndLoaders/orderHirstory";
+import RouteProtector from "./routes/RouteProtector";
+import { userRole, userRoles } from "./utils/constants";
+import OrderHistoryProtector from "./routes/OrderHistory/OrderHistoryProtector";
 
 const router = createBrowserRouter([
     {
@@ -29,75 +34,69 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Dashboard />,
-                loader: productsLoader,
-            },
-            {
-                path: 'product/:id',
-                element: <Product />,
-                loader: productLoader,
-                // errorElement: <ProductPageError /> 
-                errorElement: <ErorrPage />
+                loader: allProductsLoader,
             },
             {
                 path: 'add-product',
-                element: <AddProduct />,
+                element: <RouteProtector component={AddProduct} roles={[userRole.admin as userRoles]}  />,
                 action: addProductAction,
                 errorElement: <ErorrPage />
             },
             {
-                path: 'add-product-copy',
-                element: <AddProductCopy/>,
-                action: addProductActionDialog,
-            },
-            {
-                path: 'edit-product/:id',
-                element: <EditProduct/>,
+                path: 'edit-product/:id', 
+                element:  <RouteProtector component={EditProduct} roles={[userRole.admin as userRoles]}  />,
                 action: editProductAction,
-                loader: productLoader 
+                loader: editProductLoader 
             },
             {
                 path: "/cart",
                 element: <ShoppingCart />,
             },
             {
-                path: "/login",
-                element: <Login />,
-                action: loginAction
-                // errorElement: <ErrorPage />,
+                path: "/forgot-password",
+                element: <ForgotPassword />,
+                action: forgotPasswordAction,
+                loader: forgotPassweordLoader,
+                errorElement: <ErrorPage/>
+            },
+            {
+                path: '/order-history/:userId',
+                element:  <RouteProtector component={OrderHistoryProtector} roles={[userRole.user as userRoles, userRole.admin as userRoles]}  />,
+                loader: ordersByUserIdLoader,
             },
             {
                 path: "/register",
-                element: <Register />,
-                action: registerAction,
+                element: <RouteProtector component={Registration} roles={[undefined]}  />, // disables registered users to enter registration again
+                action: registrationAction,
             },
             {
-                path: "/about",
-                element: <About />
-                // errorElement: <ErrorPage />,
+                path: "/login",
+                element: <RouteProtector component={Login} roles={[undefined]}  />,
+                action: loginAction,
             },
             {
                 path: "*",
                 element: <ErorrPage />
             }
-            
         ],
     },
-
     {
         path: "*",
         element: <ErorrPage />
     }
-]);
+]);  
 
-
-
-const theme = extendTheme()
+const theme = extendTheme({
+    fonts: {
+        heading: `'Ubuntu', sans-serif`,
+        body: `'Ubuntu', sans-serif`,
+    },
+})
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
-        {/* <ChakraProvider theme={theme}> */}
-            <RouterProvider router={router} />
+                <RouterProvider router={router} />
         </ChakraProvider>
     </React.StrictMode>
 );

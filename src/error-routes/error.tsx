@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom"
 
-const ErorrPage = () => {
+const ErrorPage = () => {
     return (
         <>
             <div>404 error</div>
-            <p>Go to the <Link to ='/'>Catalog</Link></p>
+            <p>Go to the <Link style={{color:"#B83280"}} to ='/'>Catalog</Link></p>
         </>
         
     )
 }
 
-export default ErorrPage
+export default ErrorPage
