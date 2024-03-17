@@ -60,7 +60,7 @@ const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: stri
                             <PinInputField />
                         </PinInput>
                     </HStack>
-                    <Button mt={30} colorScheme='red' onClick={() => validateConfirmationCode()} ml={3}>
+                    <Button mt={30} colorScheme='pink' onClick={() => validateConfirmationCode()} ml={3}>
                         Confirm
                     </Button>
                 </>
@@ -75,7 +75,7 @@ const ForgotPasswordForm = ({ email, generatedConfirmationCode } : { email: stri
                         onChange={handlePasswordChange}
                         mb={30}
                     />
-                    <Button colorScheme='red' ml={3} type='submit'>
+                    <Button colorScheme='pink' ml={3} type='submit'>
                         Save
                     </Button>
                 </Form>
