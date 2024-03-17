@@ -51,6 +51,7 @@ export const AddProduct = observer(() => {
                         <FormLabel> Product Name:</FormLabel>
                         <Input type="text"
                         name="name"
+                        maxLength={30}
                         onChange={handleChange}/>
                         <FormHelperText color="pink.500">{validationResult.name}</FormHelperText>
                     </FormControl>
@@ -59,6 +60,7 @@ export const AddProduct = observer(() => {
                         <FormLabel> Price:</FormLabel>
                         <Input type="text"
                         name="price"
+                        maxLength={30}
                         onChange={handleChange}/>
                         <FormHelperText color="pink.500">{validationResult.price}</FormHelperText>
                     </FormControl>
@@ -67,6 +69,7 @@ export const AddProduct = observer(() => {
                         <FormLabel> Description:</FormLabel>
                         <Textarea
                         name="description"
+                        maxLength={400}
                         onChange={handleChange}/>
                         <FormHelperText color="pink.500">{validationResult.description}</FormHelperText>
                     </FormControl>

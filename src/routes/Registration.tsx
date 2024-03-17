@@ -55,6 +55,7 @@ const Registration = () => {
                             <FormLabel> First Name:</FormLabel>
                             <Input  type="text"
                             name="firstName"
+                            maxLength={30}
                             id="txtFirstName"
                             onChange={handleChange}/>
                             <FormHelperText color="pink.500">{ validationResult.firstName }</FormHelperText>
@@ -65,6 +66,7 @@ const Registration = () => {
                             <Input  type="text"
                             name="lastName"
                             id="txtLastName"
+                            maxLength={30}
                             onChange={handleChange}/>
                             <FormHelperText color="pink.500">{ validationResult.lastName }</FormHelperText>
                         </FormControl>
@@ -74,6 +76,7 @@ const Registration = () => {
                             <Input  type="text"
                             name="email"
                             id="txtEmail"
+                            maxLength={30}
                             onChange={handleChange}/>
                             <FormHelperText color="pink.500">{ validationResult.email }</FormHelperText>
                         </FormControl>
