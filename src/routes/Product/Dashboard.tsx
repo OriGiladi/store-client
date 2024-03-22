@@ -31,7 +31,7 @@ const Dashboard = observer(() => {
     return (
         <>
             <Flex justifyContent={"center"}>
-                <Image width={400} height={130} mb={20} src='../../../public/wrist-wonders-logo.svg'></Image>
+                <Image width={400} height={130} mb={20} src='../../../dist/wrist-wonders-logo.svg'></Image>
             </Flex>
             {userStore.userRole === userRole.admin ? (
                 <Flex justifyContent="center" alignItems="center">
