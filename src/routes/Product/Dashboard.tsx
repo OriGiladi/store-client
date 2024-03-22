@@ -7,7 +7,7 @@ import { Product } from "../../rootStore/ProductStore";
 import { observer } from 'mobx-react'
 import { userRole } from '../../utils/constants'
 import { useNavigate } from "react-router-dom";
-import wristWondersLogo from '../../../dist/wrist-wonders-logo.svg';
+import wristWondersLogo from '../../../public/wrist-wonders-logo.svg';
 const { productStore, userStore } = rootStore
 interface LoadedData {
     data: Product []
