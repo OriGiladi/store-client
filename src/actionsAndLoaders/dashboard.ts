@@ -21,5 +21,6 @@ export async function deleteProductAction({ request }: { request: Request }){
 
 export async function allProductsLoader() {
     const res = await fetch(`${BASE_URL}/product`)
+    //const res = await fetch(`https://store-server-3.onrender.com/product`)
     return res.json()
 }
