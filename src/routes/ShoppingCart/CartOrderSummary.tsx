@@ -35,7 +35,8 @@ export const CartOrderSummary = observer(() => {
             </Stack>
             {userStore.userJwt && shoppingCartStore.shoppingCartItems.length > 0 ? (
             <>
-                <Button onClick={() => setIsPaypalDisplayed(!isPaypalDisplayed)} colorScheme="pink" size="lg" fontSize="md" rightIcon={<ChevronRightIcon />}>
+                <Button onClick={() => {setIsPaypalDisplayed(!isPaypalDisplayed)
+                    console.log("@@",paypalInitialOptions)}} colorScheme="pink" size="lg" fontSize="md" rightIcon={<ChevronRightIcon />}>
                     Checkout
                 </Button>
                 

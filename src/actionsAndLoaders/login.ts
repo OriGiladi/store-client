@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import axios from "axios";
-import { BASE_URL, NOT_FOUND_STATUS_CODE, UNAUTHORIZED_STATUS_CODE } from "../utils/constants";
+import { BAD_REQUEST_STATUS_CODE, BASE_URL, NOT_FOUND_STATUS_CODE, UNAUTHORIZED_STATUS_CODE } from "../utils/constants";
 import rootStore from '../rootStore'
 import { getHeaders } from "../utils/sdk";
 
@@ -20,7 +20,7 @@ export async function loginAction({ request }: { request: Request }) {
         return redirect('/')
     } catch (error) {
         if(axios.isAxiosError(error)){
-            if (error.response?.status === UNAUTHORIZED_STATUS_CODE || error.response?.status === NOT_FOUND_STATUS_CODE ){
+            if (error.response?.status === UNAUTHORIZED_STATUS_CODE || error.response?.status === NOT_FOUND_STATUS_CODE ||  error.response?.status === BAD_REQUEST_STATUS_CODE){
                 return { message: "Invalid email or password" }
             }
         } 
